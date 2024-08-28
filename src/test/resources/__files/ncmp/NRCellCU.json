@@ -1,0 +1,31 @@
+{
+    "erienmnrmlrat:ManagedElement": [
+        {
+            "id": "NR45gNodeBRadio00022",
+            "ericsson-enm-gnbcucp:GNBCUCPFunction": [
+                {
+                    "id": "1",
+                    "ericsson-enm-gnbcucp:NRCellCU": [
+                        {
+                            "id": "1",
+                            "attributes": {
+                                "nRCellCUId": "NR45gNodeBRadio00022-1",
+                                "cellLocalId": "1",
+                                "pSCellCapable": "null",
+                                "pLMNIdList": [
+                                    {
+                                      "mcc": "240",
+                                      "mnc": "80"
+                                    }
+                                ],
+                                "smtcDuration": 0,
+                                "smtcOffset": 0,
+                                "smtcPeriodicity": 0
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

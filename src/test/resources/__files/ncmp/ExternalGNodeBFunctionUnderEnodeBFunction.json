@@ -1,0 +1,87 @@
+{
+    "erienmnrmlrat:ENodeBFunction": [
+        {
+            "id": "1",
+            "erienmnrmlrat:ExternalGNodeBFunction": [
+                {
+                    "id": "1",
+                    "attributes": {
+                        "externalGNodeBFunctionId": 1,
+                        "gNodeBId": 1,
+                        "gNodeBIdLength": 22,
+                        "gNodeBPlmnId": "null"
+                    }
+                },
+                {
+                    "id": "2",
+                    "attributes": {
+                        "externalGNodeBFunctionId": 1,
+                        "gNodeBId": 1,
+                        "gNodeBIdLength": 22,
+                        "gNodeBPlmnId": "{mncLength=2, mcc=128, mnc=49}"
+                    }
+                },
+                {
+                    "id": "3",
+                    "attributes": {
+                        "externalGNodeBFunctionId": 1,
+                        "gNodeBId": 1,
+                        "gNodeBIdLength": 22,
+                        "gNodeBPlmnId": {
+                            "mncLength": 2,
+                            "mcc": 128,
+                            "mnc": 49
+                        }
+                    }
+                },
+                {
+                    "id": "4",
+                    "attributes": {
+                        "externalGNodeBFunctionId": 2,
+                        "gNodeBId": 2,
+                        "gNodeBIdLength": 23,
+                        "gNodeBPlmnId": {
+                            "mncLength": 2,
+                            "mcc": 128,
+                            "mnc": 49
+                        }
+                    }
+                },
+                {
+                    "id": "5",
+                    "attributes": {
+                        "externalGNodeBFunctionId": 3,
+                        "gNodeBId": 3,
+                        "gNodeBIdLength": 24,
+                        "gNodeBPlmnId": {
+                            "mncLength": 2,
+                            "mcc": 128,
+                            "mnc": 49
+                        }
+                    }
+                },
+                {
+                    "id": "6",
+                    "attributes": {
+                        "externalGNodeBFunctionId": 4,
+                        "gNodeBId": 4,
+                        "gNodeBIdLength": 24,
+                        "gNodeBPlmnId": {
+                            "mncLength": 2,
+                            "mcc": 128,
+                            "mnc": 49
+                        }
+                    }
+                },
+                {
+                    "id": "7",
+                    "attributes": {
+                        "externalGNodeBFunctionId": 5,
+                        "gNodeBId": 5,
+                        "gNodeBIdLength": 24
+                    }
+                }
+            ]
+        }
+    ]
+}

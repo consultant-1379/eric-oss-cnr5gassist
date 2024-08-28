@@ -1,0 +1,59 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+openapi: 3.0.1
+info:
+  description: "Api Gateway Client for 5G CNR"
+  version: "0.0.1"
+  title: "Gateway Client"
+  license:
+    name: "COPYRIGHT Ericsson 2021"
+    url: "https://www.ericsson.com/en/legal"
+  termsOfService: "https://www.ericsson.com/en/legal"
+tags:
+  - name: "GatewayService"
+    description: "Tag for API Gateway functionalities"
+components:
+  securitySchemes:
+    login:
+      type: apiKey
+      in: header
+      name: X-Login
+    password:
+      type: apiKey
+      in: header
+      name: X-password
+    tenant:
+      type: apiKey
+      in: header
+      name: X-tenant
+paths:
+  /auth/v1/login:
+    post:
+      operationId: "login"
+      tags:
+        - "GatewayService"
+      security:
+        - login: [ ]
+          password: [ ]
+          tenant: [ ]
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: string

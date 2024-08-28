@@ -1,0 +1,18 @@
+custom-stage-marker-one:
+  - name: clean.Jenkinsfile
+custom-stage-marker-two:
+  - name: init.Jenkinsfile
+custom-stage-marker-three:
+  - name: build.Jenkinsfile
+custom-stage-marker-four:
+  - name: test.Jenkinsfile
+custom-stage-marker-five:
+  - name: image.Jenkinsfile
+custom-stage-marker-six:
+  - name: package.Jenkinsfile
+custom-stage-marker-seven:
+  - name: helm_intall.Jenkinsfile
+custom-stage-marker-eight:
+  - name: k8s_test.Jenkinsfile
+custom-stage-marker-nine:
+  - name: fossa.Jenkinsfile

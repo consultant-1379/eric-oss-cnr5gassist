@@ -1,0 +1,18 @@
+{
+  "dmi-response": {
+    "http-code": 503,
+    "body": {
+      "data": {
+        "ietf-restconf:errors": {
+          "error": [
+            {
+              "error-type": "application",
+              "error-tag": "operation-failed",
+              "error-message": "Failed to communicate with ENM: '32' due to: 'timeout',request can be retried after 48 sec."
+            }
+          ]
+        }
+      }
+    }
+  }
+}

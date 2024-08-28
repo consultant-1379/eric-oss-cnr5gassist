@@ -1,0 +1,291 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+openapi: 3.0.1
+info:
+  description: "Common Topology Handling Client for 5G CNR"
+  version: "0.0.1"
+  title: "CTS Client"
+  license:
+    name: "COPYRIGHT Ericsson 2021"
+    url: "https://www.ericsson.com/en/legal"
+  termsOfService: "https://www.ericsson.com/en/legal"
+tags:
+  - name: "NrService"
+    description: "Tag for 5G functionalities"
+  - name: "LteService"
+    description: "Tag for 4G functionalities"
+  - name: "GeoService"
+    description: "Tag for Geospatial functionalities"
+paths:
+  /ctw/gnbduTask/count:
+    get:
+      tags:
+        - "NrService"
+      operationId: "countGnbduTasks"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: integer
+                format: int64
+        "400":
+          $ref: ./eric-topology-handling.responses.openapi.yaml#/components/responses/BadRequest
+  /ctw/gnbdu:
+    get:
+      tags:
+        - "NrService"
+      operationId: "listGnbdus"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ./eric-topology-handling.schemas.openapi.yaml#/components/schemas/Gnbdu
+        "400":
+          $ref: ./eric-topology-handling.responses.openapi.yaml#/components/responses/BadRequest
+  /ctw/gnbdu/{id}:
+    get:
+      tags:
+        - "NrService"
+      operationId: "fetchGnbdu"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: fs.wirelessNetworks
+          in: query
+          schema:
+            type: string
+            example: attr
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: ./eric-topology-handling.schemas.openapi.yaml#/components/schemas/Gnbdu
+        "400":
+          $ref: ./eric-topology-handling.responses.openapi.yaml#/components/responses/BadRequest
+  /ctw/nrcellTask/count:
+    get:
+      tags:
+        - "NrService"
+      operationId: "countNrcellTasks"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: integer
+                format: int64
+        "400":
+          $ref: ./eric-topology-handling.responses.openapi.yaml#/components/responses/BadRequest
+  /ctw/nrcell:
+    get:
+      tags:
+        - "NrService"
+      operationId: "listNrCells"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ./eric-topology-handling.schemas.openapi.yaml#/components/schemas/NrCell
+        "400":
+          $ref: ./eric-topology-handling.responses.openapi.yaml#/components/responses/BadRequest
+  /ctw/nrcell/{id}:
+    get:
+      tags:
+        - "NrService"
+      operationId: "fetchNrCell"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: fs.gnbdu
+          in: query
+          schema:
+            type: string
+            example: key
+        - name: fs.nrSectorCarriers
+          in: query
+          schema:
+            type: string
+            example: attr
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: ./eric-topology-handling.schemas.openapi.yaml#/components/schemas/NrCell
+        "400":
+          $ref: ./eric-topology-handling.responses.openapi.yaml#/components/responses/BadRequest
+  /ctw/nrcell/:
+    get:
+      tags:
+        - "NrService"
+      operationId: "queryNrCellWithFilters"
+      parameters:
+        - name: queryFilters
+          in: query
+          required: true
+          schema:
+            type: object
+            additionalProperties:
+              type: string
+        - name: fs.nrSectorCarriers
+          in: query
+          schema:
+            type: string
+            example: attr
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ./eric-topology-handling.schemas.openapi.yaml#/components/schemas/NrCell
+        "400":
+          $ref: ./eric-topology-handling.responses.openapi.yaml#/components/responses/BadRequest
+  /ctw/enodeb:
+    get:
+      tags:
+        - "LteService"
+      operationId: "listENodeBs"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ./eric-topology-handling.schemas.openapi.yaml#/components/schemas/ENodeB
+        "400":
+          $ref: ./eric-topology-handling.responses.openapi.yaml#/components/responses/BadRequest
+  /ctw/enodeb/{id}:
+    get:
+      tags:
+        - "LteService"
+      operationId: "fetchENodeB"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: fs.lteCells
+          in: query
+          schema:
+            type: string
+            example: attr
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: ./eric-topology-handling.schemas.openapi.yaml#/components/schemas/ENodeB
+        "400":
+          $ref: ./eric-topology-handling.responses.openapi.yaml#/components/responses/BadRequest
+  /ctw/ltecell:
+    get:
+      tags:
+        - "LteService"
+      operationId: "listLteCells"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ./eric-topology-handling.schemas.openapi.yaml#/components/schemas/LteCell
+        "400":
+          $ref: ./eric-topology-handling.responses.openapi.yaml#/components/responses/BadRequest
+  /ctw/ltecell/{id}:
+    get:
+      tags:
+        - "LteService"
+      operationId: "fetchLteCell"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: fs.geographicSite
+          in: query
+          schema:
+            type: string
+            example: attr
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: ./eric-topology-handling.schemas.openapi.yaml#/components/schemas/LteCell
+        "400":
+          $ref: ./eric-topology-handling.responses.openapi.yaml#/components/responses/BadRequest
+  /ctg/geographicsite/{id}:
+    get:
+      tags:
+        - "GeoService"
+      operationId: "fetchGeographicSite"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: fs.locatedAt
+          in: query
+          schema:
+            type: string
+            example: attr
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: ./eric-topology-handling.schemas.openapi.yaml#/components/schemas/GeographicSite
+        "400":
+          $ref: ./eric-topology-handling.responses.openapi.yaml#/components/responses/BadRequest

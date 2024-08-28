@@ -1,0 +1,116 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+openapi: "3.0.2"
+info:
+  description: "Ericsson 5G Centralized Neighbor Relations rApp"
+  version: "0.0.1"
+  title: "5G CNR rApp"
+  license:
+    name: "COPYRIGHT Ericsson 2021"
+    url: "https://www.ericsson.com/en/legal"
+  termsOfService: "https://www.ericsson.com/en/legal"
+  contact:
+    name: "Team Aether"
+    email: "mailto:PDLEAMAETH@pdl.internal.ericsson.com"
+tags:
+  - name: "nrc"
+    description: "Tag for 5G CNR functionalities."
+paths:
+  /api/v1/nrc/startNrc:
+    post:
+      tags:
+        - "nrc"
+      summary: "Start neighbour relation calculation."
+      operationId: "startNrc"
+      requestBody:
+        description: Requested 5G CNR specification
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './eric-oss-cnr5gassist_model-openapi.yaml#/components/schemas/NrcRequest'
+      responses:
+        200:
+          description: "OK - A new NRC task has been scheduled and the task id has been returned."
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+        208:
+          description: "ALREADY REPORTED - The request is already scheduled."
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+        400:
+          description: "BAD REQUEST - Malformed or invalid json request body."
+          content:
+            application/json:
+              schema:
+                $ref: './eric-oss-cnr5gassist_model-openapi.yaml#/components/schemas/ErrorResponse'
+        503:
+          description: "SERVICE UNAVAILABLE - The service fully or partially not available."
+          content:
+            application/json:
+              schema:
+                type: string
+  /api/v1/nrc/monitoring:
+    get:
+      tags:
+        - "nrc"
+      summary: "Lists basic information of 5G CNR processes. Limited to the latest 100."
+      operationId: "monitoring"
+      responses:
+        200:
+          description: "OK - Information about the running or finished 5G CNR processes are successfully returned."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: './eric-oss-cnr5gassist_model-openapi.yaml#/components/schemas/NrcProcess'
+  /api/v1/nrc/monitoring/{id}:
+    get:
+      tags:
+        - "nrc"
+      summary: "Query 5G CNR task details using UUID."
+      operationId: "monitoringById"
+      parameters:
+        - name: id
+          in: path
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: "Unique identifier of the 5G CNR task to get."
+      responses:
+        200:
+          description: "OK - The details of requested 5G CNR task has been returned successfully."
+          content:
+            application/json:
+              schema:
+                $ref: './eric-oss-cnr5gassist_model-openapi.yaml#/components/schemas/NrcTask'
+        400:
+          description: "BAD REQUEST - Malformed unique identifier."
+          content:
+            application/json:
+              schema:
+                type: string
+        404:
+          description: "NOT FOUND - No 5G CNR task was found for the given UUID."

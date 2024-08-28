@@ -1,0 +1,10 @@
+{
+  "type": "ctw/enodeb",
+  "id": 3,
+  "href": "ctw/enodeb/3",
+  "externalId": "ew345/_3gpp-common-managed-element:ManagedElement=me01/_3gpp-LTE-LTEm-enodebfunction:enodebFunction=enodeb01",
+  "eNodeBId": 100,
+  "status": "operating",
+  "name": "Europe/Ireland/LTE001/me01/enodeb01",
+  "objectInstId": 101
+}

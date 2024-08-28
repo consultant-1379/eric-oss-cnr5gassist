@@ -1,0 +1,169 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+modelVersion: "2.0"
+flavor: "ADP 2.0"
+service:
+  # name of the service:
+  name: "5G CNR Assist"
+  # Design Country (set on the source products)
+  design_countries:
+   - SE
+  # Country of Origin (Set on the derivative products)
+  sw_compilation_country: SE
+  # Release responsible
+  release_responsible: BDGSBECH
+  # Design responsible
+  design_responsible: BDGSBECH
+  # The documents is optional if all eridoc document revisions are set
+  documents:
+    # Read documents revisions from this file
+    # Use munin-doc search and pri.py to generate this file.
+    # Use full or relative path to product_structure.yaml
+    import: ../../build/documents.yaml
+  # Encryption Usage Status (Optional), use when encryption is not changed compared to previous released version
+  encryption_status: Completed
+  # Details of the APR product structure:
+  top_product:
+    # Note: all derivative_products are automatically added to APR product structure
+    # APR Product Number
+    number: APR 201 618
+    # Designation
+    designation: 5G CNR Assist rApp
+    # Description
+    description: |-
+      EIAP rApp for automatic configuration of neighbor cell relations for 5G.
+      The 5G CNR rApp microservice provides a REST API to execute automatic provisioning of neighbor cell relations.
+    # Alias designation, use the Helm Chart name
+    alias:
+      - eric-oss-5gcnr
+    # Included documents and products
+    includes:
+        # PRI
+      - eridoc: 109 21-APR 201 618/1
+        step_strategy: highest ordinal number
+        # User Guide
+      - eridoc: 1553-APR 201 618/1
+        step_strategy: highest revision letter
+#        # Statement of Compliance [OPTIONAL]
+#      - eridoc: 174 05-APR 201 618/1
+#        step_strategy: highest revision letter
+#        # Application Developer Guide sdif [OPTIONAL]
+#      - eridoc: 198 17-APR 201 618/1
+#        step_strategy: highest revision letter
+        # Risk Assessment doc
+      - eridoc: 006 64-APR 201 618/1
+        step_strategy: highest revision letter
+        # Secure Coding Report
+      - eridoc: 105 65-APR 201 618/1
+        step_strategy: highest revision letter
+        # Test Specification
+      - eridoc: 1/152 41-APR 201 618/1
+        step_strategy: highest revision letter
+        # Test Report
+      - eridoc: 1/152 83-APR 201 618/1
+        step_strategy: highest ordinal number
+        # VA Report
+      - eridoc: 1597-APR 201 618/1
+        step_strategy: highest revision letter
+        # Characteristic Report
+      - eridoc: 2/152 83-APR 201 618/1
+        step_strategy: highest ordinal number
+        # Security Tool Scan Report
+#      - eridoc: 1597-APR 201 618/1
+#        step_strategy: highest revision letter
+        # SUSE Licenses
+      - prim: 1/FAL 115 3215
+        rstate: R1A
+      - prim: 3/FAL 115 3215
+        rstate: R1A
+      - prim: 5/FAL 115 3215
+        rstate: R1A
+      - prim: 7/FAL 115 3215
+        rstate: R1A
+      # Log Shipper
+#      - munin: CXU 101 0642
+#        version: 9.0.0
+#        secondPartyProduct: "True"
+  # Details of Source product structures
+  src_products:
+      # API Product
+    - label: "API"
+      # Designation
+      designation: 5G CNR Assist API
+      # Description
+      description: >
+        The API client package for 5G CNR Assist microservice
+      number: CAF 101 241
+#      includes:
+#        - eridoc: 155 19-CAF 101 0179/1
+#          revision: A
+      # Source Code Product
+    - label: "Source"
+      # Designation
+      designation: 5G CNR Assist Source
+      # Description
+      description: >
+        The source code for 5G CNR Assist microservice
+      # The product number
+      number: CAV 101 0179
+      # List of provides (optional)
+      provides:
+        - munin: CAF 101 241
+
+  # Details of zero or more derivative product structures, use [] for zero
+  derivative_products:
+      # Label describing the product, must be uniq per list item
+    - label: "helm"
+      # Designation
+      designation: 5G CNR Assist Helm Chart
+      # Description
+      description: >
+        The Helm Chart configuration file of 5G CNR Assist microservice
+        to deploy on a Kubernetes cluster
+      # specific CXC product number
+      number: CXD 101 255
+      # Use the helm chart name as alias for the helm chart product
+      alias:
+        - eric-oss-5gcnr
+      derivedFrom:
+        munin: CAV 101 0179
+    - label: "image"
+      # Designation
+      designation: 5G CNR Assist Image
+      # Description
+      description: >
+        The container image of 5G CNR Assist contains microservice
+        with a REST API to execute automatic provisioning of neighbor cell relations.
+      # specific CXC product number
+      number: CXU 101 1245
+      includes:
+          # Common Base OS Image
+        - munin: CXC 201 2032
+          version: 5.4.0
+          secondPartyProduct: "True"
+          # Common Base OS Repository
+        - munin: CXC 201 2031
+          version: 5.4.0
+          secondPartyProduct: "True"
+      uses_foss:
+          # Create a dependencies file just for this image
+        - dependencies_file: dependencies.yaml
+        - foss_usage: foss.usage.yaml
+      uses_encryption:
+        - import: encryptions.yaml
+      derivedFrom:
+        munin: CAV 101 0179

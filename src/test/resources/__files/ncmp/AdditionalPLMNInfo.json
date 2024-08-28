@@ -1,0 +1,41 @@
+{
+  "ManagedElement": [
+    {
+      "id": "NRGNB02_Lake",
+      "GNBDUFunction": [
+        {
+          "id": "1",
+          "NRCellDU": [
+            {
+              "id": "NRGNB01_N66_01",
+              "erienmnrmgnbdu:AdditionalPLMNInfo": [
+                {
+                  "id": "2",
+                  "attributes": {
+                    "pLMNIdList": [
+                      {
+                        "mcc": "313",
+                        "mnc": "990"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "1",
+                  "attributes": {
+                    "pLMNIdList": [
+                      {
+                        "mcc": "310",
+                        "mnc": "014"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

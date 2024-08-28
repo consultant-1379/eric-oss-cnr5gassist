@@ -1,0 +1,22 @@
+{
+  "metadata" : {
+    "serviceHelmChartName" : "eric-oss-5gcnr",
+    "usedSchemaVersion" : "1.0",
+    "fileVersion" : "1.0.0",
+    "dateEdited" : "2022-11-09"
+  },
+  "internalPorts": [
+    {
+      "serviceInterfaceName": "Health check REST Service Port",
+      "protocol": "HTTP",
+      "ipAddressType": "static",
+      "port": 8080,
+      "transportProtocol": "TCP",
+      "ipVersion": ["IPv4"]
+    }
+
+  ],
+  "externalPorts": [
+
+  ]
+}

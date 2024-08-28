@@ -1,0 +1,10 @@
+{
+    "erienmnrmrtnl3interfaceipv4:AddressIPv4": [
+        {
+            "id": "1",
+            "attributes": {
+                "address": "10.55.168.22/29"
+            }
+        }
+    ]
+}

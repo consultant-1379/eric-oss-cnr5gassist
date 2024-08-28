@@ -1,0 +1,40 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+productName: "5G CNR rApp"
+productNumber: "CXD 101 255"
+images:
+  eric-oss-cnr5gassist:
+    productName: "5G CNR Assist Image"
+    productNumber: "CXU 101 1245"
+    registry: "armdocker.rnd.ericsson.se"
+    repoPath: "REPO_PATH"
+    name: "IMAGE_NAME"
+    tag: "VERSION"
+  keycloak-client:
+    productName: "Client for Keycloak Interaction"
+    productNumber: "CXU 000 0000"
+    registry: "armdocker.rnd.ericsson.se"
+    repoPath: "proj-orchestration-so"
+    name: "keycloak-client"
+    tag: "1.0.0-ha677b80.dirty"
+  eric-api-gateway-client:
+    productName: "Client for API Gateway"
+    productNumber: "CXU 000 0000"
+    registry: "armdocker.rnd.ericsson.se"
+    repoPath: "proj-eric-oss-drop"
+    name: "eric-api-gateway-client"
+    tag: "1.0.33-1"

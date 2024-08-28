@@ -1,0 +1,101 @@
+{
+  "roles": [
+    {
+      "name": "CNR_User",
+      "attributes": {
+        "type": [
+          "internal"
+        ]
+      }
+    },
+    {
+      "name": "CNR_Admin",
+      "attributes": {
+        "type": [
+          "internal"
+        ]
+      }
+    }
+  ],
+  "authorization": {
+    "resources": [
+      {
+        "name": "CNR Queries",
+        "type": "urn:eric-oss-cnr5gassist:resources:queries",
+        "ownerManagedAccess": false,
+        "uris": [
+          "{{ .Values.integration.policyFramework.hooks.contextPath }}/api/v1/nrc/monitoring",
+          "{{ .Values.integration.policyFramework.hooks.contextPath }}/api/v1/nrc/monitoring/{id}"
+        ],
+        "scopes": [
+          {
+            "name": "GET"
+          }
+        ]
+      },
+      {
+        "name": "CNR Operations",
+        "type": "urn:eric-oss-cnr5gassist:resources:operations",
+        "ownerManagedAccess": false,
+        "uris": [
+          "{{ .Values.integration.policyFramework.hooks.contextPath }}/api/v1/nrc/startNrc"
+        ],
+        "scopes": [
+          {
+            "name": "POST"
+          }
+        ]
+      }
+    ],
+    "policies": [
+      {
+        "name": "Is CNR User",
+        "type": "role",
+        "logic": "POSITIVE",
+        "decisionStrategy": "UNANIMOUS",
+        "config": {
+          "roles": "[{\"id\":\"CNR_User\",\"required\":false}]"
+        }
+      },
+      {
+        "name": "Is CNR Admin",
+        "type": "role",
+        "logic": "POSITIVE",
+        "decisionStrategy": "UNANIMOUS",
+        "config": {
+          "roles": "[{\"id\":\"CNR_Admin\",\"required\":false}]"
+        }
+      },
+      {
+        "name": "View CNR",
+        "type": "scope",
+        "logic": "POSITIVE",
+        "decisionStrategy": "AFFIRMATIVE",
+        "config": {
+          "resources": "[\"CNR Queries\"]",
+          "scopes": "[\"GET\"]",
+          "applyPolicies": "[\"Is CNR User\", \"Is CNR Admin\"]"
+        }
+      },
+      {
+        "name": "Operate CNR",
+        "type": "scope",
+        "logic": "POSITIVE",
+        "decisionStrategy": "AFFIRMATIVE",
+        "config": {
+          "resources": "[\"CNR Operations\"]",
+          "scopes": "[\"POST\"]",
+          "applyPolicies": "[\"Is CNR Admin\"]"
+        }
+      }
+    ],
+    "scopes": [
+      {
+        "name": "GET"
+      },
+      {
+        "name": "POST"
+      }
+    ]
+  }
+}

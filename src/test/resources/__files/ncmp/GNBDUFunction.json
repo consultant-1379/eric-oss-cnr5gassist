@@ -1,0 +1,31 @@
+{
+    "ericsson-enm-gnbdu:GNBDUFunction": [
+        {
+            "id": "2",
+            "attributes": {
+                "dUpLMNId": "null",
+                "gNBId": 10,
+                "gNBIdLength": 2
+            }
+        },
+        {
+            "id": "1",
+            "attributes": {
+                "dUpLMNId": "{mnc=49, mcc=128}",
+                "gNBId": "10",
+                "gNBIdLength": "22"
+            }
+        },
+        {
+            "id": "3",
+            "attributes": {
+                "dUpLMNId": {
+                    "mcc": 240,
+                    "mnc": 80
+                },
+                "gNBId": 20,
+                "gNBIdLength": 2
+            }
+        }
+    ]
+}

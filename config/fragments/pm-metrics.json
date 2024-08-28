@@ -1,0 +1,362 @@
+{
+  "metadata" : {
+    "serviceHelmChartName" : "eric-oss-5gcnr",
+    "usedSchemaVersion" : "3.1",
+    "fileVersion" : "1.3.0",
+    "dateEdited" : "2023-03-30"
+  },
+  "metrics" :
+  [
+    {
+      "pmMetric": "5gcnr_threadqueue_size",
+      "metricDescription" : "The number of all NRC tasks waiting for completion.",
+      "metricType": "Gauge",
+      "metricStatus": "alpha",
+      "metricCategory" : "USE",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_threadqueue_pending_size",
+      "metricDescription" : "The number of pending NRC tasks waiting to be executed.",
+      "metricType": "Gauge",
+      "metricStatus": "alpha",
+      "metricCategory" : "USE",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_threadqueue_ongoing_size",
+      "metricDescription" : "The number of ongoing NRC tasks under execution.",
+      "metricType": "Gauge",
+      "metricStatus": "alpha",
+      "metricCategory" : "USE",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_threadqueue_full_count",
+      "metricDescription" : "The number of rejected NRC requests because of thread queue full.",
+      "metricType": "Counter",
+      "metricStatus": "alpha",
+      "metricCategory" : "RED",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_threadqueue_idle_duration_seconds_max",
+      "metricDescription" : "The maximum time measured while the thread queue was empty between two requests.",
+      "metricType": "Gauge",
+      "metricStatus": "alpha",
+      "metricCategory" : "RED",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_threadqueue_idle_duration_seconds",
+      "metricDescription" : "The time measured while the thread queue was empty between two requests.",
+      "metricType": "Summary",
+      "metricStatus": "alpha",
+      "metricCategory" : "RED",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_history_http_request_duration_seconds_max",
+      "metricDescription" : "The maximum time an NRC request result has remained in history.",
+      "metricType": "Gauge",
+      "metricStatus": "alpha",
+      "metricCategory" : "USE",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_history_http_request_duration_seconds",
+      "metricDescription" : "The time an NRC request result has remained in history.",
+      "metricType": "Summary",
+      "metricStatus": "alpha",
+      "metricCategory" : "USE",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_nrc_nrc_http_requests",
+      "metricDescription" : "The number of startNrc endpoint http calls.",
+      "metricType": "Counter",
+      "metricStatus": "alpha",
+      "metricCategory" : "RED",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."},
+        {"label": "endpoint", "labelDescription": "Label for provided HTTP endpoint/resource."},
+        {"label": "method", "labelDescription": "Label for supported HTTP methods/verbs."},
+        {"label": "http_status", "labelDescription": "The response status code of the NRC request."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_nrc_http_request_size",
+      "metricDescription" : "The number of EnodeB IDs in the last NRC request.",
+      "metricType": "Counter",
+      "metricStatus": "alpha",
+      "metricCategory" : "RED",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_nrc_process_http_request_duration_seconds_max",
+      "metricDescription" : "The maximum time elapsed between request and completion of an NRC request.",
+      "metricType": "Gauge",
+      "metricStatus": "alpha",
+      "metricCategory" : "USE",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_nrc_process_http_request_duration_seconds",
+      "metricDescription" : "The time elapsed between request and completion of the last NRC request.",
+      "metricType": "Summary",
+      "metricStatus": "alpha",
+      "metricCategory" : "USE",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_nrc_request_count",
+      "metricDescription" : "The number of finished nrc requests.",
+      "metricType": "Counter",
+      "metricStatus": "alpha",
+      "metricCategory" : "RED",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."},
+        {"label": "nrc_status", "labelDescription": "The final status of a finished NRC process. It can be Succeeded or Failed."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_nrc_found_neighbouring_nodes_count",
+      "metricDescription" : "The number of NRC neighbor nodes identified.",
+      "metricType": "Counter",
+      "metricStatus": "alpha",
+      "metricCategory" : "RED",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_nrc_found_neighbouring_cells_count",
+      "metricDescription" : "The number of NRC neighbor cells identified.",
+      "metricType": "Counter",
+      "metricStatus": "alpha",
+      "metricCategory" : "RED",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_monitoring_request_count",
+      "metricDescription" : "The number of monitoring endpoint http calls.",
+      "metricType": "Counter",
+      "metricStatus": "alpha",
+      "metricCategory" : "RED",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_cts_http_requests",
+      "metricDescription" : "The number of requests sent to CTS.",
+      "metricType": "Counter",
+      "metricStatus": "alpha",
+      "metricCategory" : "USE",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."},
+        {"label": "http_status", "labelDescription": "The response status code of the CTS request."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_ncmp_http_requests",
+      "metricDescription" : "The number of requests sent to NCMP.",
+      "metricType": "Counter",
+      "metricStatus": "alpha",
+      "metricCategory" : "USE",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."},
+        {"label": "http_status", "labelDescription": "The response status code of the NCMP request."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_ncmp_object_count",
+      "metricDescription" : "The number of NCMP created objects.",
+      "metricType": "Counter",
+      "metricStatus": "alpha",
+      "metricCategory" : "RED",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_ncmp_missing_neighbours_count",
+      "metricDescription" : "The number of missing neighbors.",
+      "metricType": "Counter",
+      "metricStatus": "alpha",
+      "metricCategory" : "RED",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_cts_processing_http_request_duration_seconds_max",
+      "metricDescription" : "Maximum response time for CTS requests.",
+      "metricType": "Gauge",
+      "metricStatus": "alpha",
+      "metricCategory" : "USE",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_cts_processing_http_request_duration_seconds",
+      "metricDescription" : "Response time for CTS request.",
+      "metricType": "Summary",
+      "metricStatus": "alpha",
+      "metricCategory" : "USE",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_ncmp_processing_http_request_duration_seconds_max",
+      "metricDescription" : "Maximum response time for NCMP requests.",
+      "metricType": "Gauge",
+      "metricStatus": "alpha",
+      "metricCategory" : "USE",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_ncmp_processing_http_request_duration_seconds",
+      "metricDescription" : "Response time for NCMP request.",
+      "metricType": "Summary",
+      "metricStatus": "alpha",
+      "metricCategory" : "USE",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_apigateway_sessionid_http_requests",
+      "metricDescription" : "The number of session ID requests sent to API Gateway.",
+      "metricType": "Counter",
+      "metricStatus": "alpha",
+      "metricCategory" : "USE",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."},
+        {"label": "http_status", "labelDescription": "The response status code of the API Gateway request."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_apigateway_sessionid_processing_seconds_max",
+      "metricDescription" : "Maximum response time for API Gateway requests.",
+      "metricType": "Gauge",
+      "metricStatus": "alpha",
+      "metricCategory" : "USE",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_apigateway_sessionid_processing_seconds",
+      "metricDescription" : "Response time for API Gateway request.",
+      "metricType": "Summary",
+      "metricStatus": "alpha",
+      "metricCategory" : "USE",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_cache_served_objects_requests_count",
+      "metricDescription" : "The number of requests served from the cache.",
+      "metricType": "Counter",
+      "metricStatus": "alpha",
+      "metricCategory" : "USE",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."},
+        {"label": "service", "labelDescription": "Label for service calls served from the cache. (CTS, NCMP)"}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_cache_size",
+      "metricDescription" : "The number of objects that are currently in the cache.",
+      "metricType": "Counter",
+      "metricStatus": "alpha",
+      "metricCategory" : "USE",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."},
+        {"label": "service", "labelDescription": "Label for service calls stored in the cache. (CTS, NCMP)"}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_retry_http_requests",
+      "metricDescription" : "The number of CTS and NCMP request retries performed.",
+      "metricType": "Counter",
+      "metricStatus": "alpha",
+      "metricCategory" : "USE",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."},
+        {"label": "object_type", "labelDescription": "Label for service calls where retries are performed. (CTS, NCMP)"}
+      ]
+    },
+    {
+      "pmMetric": "5gcnr_enm_retry_overload_count",
+      "metricDescription" : "The number of CTS and NCMP request retries when ENM adapter is overloaded.",
+      "metricType": "Counter",
+      "metricStatus": "alpha",
+      "metricCategory" : "USE",
+      "metricLabel": [
+        {"label": "uniqueAppId", "labelDescription": "The unique ID of the rApp visible on the dashboard."},
+        {"label": "instance", "labelDescription": "Label for differentiating metrics between instances."}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+{{- $default := include "eric-oss-5gcnr.annotations" . | fromYaml -}}
+{{- $prometheus := include "eric-oss-5gcnr.prometheus" . | fromYaml -}}
+{{- $name := include "eric-oss-5gcnr.name" . }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $name }}-configmap
+  labels:
+    {{- include "eric-oss-5gcnr.labels" . | nindent 4 }}
+  annotations:
+    {{- include "eric-oss-5gcnr.annotations" . | nindent 4 }}
+data:
+{{- range $path, $_ := (.Files.Glob "resources/deployment/*") }}
+  {{ trimPrefix "resources/deployment/" $path }}: |
+    {{- tpl ($.Files.Get $path) $ | nindent 4 }}
+{{- end }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "eric-oss-5gcnr.fullname" . }}
+  labels:
+    {{- include "eric-oss-5gcnr.labels" . | nindent 4 }}
+  annotations:
+    {{- include "eric-oss-5gcnr.mergeAnnotations" (dict "location" .Template.Name "sources" (list $prometheus $default)) | nindent 4 }}
+spec:
+{{- if not .Values.autoScaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels: {{ include "eric-oss-5gcnr.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: {{ .Values.updateStrategy.type | quote }}
+    {{- if and (eq .Values.updateStrategy.type "RollingUpdate") .Values.updateStrategy.rollingUpdate }}
+    rollingUpdate:
+      maxUnavailable: {{ .Values.updateStrategy.rollingUpdate.maxUnavailable }}
+      maxSurge: {{ .Values.updateStrategy.rollingUpdate.maxSurge }}
+    {{- end }}
+  template:
+    metadata:
+      labels:
+        {{- $commonLabels := include "eric-oss-5gcnr.labels" . | fromYaml }}
+        {{- $serviceMesh := include "eric-oss-5gcnr.service-mesh-inject" .| fromYaml }}
+        {{- $directStreaming := include "eric-oss-5gcnr.directStreamingLabel" . | fromYaml }}
+        {{- $peerServiceAccess := include "eric-oss-5gcnr.peerServiceAccess.labels" . | fromYaml }}
+        {{- include "eric-oss-5gcnr.mergeLabels" (dict "location" .Template.Name "sources" (list $commonLabels $serviceMesh $directStreaming $peerServiceAccess)) | trim | nindent 8 }}
+      annotations:
+        {{- $serviceMesh := include "eric-oss-5gcnr.service-mesh-inject" .| fromYaml }}
+        {{- include "eric-oss-5gcnr.service-mesh-version" .| nindent 8 }}
+        {{- include "eric-oss-5gcnr.service-mesh-volume" .| nindent 8 }}
+        {{- include "eric-oss-5gcnr.mergeAnnotations" (dict "location" .Template.Name "sources" (list $prometheus $default $serviceMesh)) | trim | nindent 8 }}
+    spec:
+      {{- include "eric-oss-5gcnr.priorityClassName" . | indent 6}}
+      {{- if include "eric-oss-5gcnr.pullSecret" . }}
+      imagePullSecrets:
+      - name: {{ include "eric-oss-5gcnr.pullSecret" . | quote}}
+      {{- end }}
+      {{- with .Values.topologySpreadConstraints.deployment }}
+      topologySpreadConstraints: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      serviceAccountName: {{ template "eric-oss-5gcnr.fullname" . }}
+      securityContext:
+        {{- include "eric-oss-5gcnr.fsGroup.coordinated" . | indent 8 }}
+        {{- include "eric-oss-5gcnr.supplementalGroups" . | indent 8 }}
+      volumes:
+        - name: tmp-volume
+          emptyDir: {}
+        - name: config-volume
+          configMap:
+            name: {{ $name }}-configmap
+        - name: log-control-configmap-volume
+          configMap:
+            name: {{ include "eric-oss-5gcnr.name" . }}-log-control-configmap
+      containers:
+      - name: eric-oss-cnr5gassist
+        {{- $image := merge (dict "imageName" "eric-oss-cnr5gassist") . }}
+        image: {{ include "eric-oss-5gcnr.image" $image }}
+        imagePullPolicy: {{ include "eric-oss-5gcnr.imagePullPolicy" $image }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          capabilities:
+            drop:
+            - all
+        volumeMounts:
+        - name: config-volume
+          mountPath: /config
+        - name: tmp-volume
+          mountPath: /tmp
+        - name: log-control-configmap-volume
+          mountPath: /logcontrol
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        livenessProbe: {{- include "eric-oss-5gcnr.livenessProbe" $image | nindent 10 }}
+          httpGet:
+            path: /actuator/health
+            port: http
+        readinessProbe: {{- include "eric-oss-5gcnr.readinessProbe" $image | nindent 10 }}
+          httpGet:
+            path: /actuator/health
+            port: http
+        env:
+        - name: SERVICE_ID
+          value: {{ include "eric-oss-5gcnr.name" . | quote }}
+        - name: TZ
+          value: {{ template "eric-oss-5gcnr.timezone" . }}
+        {{- $secretName := default (include "eric-oss-5gcnr.name" .) $.Values.integration.policyFramework.secretName }}
+        {{- range $key, $value := .Values.integration.policyFramework.credentials }}
+        - name: LOG_CTRL_FILE
+          value: "/logcontrol/logcontrol.json"
+        - name: GATEWAY_AUTH_{{ $key | upper }}
+          valueFrom:
+            secretKeyRef:
+              name: {{ $secretName | quote }}
+              key: {{ $key | quote }}
+        {{- end }}
+        {{- if .Values.global }}
+          {{- if .Values.global.security }}
+            {{- if .Values.global.security.tls }}
+              {{- if .Values.global.security.tls.enabled }}
+        - name: CONNECT_MODE
+          value: "tls"
+          {{- if (eq .Values.service.endpoints.chassisapi.tls.enforced "required") }}
+        - name: TLS_MODE
+          value: "only_tls"
+          {{- if (eq .Values.service.endpoints.chassisapi.tls.verifyClientCertificate "required") }}
+        - name: TLS_CA
+          value: "ca_path"
+          {{- end }}
+          {{- end }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
+        {{- end }}
+        {{- include "eric-oss-5gcnr.loggingEnv" . | indent 8 }}
+        {{- with index .Values "resources" "eric-oss-cnr5gassist" }}
+        resources:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+      nodeSelector: {{ include "eric-oss-5gcnr.nodeSelector" . | nindent 8 }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.affinity.podAntiAffinity }}
+      affinity: {{- include "eric-oss-5gcnr.affinity" (merge (dict "name" $name) .) | nindent 8 }}
+      {{- end }}

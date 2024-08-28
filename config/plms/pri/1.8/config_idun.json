@@ -1,0 +1,57 @@
+{
+    "git_collector__Feature": {
+        "id_pattern": "(?:Requirement:\\s*)(IDUN-[0-9]+).*?"
+    },
+    "git_collector__Bug": {
+        "id_pattern": "(?:Troublereport:\\s*)(IDUN-[0-9]+).*?"
+    },
+    "git_collector__Deprecation": {
+        "id_pattern": "(?:Deprecation:\\s*)(IDUN-[0-9]+).*?"
+    },
+    "git_collector__Abrupt_nbc": {
+        "id_pattern": "(?:Abrupt_NBC:\\s*)(IDUN-[0-9]+).*?"
+    },
+    "git_collector__Nuc": {
+        "id_pattern": "(?:NUC:\\s*)(IDUN-[0-9]+).*?"
+    },
+    "jira_collector__No_feature_in_jira": {
+        "jira_url": "https://jira-oss.seli.wh.rnd.internal.ericsson.com",
+        "jql": "key = ${id} AND type != Bug AND status = Done"
+    },
+    "jira_collector__Feature_in_jira": {
+        "jira_url": "https://jira-oss.seli.wh.rnd.internal.ericsson.com",
+        "jql": "key = ${id} AND status IN (FA, FG, F4)"
+    },
+    "jira_collector__Bug": {
+        "jira_url": "https://jira-oss.seli.wh.rnd.internal.ericsson.com",
+        "jql": "key = ${id} AND type IN (Bug, Task, Sub-task, Story) AND status IN (Closed, Done)"
+    },
+    "jira_collector__unfinished_tasks": {
+        "jira_url": "https://jira-oss.seli.wh.rnd.internal.ericsson.com",
+        "jql": "key = ${id} AND status NOT IN (Done, Closed, Cancelled, FA, FG, F4)"
+    },
+    "jira_collector__open_bug": {
+        "jira_url": "https://jira-oss.seli.wh.rnd.internal.ericsson.com",
+        "jql": "project = \"IDUN\" AND type=Bug AND status NOT IN (Done, Closed, Cancelled)"
+    },
+    "jira_collector__Deprecation_done": {
+        "jira_url": "https://jira-oss.seli.wh.rnd.internal.ericsson.com",
+        "jql": "key = ${id} AND type = Deprecation AND status = Done"
+    },
+    "jira_collector__Deprecation_approved": {
+        "jira_url": "https://jira-oss.seli.wh.rnd.internal.ericsson.com",
+        "jql": "project = IDUN AND type = Deprecation AND status = Approved AND \"Start date\" <= endOfDay()"
+    },
+    "jira_collector__Vulnerabilities": {
+        "jira_url": "https://jira-oss.seli.wh.rnd.internal.ericsson.com",
+        "jql": "key = ${id} AND type IN (Bug, Task, Sub-task, Story) AND status IN (Closed, Done)"
+    },
+    "jira_collector__Abrupt_nbc": {
+        "jira_url": "https://jira-oss.seli.wh.rnd.internal.ericsson.com",
+        "jql": "key = ${id} AND type = \"Abrupt NBC\" AND status IN (Closed, Done)"
+    },
+    "jira_collector__Nuc": {
+        "jira_url": "https://jira-oss.seli.wh.rnd.internal.ericsson.com",
+        "jql": "key = ${id} AND type = NUC AND status IN (Closed, Done)"
+    }
+}

@@ -1,0 +1,154 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+openapi: "3.0.2"
+info:
+  title: "5G CNR rApp schemas"
+  description: "Open api file which represent components schemas of 5G CNR rApp"
+  version: "0.0.1"
+  license:
+    name: "COPYRIGHT Ericsson 2021"
+    url: "https://www.ericsson.com/en/legal"
+  termsOfService: "https://www.ericsson.com/en/legal"
+  contact:
+    email: "Team Aether<PDLEAMAETH@pdl.internal.ericsson.com>"
+components:
+  schemas:
+    NrcTask:
+      type: object
+      description: "A representation of NRC calculation: process information, request and result of an NRC task."
+      required:
+        - request
+        - process
+      properties:
+        request:
+          description: "The input request of the task."
+          $ref: "#/components/schemas/NrcRequest"
+        process:
+          description: "It contains information about the process."
+          $ref: "#/components/schemas/NrcProcess"
+        allNrcNeighbors:
+          description: "The result of the task."
+          type: array
+          items:
+            $ref: '#/components/schemas/NrcNeighbor'
+    NrcRequest:
+      type: object
+      description: "Input request payload object representation to start an NRC algorithm."
+      required:
+        - eNodeBIds
+      properties:
+        eNodeBIds:
+          type: array
+          description: "The CTS id parameter for the 4G ENodeBs that the NRC task need to take into consideration."
+          minItems: 1
+          maxItems: 500
+          uniqueItems: true
+          items:
+            type: integer
+            format: int64
+            minimum: 0
+        distance:
+          type: integer
+          minimum: 0
+          default: 200
+          description: "Area radius - in meters - around the LTE Cell where the neighbors (NR Cells) will be looked up."
+        freqPairs:
+          type: object
+          description: "The frequency compatibility pairs to be considered in NRC algorithm. For each 4G Cell Frequency you can specify a list of 5G Cell Frequencies which the NRC algorithm will use."
+          additionalProperties:
+            type: array
+            uniqueItems: true
+            items:
+              type: integer
+              minimum: 0
+    NrcProcess:
+      type: object
+      description: "NRC process information."
+      properties:
+        id:
+          type: string
+          description: "A unique identifier of the process."
+          format: uuid
+        status:
+          description: "The current status of the process execution."
+          $ref: '#/components/schemas/NrcProcessStatus'
+        hour:
+          description: "The hour of the request sent."
+          type: integer
+        minute:
+          description: "The minute of the request sent."
+          type: integer
+    NrcProcessStatus:
+      type: string
+      description: |
+        The current status of the process execution.
+        Where:
+        Pending - NRC task is scheduled
+        Ongoing - NRC task processing is started
+        Succeeded - NRC task finished with success
+        Failed - task failed due to exceptional behaviour e. g.: CTS is unreachable, etc.
+      enum:
+        - Pending
+        - Ongoing
+        - Succeeded
+        - Failed
+    NrcNeighbor:
+      type: object
+      description: "The output result of the NRC algorithm containing the neighbouring cells discovered within the provided distance and running on the specified frequencies."
+      properties:
+        eNodeBId:
+          type: integer
+          format: int64
+        gNodeBDUs:
+          type: array
+          items:
+            $ref: '#/components/schemas/NrcGroupingGnbdu'
+    NrcGroupingGnbdu:
+      type: object
+      description: "The list of NRCells in the GNodeB discovered to be within the specified distance of the ENodeB."
+      properties:
+        gNodeBDUId:
+          type: integer
+          format: int64
+        nrCellIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+    ErrorResponse:
+      type: object
+      description: "The error response body"
+      required:
+        - timestamp
+        - error
+        - status
+        - path
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        error:
+          type: string
+        status:
+          type: integer
+          format: int32
+        path:
+          type: string
+        body:
+          type: object
+
+

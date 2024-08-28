@@ -1,0 +1,102 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+modelVersion: 2.0
+
+properties:
+  # Microservice artifactID
+  - project-artifact-id: eric-oss-5gcnr
+    # Microservice helm chart name
+  - helm-chart-name: eric-oss-5gcnr
+    # Microservice docker image name
+  - docker-image-name: eric-oss-cnr5gassist
+    # Path to YAML file containing all needed information about product structure to release in PRIM
+  - dpraf-config-file: 'config/dpraf_config.yaml'
+    # Local folder where the dpraf output is generated based on dpraf-config-file during execution of adp-prim-release rule
+  - dpraf-output-dir: 'build/dpraf-output'
+    # Configuration file for EriDoc documents
+  - eridoc-config: "config/plms/eridoc_config.yaml"
+    # Static information for PRI
+  - pri-manual-input: "config/plms/pri_manual_input.json"
+    # Product extended name in JIRA
+  - jira-component-name: "IDUN"
+    # Project name in JIRA
+  - jira-project-name: "IDUN"
+    # Gerrit repository name
+  - gerrit-repo-name: OSS/com.ericsson.oss.apps/eric-oss-cnr5gassist
+    # Gerrit repository URL
+  - gerrit-url: "https://gerrit.ericsson.se/plugins/gitiles/OSS/com.ericsson.oss.apps/eric-oss-cnr5gassist/"
+    # Image product number
+  - image-product-number: "CXU1011245"
+    # License Agreement file name
+  - license-agreement-file-name: license-agreement
+    # Config-Fragments
+  - config-fragments: "config/fragments"
+    # Manual License Agreement file name
+  - manual-license-agreement-file-name: manual-${license-agreement-file-name}
+    # License Agreement JSON file path
+  - license-agreement-file-path-json: doc/fragments/${license-agreement-file-name}.json
+    # License Agreement md file path
+  - license-agreement-file-path-md: doc/fragments/${license-agreement-file-name}.md
+    # Manual License Agreement JSON file path
+  - manual-license-agreement-file-path: ${config-fragments}/${manual-license-agreement-file-name}.json
+    # License Agreement JSON destination file name
+  - license-agreement-dest-file-name: ${project-artifact-id}_license_agreement.json
+    # FOSS dependencies list yaml file
+  - dependencies-file-name: dependencies.yaml
+    # FOSS dependencies list yaml file with file path
+  - dependencies-file-path: config/plms/${dependencies-file-name}
+    # Service Ports JSON source file name
+    # Service Ports JSON source file name
+  - service-ports-file-name: service-ports.json
+    #  Service Ports JSON file path
+  - service-ports-file-path: ${config-fragments}/${service-ports-file-name}
+    # Service Ports JSON destination file name
+  - service-ports-dest-file-name: ${project-artifact-id}_service_ports.json
+    # PM Metrics JSON source file name
+  - pm-metrics-file-name: pm-metrics.json
+    # PM Metrics JSON file path
+  - pm-metrics-file-path: ${config-fragments}/${pm-metrics-file-name}
+    # PM Metrics JSON destination file name
+  - pm-metrics-dest-file-name: ${project-artifact-id}_pm_metrics.json
+    # PM Metrics MD report file name
+  - pm-metrics-md-file-name: pm_metrics.md
+    # PM Metrics MD report file path
+  - pm-metrics-md-file-path: ${config-fragments}/${pm-metrics-md-file-name}
+    # characteristics report JSON source file path in release repo
+  - characteristics-report-source-file-path-release: ${config-fragments}/${characteristics-report-source-file-name}
+    # characteristics report JSON source file name
+  - characteristics-report-source-file-name: ${project-artifact-id}_characteristic_report.json
+    # characteristics report JSON source file path in dev repo
+  - characteristics-report-source-file-path-dev: src/test/resources/utils/config/${project-artifact-id}_characteristic_report.json
+    # Generated documents directory path
+  - generated-docs-path-dir: doc/target/generated-docs
+    # characteristics report generated output file path
+  - characteristics-report-output-dir: ${generated-docs-path-dir}/characteristics_report
+    # characteristics report JSON destination file name
+  - characteristics-report-dest-file-name: ${project-artifact-id}_characteristics-report.json
+    # Structure-data output directory
+  - structure-output-dir: "build/structure-output"
+    # Structure-data JSON source file name
+  - structure-data-file: eric-oss-5gcnr-structured-data.json
+    # Mimer product number
+  - mimer-product-number: "APR201618"
+    # Mimer product version
+  - mimer-product-version: "1.1.0"
+    # Generated SVL file name
+  - svl-file-name: 3pp_list.xlsx
+    # Generated SVL file output
+  - svl-file-out-dir: ${generated-docs-path-dir}/svl

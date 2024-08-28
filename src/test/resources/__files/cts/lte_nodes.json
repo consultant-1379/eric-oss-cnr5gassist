@@ -1,0 +1,32 @@
+[
+  {
+    "type": "ctw/enodeb",
+    "id": 3,
+    "href": "ctw/enodeb/3",
+    "externalId": "externalId1",
+    "eNodeBId": 100,
+    "status": "operating",
+    "name": "eNodeB1",
+    "objectInstId": 101
+  },
+  {
+    "type": "ctw/enodeb",
+    "id": 4,
+    "href": "ctw/enodeb/4",
+    "externalId": "externalId2",
+    "eNodeBId": 200,
+    "status": "operating",
+    "name": "eNodeB2",
+    "objectInstId": 201
+  },
+  {
+    "type": "ctw/enodeb",
+    "id": 5,
+    "href": "ctw/enodeb/5",
+    "externalId": "externalId3",
+    "eNodeBId": 300,
+    "status": "operating",
+    "name": "eNodeB3",
+    "objectInstId": 301
+  }
+]

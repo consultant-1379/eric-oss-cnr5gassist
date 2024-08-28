@@ -1,0 +1,408 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+modelVersion: 2.0
+
+description: "Ericsson Java Spring Boot Supporting LTE to 5G FR2 cell relationship creation. It provides the information needed by the LTE nodes for ANR on the node to work with 5G FR2 cells"
+
+# See image catalog: https://confluence.lmera.ericsson.se/display/ACD/ADP+CICD+Docker+Image+Catalog
+docker-images:
+  - adp-release-auto: armdocker.rnd.ericsson.se/proj-adp-cicd-drop/bob-adp-release-auto:${env.RELEASE_AUTO_TAG}
+  - adp-helm-kubectl: armdocker.rnd.ericsson.se/proj-adp-cicd-drop/bob-py3kubehelmbuilder:${env.HELM_KUBECTL_TAG}
+  - grype-scan: armdocker.rnd.ericsson.se/proj-adp-cicd-drop/va-image-scanning-grype:${env.ANCHORE_TAG}
+  - trivy-inline-scan: armdocker.rnd.ericsson.se/proj-adp-cicd-drop/trivy-inline-scan:${env.TRIVY_TAG}
+  - va-scan-kubesec: armdocker.rnd.ericsson.se/proj-adp-cicd-drop/va-scan-kubesec:${env.KUBESEC_TAG}
+  - va-scan-kubeaudit: armdocker.rnd.ericsson.se/proj-adp-cicd-drop/va-scan-kubeaudit:${env.KUBEAUDIT_TAG}
+  - va-scan-kubehunter: armdocker.rnd.ericsson.se/proj-adp-cicd-drop/va-scan-kubehunter:${env.KUBEHUNTER_TAG}
+  - va-scan-unicornscan: armdocker.rnd.ericsson.se/proj-ews/rymden/unicornscan:${env.UNICORN_TAG}
+  - kubebench-scan: armdocker.rnd.ericsson.se/proj-adp-cicd-drop/va-scan-kubebench:${env.KUBEBENCH_TAG}
+  - hadolint-scan: armdocker.rnd.ericsson.se/proj-adp-cicd-drop/hadolint-scan:${env.HADOLINT_TAG}
+  - report-generator: armdocker.rnd.ericsson.se/proj-eea-drop/report-generator:${env.REPORT_GENERATOR_TAG}
+
+import:
+  common: ../common-properties.yaml
+
+# List of constants
+properties:
+  - image-full-name: armdocker.rnd.ericsson.se/proj-eric-oss-drop/${common.docker-image-name}
+  - bob-dir: ${env.PWD}/.bob
+  - config-dir: ${env.PWD}/va-configs
+  - report-dir: ${bob-dir}/va-reports
+  - xray-report-dir: ${bob-dir}/xray-reports
+  - project-subpath: proj-eric-oss
+
+  - helm-chart-file-name: ${common.helm-chart-name}-${var.version}.tgz
+
+# import environment variables (For example: Jenkins parameters)
+env:
+  - PWD
+  - HOME
+  - DOCKER_NETWORK (default=--network host)
+  - KUBECONFIG (default=${env.HOME}/.kube/config)
+  - DEFENSICS_HOME (default=${bob-dir}/defensics_home)
+
+  # Default docker image tags
+  - RELEASE_AUTO_TAG (default=latest)
+  - HELM_KUBECTL_TAG (default=latest)
+  - ANCHORE_TAG (default=latest)
+  - TRIVY_TAG (default=latest)
+  - KUBESEC_TAG (default=latest)
+  - KUBEAUDIT_TAG (default=latest)
+  - KUBEHUNTER_TAG (default=latest)
+  - UNICORN_TAG (default=latest)
+  - KUBEBENCH_TAG (default=latest)
+  - HADOLINT_TAG (default=latest)
+  - REPORT_GENERATOR_TAG (default=1.0.0-89)
+
+  # Credentials
+  - DOCKER_CONFIG (default=$HOME/.docker/config.json)
+  - SERO_ARTIFACTORY_REPO_USER
+  - SERO_ARTIFACTORY_REPO_PASS
+  - XRAY_USER
+  - XRAY_APIKEY
+  - BAZAAR_USER (default=ossadmin)
+  - BAZAAR_TOKEN
+  - FOSSA_ARTIFACT_HASH
+  - FOSSA_API_KEY
+  - HADOLINT_DATA_DIR
+  - HADOLINT_REPORTS_DIR
+  - VHUB_API_TOKEN
+
+# Variables, set by below tasks
+var:
+  - version
+  - k8s-namespace
+  - image-repopath-drop
+  - image-repopath-internal
+  - resultcode_hadolint_check
+  - defensics_report_dir
+
+# Rules to execute
+rules:
+  init:
+    - task: create-temp-dir
+      cmd:
+        - mkdir -p ${xray-report-dir}
+        - mkdir -p ${report-dir}/nmap
+        - mkdir -p ${report-dir}/trivy
+        - mkdir -p ${report-dir}/kubeaudit
+        - mkdir -p ${report-dir}/kubehunter
+        - mkdir -p ${report-dir}/kubebench
+        - mkdir -p ${report-dir}/kubesec
+        - mkdir -p ${report-dir}/hadolint
+        - mkdir -p ${report-dir}/fuzz
+        - touch ${report-dir}/kubeaudit/test
+
+    - task: template-chart
+      docker-image: adp-helm-kubectl
+      cmd: helm template charts/${common.helm-chart-name} --output-dir=${bob-dir}/helm_src
+
+  fetch-xray-report:
+    - task: fetch-xray-report
+      docker-image: adp-release-auto
+      cmd: bash -c 'fetch-xray
+        --config ${config-dir}/xray_report.config
+        --debug
+        --user ${env.XRAY_USER}
+        --apikey ${env.XRAY_APIKEY}
+        --output ${xray-report-dir}/xray_report.json
+        --set ci-internal-artifactory=${var.image-repopath-internal}
+        --set ci-drop-artifactory=${var.image-repopath-drop}
+        --set image=${common.docker-image-name}
+        --set version=${var.version}
+        --raw-output ${xray-report-dir}/raw_xray_report.json'
+    - task: get-bazaar-data
+      docker-image: adp-release-auto
+      cmd: bash -c 'python3 bazaar.py -v -t ${env.BAZAAR_TOKEN} -u ${env.BAZAAR_USER}'
+
+  kubeaudit-scan:
+    - task: copy
+      cmd: cp ${config-dir}/kubeaudit_config.yaml ${bob-dir}/kubeaudit_config.yaml
+    - task: set-namespace
+      docker-image: adp-helm-kubectl
+      cmd: yq w -i ${bob-dir}/kubeaudit_config.yaml Kubeaudit.CustomRun.Parameters "all --kubeconfig /opt/va-scan-kubeaudit/conf/kubeconfig --format json --namespace ${var.k8s-namespace}"
+    - task: kube-scan-test
+      docker-image: va-scan-kubeaudit
+      docker-flags:
+        - "--env VA_NAMESPACE=${var.k8s-namespace}"
+        - "--workdir /opt/va-scan-kubeaudit/"
+        - "--volume ${bob-dir}/kubeaudit_config.yaml:/opt/va-scan-kubeaudit/conf/kubeaudit_config.yaml"
+        - "--volume ${env.KUBECONFIG}:/opt/va-scan-kubeaudit/conf/kubeconfig"
+        - "--volume ${report-dir}/kubeaudit:/tmp/reports"
+        - "--volume ${bob-dir}/helm_src:/tmp/src"
+      cmd: ""
+
+  trivy-scan:
+    - task: trivy-inline-scan-console-report
+      docker-image: trivy-inline-scan
+      docker-flags:
+        - "--env HOME=${env.HOME}"
+        - "--volume ${env.HOME}:${env.HOME}"
+      docker-in-docker: socket
+      cmd: --offline-scan --timeout 30m ${image-full-name}:${var.version}
+    - task: trivy-inline-scan-json-report
+      docker-image: trivy-inline-scan
+      docker-flags:
+        - "--env HOME=${env.HOME}"
+        - "--volume ${env.HOME}:${env.HOME}"
+      docker-in-docker: socket
+      cmd: --format json --output ${report-dir}/trivy/trivy.report.json --offline-scan --timeout 30m ${image-full-name}:${var.version}
+
+  anchore-grype-scan:
+    - task: anchore-grype-scan
+      docker-image: grype-scan
+      docker-flags:
+        - "--env HOME=${env.HOME}"
+        - "--volume ${env.HOME}:${env.HOME}"
+      docker-in-docker: socket
+      cmd: grype_scan
+            --image ${image-full-name}:${var.version}
+            --report-dir ${report-dir}/anchore-reports
+
+  kubehunter-scan:
+    - task: va-scan-kubehunter
+      docker-image: va-scan-kubehunter
+      docker-flags:
+        - "--workdir /opt/kubehunter/"
+        - "--volume ${env.KUBECONFIG}:/opt/kubehunter/conf/kubeconfig"
+        - "--volume ${config-dir}/kubehunter_config.yaml:/opt/kubehunter/conf/kubehunter_config.yaml"
+        - "--volume ${report-dir}/kubehunter:/tmp/reports"
+      cmd: ""
+
+  kubebench-scan:
+    - task: kubebench-scan
+      docker-image: kubebench-scan
+      docker-flags:
+        - "--env VA_NAMESPACE=${var.k8s-namespace}"
+        - "--workdir /opt/kubebench/"
+        - "--volume ${env.KUBECONFIG}:/opt/kubebench/conf/kubeconfig"
+        - "--volume ${config-dir}/kubebench_config.yaml:/opt/kubebench/conf/kubebench_config.yaml"
+        - "--volume ${report-dir}/kubebench:/tmp/reports"
+      cmd: ""
+
+  kubesec-scan:
+    - task: kube-scan-test
+      docker-image: va-scan-kubesec
+      docker-flags:
+        - "--env VA_NAMESPACE=${var.k8s-namespace}"
+        - "--workdir /opt/va-scan-kubesec/"
+        - "--volume ${env.KUBECONFIG}:/opt/va-scan-kubesec/conf/kubeconfig"
+        - "--volume ${config-dir}/kubesec_config.yaml:/opt/va-scan-kubesec/conf/kubesec_config.yaml"
+        - "--volume ${report-dir}/kubesec:/tmp/reports"
+        - "--volume ${bob-dir}/helm_src:/tmp/src"
+      cmd: ""
+
+  nmap-scan:
+    - task: nmap-port-scanning-test
+      docker-image: adp-helm-kubectl
+      docker-flags:
+        - "--env KUBECONFIG=${env.KUBECONFIG}"
+        - "--volume ${env.KUBECONFIG}:${env.KUBECONFIG}:ro"
+      cmd:
+        - test.py
+          --helm-v3
+          --kubernetes-admin-conf=${env.KUBECONFIG}
+          --helm-user=${env.SERO_ARTIFACTORY_REPO_USER}
+          --arm-api-token=${env.SERO_ARTIFACTORY_REPO_PASS}
+          --kubernetes-namespace=${var.k8s-namespace}
+          --nmap-config-file=${config-dir}/nmap_config_all_protocols.yaml
+          --nmap-test
+          --skip-cleanup
+        - cp
+          nmap_reports/nmap_report/${common.helm-chart-name}.xml
+          ${report-dir}/nmap/${common.helm-chart-name}_${var.version}_nmap_report.xml
+    - task: generate-nmap-report
+      docker-image: report-generator
+      cmd: nmap
+        --input nmap_reports/nmap_report/${common.helm-chart-name}.xml
+        --output ${report-dir}/nmap/${common.helm-chart-name}_${var.version}_nmap_report.json
+
+  hadolint-scan:
+    - task: hadolint-scan-test
+      docker-image: hadolint-scan
+      docker-flags:
+        - "--workdir /app/"
+        - "--volume ${config-dir}/custom_config.yaml:${config-dir}/custom_config.yaml"
+        - "--volume ${env.PWD}/Dockerfile:/Dockerfile"
+        - "--volume ${report-dir}/hadolint:/tmp/reports/"
+      cmd: "-p ${common.helm-chart-name} -f /Dockerfile -c ${config-dir}/custom_config.yaml; echo $? > .bob/var.resultcode_hadolint_check"
+
+  evaluate-design-rule-check-resultcodes:
+    - task: hadolint-result-check
+      cmd: sh -c '
+         if [ ${var.resultcode_hadolint_check} -ne 0 ]; then
+            echo "Failure in hadolint checker";
+            exit ${var.resultcode_hadolint_check};
+         fi ;'
+
+  zap-test:
+    - task: zap-scan
+      docker-image: adp-helm-kubectl
+      docker-flags:
+        - "--env KUBECONFIG=${env.KUBECONFIG}"
+        - "--volume ${env.KUBECONFIG}:${env.KUBECONFIG}"
+        - "--volume ${env.HOME}:${env.HOME}"
+      cmd: test.py --helm-v3 --kubernetes-admin-conf=${env.KUBECONFIG}
+        --helm-user=${env.SERO_ARTIFACTORY_REPO_USER}
+        --arm-api-token=${env.SERO_ARTIFACTORY_REPO_PASS}
+        --kubernetes-namespace=${var.k8s-namespace}
+        --chart-archive=${bob-dir}/eric-oss-5gcnr-internal/${helm-chart-file-name}
+        --helm-repo=${helm-chart-drop-repo}
+        --skip-upgrade-test
+        --zap-test
+        --skip-cleanup
+        --zap-config-file=${config-dir}/zap_config.yaml
+        --configure-imagepull-secret-from-json=${env.DOCKER_CONFIG}
+        --secret-name=arm-pullsecret
+        --helm_variables="imageCredentials.pullSecret=arm-pullsecret"
+
+  fuzz-test:
+    - task: fuzz-test
+      docker-image: adp-helm-kubectl
+      docker-flags:
+        - "--env KUBECONFIG=${env.KUBECONFIG}"
+        - "--env DEFENSICS_HOME=${env.DEFENSICS_HOME}"
+        - "--volume ${env.KUBECONFIG}:${env.KUBECONFIG}"
+      cmd:
+        - test.py --helm-v3 --kubernetes-admin-conf=${env.KUBECONFIG}
+          --helm-user=${env.SERO_ARTIFACTORY_REPO_USER}
+          --arm-api-token=${env.SERO_ARTIFACTORY_REPO_PASS}
+          --kubernetes-namespace=${var.k8s-namespace}
+          --skip-cleanup
+          --defensics-test
+          --defensics-test-suite="http-server"
+          --defensics-test-plan-dir="${config-dir}/defensics-test-plan/"
+          --defensics-test-report-dir="${report-dir}"
+          --defensics-suite-properties="uri http://eric-oss-5gcnr:8080"
+
+  get-defensics-dir:
+    - task: get-dir
+      cmd:
+        - cd ${report-dir}/reports/http-server-test/; echo $(pwd)/$(ls)/output > ${bob-dir}/var.defensics_report_dir
+
+  va-report_light:
+    - task: fetch_vulnerability
+      docker-image: adp-release-auto
+      cmd: va-report
+           --config ${config-dir}/report.config
+           --md
+           --debug
+           --output ${report-dir}/VA_Report_${var.version}.md
+           --set version=${var.version}
+           --raw-xray-report ${xray-report-dir}/raw_xray_report.json
+           --xray-report ${xray-report-dir}/xray_report.json
+           --anchore-reports ${report-dir}/anchore-reports
+           --trivy-reports ${report-dir}/trivy
+           --kubeaudit-reports ${report-dir}/kubeaudit
+           --kubesec-reports ${report-dir}/kubesec; exit 0;
+    - task: upload
+      docker-image: adp-release-auto
+      docker-flags:
+        - "--env VHUB_API_TOKEN=${env.VHUB_API_TOKEN}"
+      cmd: bash -c 'va-report
+           --set version=${var.version}
+           --version ${var.version}
+           --config ${config-dir}/report.config
+           --product-name ${common.helm-chart-name}
+           --output ${report-dir}/VA_Report_${var.version}.md
+           --md
+           --debug
+           --anchore-reports ${report-dir}/anchore-reports
+           --trivy-reports ${report-dir}/trivy
+           --raw-xray-report ${xray-report-dir}/raw_xray_report.json
+           --xray-report ${xray-report-dir}/xray_report.json
+           --kubeaudit-reports ${report-dir}/kubeaudit
+           --kubesec-reports ${report-dir}/kubesec
+           --upload-scan-results'; exit 0;
+
+  va-report:
+    - task: fetch_vulnerability
+      docker-image: adp-release-auto
+      cmd: va-report
+           --config ${config-dir}/report.config
+           --md
+           --debug
+           --output ${report-dir}/VA_Report_${var.version}.md
+           --set version=${var.version}
+           --raw-xray-report ${xray-report-dir}/raw_xray_report.json
+           --xray-report ${xray-report-dir}/xray_report.json
+           --anchore-reports ${report-dir}/anchore-reports
+           --trivy-reports ${report-dir}/trivy
+           --kubeaudit-reports ${report-dir}/kubeaudit
+           --kubesec-reports ${report-dir}/kubesec
+           --defensics-report ${var.defensics_report_dir}; exit 0;
+    - task: upload
+      docker-image: adp-release-auto
+      docker-flags:
+        - "--env VHUB_API_TOKEN=${env.VHUB_API_TOKEN}"
+      cmd: bash -c 'va-report
+           --set version=${var.version}
+           --version ${var.version}
+           --config ${config-dir}/report.config
+           --product-name ${common.helm-chart-name}
+           --output ${report-dir}/VA_Report_${var.version}.md
+           --md
+           --debug
+           --anchore-reports ${report-dir}/anchore-reports
+           --trivy-reports ${report-dir}/trivy
+           --raw-xray-report ${xray-report-dir}/raw_xray_report.json
+           --xray-report ${xray-report-dir}/xray_report.json
+           --kubeaudit-reports ${report-dir}/kubeaudit
+           --kubesec-reports ${report-dir}/kubesec
+           --defensics-report ${var.defensics_report_dir}
+           --upload-scan-results'; exit 0;
+
+  va-report_long:
+    - task: fetch_vulnerability
+      docker-image: adp-release-auto
+      cmd: va-report
+           --config ${config-dir}/report.config
+           --md
+           --debug
+           --output ${report-dir}/VA_Report_${var.version}.md
+           --set version=${var.version}
+           --raw-xray-report ${xray-report-dir}/raw_xray_report.json
+           --xray-report ${xray-report-dir}/xray_report.json
+           --anchore-reports ${report-dir}/anchore-reports
+           --trivy-reports ${report-dir}/trivy
+           --zap-reports ${report-dir}/zap-scan
+           --kubeaudit-reports ${report-dir}/kubeaudit
+           --kubesec-reports ${report-dir}/kubesec
+           --defensics-report ${var.defensics_report_dir}
+           --nmap-reports ${report-dir}/nmap
+           --zap-reports ${report-dir}/zap-scan; exit 0;
+    - task: upload
+      docker-image: adp-release-auto
+      docker-flags:
+        - "--env VHUB_API_TOKEN=${env.VHUB_API_TOKEN}"
+      cmd: bash -c 'va-report
+           --set version=${var.version}
+           -version ${var.version}
+           --config ${config-dir}/report.config
+           --product-name ${common.helm-chart-name}
+           --output ${report-dir}/VA_Report_${var.version}.md
+           --md
+           --debug
+           --anchore-reports ${report-dir}/anchore-reports
+           --trivy-reports ${report-dir}/trivy
+           --raw-xray-report ${xray-report-dir}/raw_xray_report.json
+           --xray-report ${xray-report-dir}/xray_report.json
+           --kubeaudit-reports ${report-dir}/kubeaudit
+           --kubesec-reports ${report-dir}/kubesec
+           --defensics-report ${var.defensics_report_dir}
+           --nmap-reports ${report-dir}/nmap
+           --zap-reports ${report-dir}/zap-scan
+           --upload-scan-results'; exit 0;

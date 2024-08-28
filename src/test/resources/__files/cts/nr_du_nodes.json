@@ -1,0 +1,46 @@
+[
+  {
+    "type": "ctw/gnbdu",
+    "id": 6,
+    "href": "ctw/gnbdu/6",
+    "name": "Sample 5G gNB DU 01",
+    "revisionNumber": 1,
+    "createdOn": "2021-05-31T10:31:24.684Z",
+    "createdBy": "sysadm",
+    "status": "operating",
+    "lastModifiedOn": "2021-05-31T10:31:24.684Z",
+    "lastModifiedBy": "sysadm",
+    "revisionGroupKey": {
+      "type": "revisionGroupKey",
+      "keyValue": 8
+    },
+    "versionNumber": 1,
+    "gnbduId": 1,
+    "key": {
+      "type": "ctw/gnbduKey",
+      "keyValue": 6
+    }
+  },
+  {
+    "type": "ctw/gnbdu",
+    "id": 7,
+    "href": "ctw/gnbdu/7",
+    "name": "Sample 5G gNB DU 01",
+    "revisionNumber": 1,
+    "createdOn": "2021-05-31T10:31:24.684Z",
+    "createdBy": "sysadm",
+    "status": "operating",
+    "lastModifiedOn": "2021-05-31T10:31:24.684Z",
+    "lastModifiedBy": "sysadm",
+    "revisionGroupKey": {
+      "type": "revisionGroupKey",
+      "keyValue": 8
+    },
+    "versionNumber": 1,
+    "gnbduId": 1,
+    "key": {
+      "type": "ctw/gnbduKey",
+      "keyValue": 7
+    }
+  }
+]

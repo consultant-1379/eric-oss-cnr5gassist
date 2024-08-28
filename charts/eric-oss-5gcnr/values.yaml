@@ -1,0 +1,217 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+# Default values for eric-oss-cnr5gassist.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+#nameOverride: ""
+#fullnameOverride: ""
+
+#  # Configuring global streamingMethod: indirect, direct, dual. default=direct
+#  log:
+#    streamingMethod: "direct"
+
+replicaCount: 1
+
+podDisruptionBudget:
+  # Minimum number/percentage of Pods that must remain available during the planned disruption.
+  # Value can be expressed as an integer or as a percentage. When specified as a percentage of the Pods,
+  # if it does not map to an exact number, Kubernetes rounds up to the nearest integer.
+  # minAvailable: 2 # example value for 2 pods defined as integer
+  minAvailable: "40%"
+
+productInfo:
+  # R-State of the product. R State should match helm chart version (3.1.0 -> R2A)
+  # To automate it when packaging the helm chart rstate can be generated
+  # and below value replaced with correct R-Statei by e.g. Bob
+  rstate: RSTATE
+
+updateStrategy:
+ type: RollingUpdate
+ rollingUpdate:
+   maxSurge: 1
+   maxUnavailable: 0
+
+imageCredentials:
+  repoPath: # overrides repoPath from eric-product-info.yaml
+  eric-oss-cnr5gassist:
+    # pullPolicy: IfNotPresent
+    # pullSecret: REPO_SECRET
+    repoPath:
+    registry:
+    #   url: REPO_URL
+  keycloak-client:
+    registry:
+    repoPath: "proj-orchestration-so"
+  eric-api-gateway-client:
+    registry:
+    repoPath: "proj-eric-oss-drop"
+
+images:
+  eric-oss-cnr5gassist: {}
+    # name: IMAGE_NAME
+    # tag: VERSION
+  keycloak-client:
+    name: "keycloak-client"
+    tag: "1.0.0-ha677b80.dirty"
+  eric-api-gateway-client:
+    name: "eric-api-gateway-client"
+    tag: "1.0.33-1"
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+annotations: {}
+
+labels: {}
+
+serviceMesh:
+  proxy:
+    holdApplicationUntilProxyStarts: true
+
+service:
+  type: ClusterIP
+  port: 8080    # Changed from 80 to 8080 and spring application is hosted on 8080
+  endpoints:
+    chassisapi:
+      tls:
+        enforced: required
+        verifyClientCertificate: required
+
+ingress:
+  enabled: false
+  ingressClass: OAM-IngressClass
+  hosts:
+    - host: chart-example.local
+      paths: [/]
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+networkPolicy:
+  enabled: true
+
+pmServer:
+  name: eric-pm-server
+  rbac:
+    appMonitoring:
+      enabled: true
+
+apiGateway:
+  name: eric-eo-api-gateway
+
+prometheus:
+  path: /actuator/prometheus
+  scrape: true
+
+resources:
+  eric-oss-cnr5gassist:
+    requests:
+      memory: 512Mi
+      cpu: 250m
+    limits:
+      memory: 2Gi
+      cpu: 1
+  keycloak-client:
+    requests:
+      memory: 64Mi
+      cpu: 50m
+    limits:
+      memory: 256Mi
+      cpu: 100m
+  eric-api-gateway-client:
+    requests:
+      memory: 256Mi
+      cpu: 250m
+    limits:
+      memory: 512Mi
+      cpu: 500m
+
+autoScaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+additionalIngresses: []
+
+affinity:
+  podAntiAffinity: "soft"
+
+terminationGracePeriodSeconds: 30
+
+topologySpreadConstraints:
+  deployment: []
+  test: []
+
+integration:
+  policyFramework:
+    tenant: master
+    insecure: true
+    secretName: ""
+    credentials:
+      login: ""
+      password: ""
+      session: ""
+    hooks:
+      enabled: false
+      contextPath: /cnr
+      requiredRoles: []
+  commonTopology:
+    base-path: /oss-core-ws/rest
+    headers: ""
+  networkCmProxy:
+    base-path: /ncmp
+    headers: ""
+
+probes:
+  eric-oss-5gassist:
+    livenessProbe:
+      failureThreshold: 3
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 10
+    readinessProbe:
+      failureThreshold: 3
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 10
+
+# Pod priority configuration for deployment
+podPriority:
+  eric-oss-5gassist:
+    priorityClassName: "" # No priority set
+
+# local streamingMethod
+log:
+  streamingMethod:
+
+# Log level settings. Possible values ERROR, WARN, INFO, DEBUG, TRACE
+logging:
+  logLevel: INFO

@@ -1,0 +1,115 @@
+{
+  "ADP-Microservice-Characteristics-Report": {
+    "model_version": "2.0.0",
+    "service": {
+      "name": "5G CNR",
+      "version": "1.1.1"
+    },
+    "resource-configuration": [
+      {
+        "flavor": "minimum",
+        "resources": [
+          {
+            "pod": "eric-oss-5gcnr-7bff5dbcd9-s6f2f",
+            "instances": 1,
+            "containers": [
+              {
+                "name": "eric-oss-cnr5gassist",
+                "cpu-req": "250m",
+                "cpu-limit": "1",
+                "mem-req": "512Mi",
+                "mem-limit": "2Gi",
+                "optional-container-metadata": {}
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "results": [
+      {
+        "use-case": "Measure startup time (to fully ready)",
+        "description": "It is from the point where the service is allowed to start, i.e. dependencies startup and scheduling time excluded from the measurement.",
+        "duration": 66,
+        "labels": [
+          "LCM"
+        ],
+        "used-resources-configuration": {
+          "flavor": "minimum",
+          "resources": []
+        },
+        "metrics": [],
+        "additional-results": {}
+      },
+      {
+        "use-case": "Measure restart time (to fully ready)",
+        "description": "Measure from the point where a POD is killed until the service instance is fully ready.",
+        "duration": 71,
+        "labels": [
+          "LCM"
+        ],
+        "used-resources-configuration": {
+          "flavor": "minimum",
+          "resources": []
+        },
+        "metrics": [],
+        "additional-results": {}
+      },
+      {
+        "use-case": "Measure upgrade time (to fully ready)",
+        "description": "Measure time from the point 'helm upgrade' is executed until the upgrade is completed and service instance is fully ready. Upgrade shall be executed under \"traffic\" and service shall be considered fully ready when traffic disturbance (if any) is over.",
+        "duration": 128,
+        "labels": [
+          "LCM",
+          "UPGRADE"
+        ],
+        "used-resources-configuration": {
+          "flavor": "minimum",
+          "resources": []
+        },
+        "metrics": [],
+        "additional-results": {}
+      },
+      {
+        "use-case": "Measure rollback time (to fully ready)",
+        "description": "Measure time from the point 'helm rollback' is executed until the rollback is completed and service instance is fully ready. Rollback shall be executed under \"traffic\" and service shall be considered fully ready when traffic disturbance (if any) is over.",
+        "duration": 128,
+        "labels": [
+          "LCM"
+        ],
+        "used-resources-configuration": {
+          "flavor": "minimum",
+          "resources": []
+        },
+        "metrics": [],
+        "additional-results": {}
+      },
+      {
+        "use-case": "Measure loss of service duration (during upgrade/rollback)",
+        "description": "Measure the amount of time, during helm upgrade/rollback period, in which the service is unavailable and \"traffic\" is lost.",
+        "duration": 128,
+        "labels": [
+          "LCM"
+        ],
+        "used-resources-configuration": {
+          "flavor": "minimum",
+          "resources": []
+        },
+        "metrics": [],
+        "additional-results": {}
+      }
+    ],
+    "test-environment": {
+      "cluster": "arn:aws:eks:eu-west-1:662502336946:cluster/ossautoapp01-EKS-Cluster",
+      "cpu": {
+        "model": "Xeon(R) Platinum 8259CL",
+        "CPU-MHz": 2500,
+        "bogomips": 4999.99
+      },
+      "memory": "340Gi",
+      "kaas": "CCD-2.15.1",
+      "kubernetes-version": "1.20",
+      "other-info": {}
+    }
+  }
+}

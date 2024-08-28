@@ -1,0 +1,7 @@
+{{- $requiredRoles := list (dict "name" "CNR_Admin") }}
+{{- $requiredRoles = append $requiredRoles (dict "name" "NCMP") }}
+{{- $requiredRoles = append $requiredRoles (dict "name" "CTS") }}
+{{- range .Values.integration.policyFramework.hooks.requiredRoles -}}
+{{- $requiredRoles = append $requiredRoles (dict "name" .) }}
+{{- end -}}
+{{- toJson $requiredRoles }}

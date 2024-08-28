@@ -1,0 +1,23 @@
+[
+  {
+    "type": "ctw/nrcell",
+    "id": 123,
+    "localCellIdNci": 0,
+    "physicalCellIdentity": 0,
+    "geographicSite": null
+  },
+  {
+    "type": "ctw/nrcell",
+    "id": 456,
+    "localCellIdNci": 1,
+    "physicalCellIdentity": 1,
+    "geographicSite": null
+  },
+  {
+    "type": "ctw/nrcell",
+    "id": 789,
+    "localCellIdNci": 2,
+    "physicalCellIdentity": 2,
+    "geographicSite": null
+  }
+]

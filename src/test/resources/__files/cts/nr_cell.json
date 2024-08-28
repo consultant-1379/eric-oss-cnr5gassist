@@ -1,0 +1,35 @@
+{
+  "type": "ctw/nrcell",
+  "id": 3,
+  "href": "ctw/nrcell/3",
+  "name": "Sample 5G Cell 03",
+  "createdOn": "2021-05-28T14:33:06.959Z",
+  "createdBy": "sysadm",
+  "status": "operating",
+  "lastModifiedOn": "2021-05-31T10:31:24.634Z",
+  "lastModifiedBy": "sysadm",
+  "versionNumber": 2,
+  "revisionNumber": 1,
+  "revisionGroupKey": {
+    "type": "revisionGroupKey",
+    "keyValue": 3
+  },
+  "localCellIdNci": 3,
+  "physicalCellIdentity": 1,
+  "trackingAreaCode": 1,
+  "downlinkEARFCN": 1,
+  "uplinkEARFCN": 1,
+  "supplementaryUplinkEARFCN": 1,
+  "bsChannelBandwidthDownlink": 1,
+  "ssbFrequency": 1,
+  "ssbPeriodicity": 1,
+  "ssbSubcarrierSpacing": 1,
+  "ssbOffset": 1,
+  "ssbDuration": 1,
+  "bsChannelBandwidthUplink": 1,
+  "bsChannelBwSupplUplink": 1,
+  "key": {
+    "type": "ctw/nrcellKey",
+    "keyValue": 3
+  }
+}

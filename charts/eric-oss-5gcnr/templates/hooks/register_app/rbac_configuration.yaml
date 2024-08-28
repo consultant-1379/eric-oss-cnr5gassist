@@ -1,0 +1,94 @@
+{{- if .Values.networkPolicy.enabled -}}{{- if eq (include "eric-oss-5gcnr.hook.register" .) "true" }}
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+{{- $global := fromJson (include "eric-oss-5gcnr.global" .) }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "eric-oss-5gcnr.name" . }}-rbac-configuration
+  labels:
+    {{- include "eric-oss-5gcnr.labels" . | indent 4 }}
+    {{- include "eric-oss-5gcnr.config-labels" . | indent 4 }}
+  annotations:
+    {{- include "eric-oss-5gcnr.product-info" . | indent 4 }}
+    {{- include "eric-oss-5gcnr.config-annotations" . | indent 4 }}
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "5"
+    "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
+    {{- include "eric-oss-5gcnr.service-mesh-hook-annotations" . | nindent 4 }}
+spec:
+  template:
+    metadata:
+      labels: {{- include "eric-oss-5gcnr.config-labels" . | nindent 8 }}
+      annotations: {{- include "eric-oss-5gcnr.config-annotations" . | nindent 8 }}
+    spec:
+      {{- if include "eric-oss-5gcnr.pullSecret" . }}
+      imagePullSecrets:
+      - name: {{ include "eric-oss-5gcnr.pullSecret" . | quote }}
+      {{- end }}
+      restartPolicy: Never
+      containers:
+      - name: keycloak-client
+        {{- $image1 := merge (dict "imageName" "keycloak-client") . }}
+        image: {{ include "eric-oss-5gcnr.image" $image1 }}
+        imagePullPolicy: {{ include "eric-oss-5gcnr.imagePullPolicy" $image1 }}
+        env:
+        - name: IAM_HOST
+          value: {{ include "eric-oss-5gcnr.global.hostUrl" (merge (dict "host" "iam") .) | quote }}
+        - name: IAM_ADMIN_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ $global.iam.adminSecret | quote }}
+              key: {{ $global.iam.userKey | quote }}
+        - name: IAM_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ $global.iam.adminSecret | quote }}
+              key: {{ $global.iam.passwordKey | quote }}
+        args:
+          - "create"
+          - "authz"
+          - "--keycloak_hostname=$(IAM_HOST)"
+          - "--keycloak_user=$(IAM_ADMIN_USER)"
+          - "--keycloak_password=$(IAM_ADMIN_PASSWORD)"
+          - "--client_name={{ $global.iam.clientId }}"
+          - "--provider={{ .Chart.Name }}"
+          - "--config=/config/rbac-configuration.json"
+        {{- with index .Values "resources" "keycloak-client" }}
+        resources: {{- toYaml . | nindent 10 }}
+        {{- end }}
+        volumeMounts:
+        - name: eric-oss-5gcnr-rbac-configuration-volume
+          mountPath: /config
+        - name: create-cacert-volume
+          mountPath: /mnt/certs
+        securityContext:
+          allowPrivilegeEscalation: true
+          runAsNonRoot: false
+          runAsUser: 0
+      volumes:
+        - name: eric-oss-5gcnr-rbac-configuration-volume
+          configMap:
+            name: {{ include "eric-oss-5gcnr.name" . }}-register-app-config
+            defaultMode: 0777
+        - name: create-cacert-volume
+          secret:
+            secretName: {{ $global.iam.cacert.secretName }}
+            items:
+              - key: {{ $global.iam.cacert.key }}
+                path: {{ $global.iam.cacert.filePath }}
+{{- end }}{{- end }}

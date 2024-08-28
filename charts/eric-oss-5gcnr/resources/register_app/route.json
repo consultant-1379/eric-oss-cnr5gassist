@@ -1,0 +1,22 @@
+{
+  "id": "{{ include "eric-oss-5gcnr.fullname" . | replace "-" "_" }}_route",
+  "predicates": [
+    {
+      "name": "Path",
+      "args": {
+        "_genkey_0": "{{ .Values.integration.policyFramework.hooks.contextPath }}/**"
+      }
+    }
+  ],
+  "filters": [
+    {
+      "name": "RewritePath",
+      "args": {
+        "_genkey_0": "{{ .Values.integration.policyFramework.hooks.contextPath }}/(?<segment>.*)",
+        "_genkey_1": "/$\\{segment}"
+      }
+    }
+  ],
+  "uri": "http://{{ include "eric-oss-5gcnr.fullname" . }}:{{ .Values.service.port }}",
+  "order": 0
+}

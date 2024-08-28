@@ -1,0 +1,211 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+openapi: "3.0.2"
+info:
+  title: "5G CNR rApp schemas"
+  description: "Open api file which represent components schemas of 5G CNR rApp"
+  version: "0.0.1"
+  license:
+    name: "COPYRIGHT Ericsson 2021"
+    url: "https://www.ericsson.com/en/legal"
+  termsOfService: "https://www.ericsson.com/en/legal"
+  contact:
+    email: "Team Aether<PDLEAMAETH@pdl.internal.ericsson.com>"
+components:
+  schemas:
+    NrcTask:
+      type: object
+      description: "A representation of 5G CNR calculation: process information, request and result of an 5G CNR task."
+      required:
+        - request
+        - process
+      properties:
+        request:
+          description: "The input request of the task."
+          $ref: "#/components/schemas/NrcRequest"
+        process:
+          description: "It contains information about the process."
+          $ref: "#/components/schemas/NrcProcess"
+        allNrcNeighbors:
+          description: "The result of the task."
+          type: array
+          items:
+            $ref: '#/components/schemas/NrcNeighbor'
+        enmUpdates:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnmUpdate'
+    NrcRequest:
+      type: object
+      description: "Input request payload object representation to start an 5G CNR algorithm."
+      required:
+        - eNodeBIds
+      properties:
+        eNodeBIds:
+          type: array
+          description: "The CTS id parameter for the 4G ENodeBs that the 5G CNR task need to take into consideration."
+          minItems: 1
+          maxItems: 500
+          uniqueItems: true
+          items:
+            type: integer
+            format: int64
+            minimum: 0
+        distance:
+          type: integer
+          minimum: 0
+          default: 200
+          description: "Area radius - in meters - around the LTE Cell where the neighbors (NR Cells) will be looked up. If not specified a distance of 200 metres is used."
+        freqPairs:
+          type: object
+          description: "The frequency compatibility pairs to be considered in 5G CNR algorithm. For each 4G Cell Frequency you can specify a list of 5G Cell Frequencies which the 5G CNR algorithm will use when searching for neighbouring 5G NR Cells."
+          additionalProperties:
+            type: array
+            uniqueItems: true
+            items:
+              type: integer
+              minimum: 0
+      example:
+        eNodeBIds: [ 8, 30 ]
+        distance: 600
+        freqPairs: { "5230": [ 175000, 177000 ] }
+    NrcProcess:
+      type: object
+      description: "5G CNR process information."
+      properties:
+        id:
+          type: string
+          description: "A unique identifier of the process."
+          format: uuid
+        nrcStatus:
+          type: string
+          description: "The current status of the process execution."
+          $ref: '#/components/schemas/NrcProcessStatus'
+        enmUpdateStatus:
+          description: "The current status of ENM update execution."
+          $ref: '#/components/schemas/NrcProcessStatus'
+        hour:
+          description: "The hour of the request sent."
+          type: integer
+        minute:
+          description: "The minute of the request sent."
+          type: integer
+      example:
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        status: Succeeded
+        hour: 9
+        minute: 16
+    NrcProcessStatus:
+      type: string
+      description: |
+        The current status of the process execution.
+        
+        Where:
+        
+        - Pending - 5G CNR task is scheduled
+        
+        - Ongoing - 5G CNR task processing is started
+        
+        - Succeeded - 5G CNR task finished with success
+        
+        - Failed - task failed due to exceptional behaviour e. g.: CTS is unreachable, etc.
+      enum:
+        - Pending
+        - Ongoing
+        - Succeeded
+        - Failed
+      example: Succeeded
+    NrcNeighbor:
+      type: object
+      description: "The output result of the 5G CNR algorithm containing the neighbouring cells discovered within the provided distance and running on the specified frequencies."
+      properties:
+        eNodeBId:
+          type: integer
+          format: int64
+        gNodeBDUs:
+          type: array
+          items:
+            $ref: '#/components/schemas/NrcGroupingGnbdu'
+      example:
+        eNodeBId: 29
+        gNodeBDUs: [ gNodeBDUId: 23, nrCellIds: [ 26, 28 ] ]
+    NrcGroupingGnbdu:
+      type: object
+      description: "The list of NRCells in the GNodeB discovered to be within the specified distance of the ENodeB."
+      properties:
+        gNodeBDUId:
+          type: integer
+          format: int64
+        nrCellIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+      example:
+        gNodeBDUId: 23
+        nrCellIds: [ 26, 28 ]
+    EnmUpdate:
+      type: object
+      description: "The resulted network configuration changes of running the NRC algorithm"
+      properties:
+        eNodeBId:
+          type: integer
+          format: int64
+        gNodeBDUId:
+          type: integer
+          format: int64
+        nrCellId:
+          type: integer
+          format: int64
+        name:
+          type: string
+        operation:
+          type: string
+        status:
+          description: "The status of ENM update operation."
+          $ref: '#/components/schemas/NrcProcessStatus'
+        error:
+          type: string
+    ErrorResponse:
+      type: object
+      description: "The error response body"
+      required:
+        - timestamp
+        - error
+        - status
+        - path
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        error:
+          type: string
+        status:
+          type: integer
+          format: int32
+        path:
+          type: string
+        body:
+          type: object
+      example:
+        timestamp: "2022-06-07T09:22:24.876625Z"
+        error: "Bad Request"
+        status: 400
+        path: "/api/v1/nrc/startNrc"
+        body: { "message": "JSON parse error: Unexpected character ..." }
+
+

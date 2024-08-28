@@ -1,0 +1,38 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+Kubesec:
+  Product: "eric-oss-5gcnr"
+  Product_contact: 'PDLEAMAETH@pdl.internal.ericsson.com'
+  KubesecYAML:
+    Scan: True
+    armLinks: #Add the ARM links which doesn't require authentication here
+      Links:
+        #  - "https://arm.sero.gic.ericsson.se/artifactory/proj-adp-gs-all-helm/eric-pm-server/eric-pm-server-1.0.0-259.tgz"
+      valuesOverride: ##If override is needed, add the values yaml names in the same order as arm links
+    armLinksWithAuth:  #Add the ARM links which require authentication here
+      Links:
+        #  - "https://arm.seli.gic.ericsson.se/artifactory/......-0.tgz"
+        #  - "https://arm.seli.gic.ericsson.se/artifactory/...17-0.tgz"
+      armUser: 'exxxxx'  ##mandatory if links given
+      armEncryptedPwd: ''  ##mandatory if links given
+      valuesOverride: ##If override is needed, add the values yaml names in the same order as arm links, if none, mark it ''
+        #  - ''
+        #  - 'external-values.yaml'  #place this inside conf and mount to /opt/va-scan-kubesec/conf
+  KubesecCluster:
+    Scan: False
+    KubeconfigFile: "kubeconfig"
+    namespace: "!ENV ${VA_NAMESPACE}"

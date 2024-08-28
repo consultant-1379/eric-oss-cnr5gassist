@@ -1,0 +1,26 @@
+{
+    "erienmnrmlrat:ManagedElement": [
+        {
+            "id": "NR45gNodeBRadio00022",
+            "erienmnrmgnbcucp:GNBCUCPFunction": [
+                {
+                    "id": "1",
+                    "erienmnrmgnbcucp:EndpointResource": [
+                        {
+                            "id": "1",
+                            "erienmnrmgnbcucp:LocalSctpEndpoint": [
+                                {
+                                    "id": "1",
+                                    "attributes": {
+                                        "sctpEndpointRef": "SubNetwork=Europe,SubNetwork=Ireland,MeContext=NR45gNodeBRadio00022,ManagedElement=NR45gNodeBRadio00022,Transport=1,SctpEndpoint=NRAT",
+                                        "interfaceUsed": "X2"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

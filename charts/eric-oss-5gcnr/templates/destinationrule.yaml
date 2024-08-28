@@ -1,0 +1,42 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+{{- $fullName := include "eric-oss-5gcnr.fullname" . -}}
+{{- $serviceMesh := include "eric-oss-5gcnr.service-mesh-enabled" . | trim -}}
+{{- $tls := include "eric-oss-5gcnr.global-security-tls-enabled" . | trim -}}
+{{- if eq $serviceMesh "true" }}
+
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: {{ $fullName }}-destinationrule
+  annotations:
+    {{- include "eric-oss-5gcnr.annotations" .| nindent 4 }}
+  labels:
+    {{- include "eric-oss-5gcnr.labels" . | nindent 4 }}
+spec:
+  host: {{ $fullName }}
+  trafficPolicy:
+    tls:
+      {{- if eq $tls "true" }}
+      mode: ISTIO_MUTUAL
+      {{- else }}
+      mode: DISABLE
+      {{- end }}
+    loadBalancer:
+      consistentHash:
+        minimumRingSize: 1024
+{{- end }}

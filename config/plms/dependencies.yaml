@@ -1,0 +1,1218 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+modelVersion: '2.0'
+dependencies:
+- ID: ch.qos.logback:logback-core+1.2.9
+  additional_info:
+    fossa-attribution:
+      Description: logback-core module
+      Package: ch.qos.logback:logback-core
+      Source: mvn
+      Version: 1.2.9
+      Hash: ''
+      licenses:
+      - EPL-1.0
+      - LGPL-2.1-only
+      Title: Logback Core Module
+  bazaar:
+    register: 'no'
+    prim: 32/CAX1055342
+    community_link: https://github.com/qos-ch/logback
+    community_name: https://github.com/qos-ch/logback
+    community_url: https://github.com/qos-ch/logback
+    component_comment: ''
+    component_highlevel_description: Logback is intended as a successor to the popular
+      log4j project, picking up where log4j leaves off. Logback's basic architecture
+      is sufficiently generic so as to apply under different circumstances. At present
+      time, logback is divided into three modules, logbackcore, logback-classic and
+      logback-access.
+    component_name: logback
+    component_platform: linux
+    component_programing_language: Java
+    component_version: 1.2.9
+    licenses:
+    - 'FAL1159002/21: GNU Lesser General Public License v2.1 only (LGPL-2.1-only)'
+    - 'FAL1159013/10: Eclipse Public License 1.0 (EPL-1.0)'
+    src_download_link: https://github.com/qos-ch/logback/archive/v_1.2.9.tar.gz
+    stako_decision_reason: team
+    stako: ESW3
+    stako_comment: Newer versions exists
+    bazaarurl: https://bazaar.internal.ericsson.com/b-view-component.php?componentid=995493
+    recode: ''
+    retext: ''
+    country: CH
+    crypto: 'NO'
+    programming_language: Java
+  encryptions:
+    used:
+    - ''
+  evms:
+    register: 'yes'
+    product_name: ch.qos.logback_logback-core
+    target_sw: linux
+    vendor: mvn
+    version: 1.2.9
+    web_url: https://repo1.maven.org/maven2/ch/qos/logback/logback-core
+  licenses:
+  - EPL-1.0
+  - LGPL-2.1-only
+  linking: Static
+  name: Logback Core Module
+  primary:
+  - this
+  selected_license: EPL-1.0
+  subcomponent: false
+  type: FOSS
+  versions:
+  - 1.2.9
+  mimer:
+    product_number: CAX1055342
+    product_version_label: 1.2.9
+  alerts:
+  - Stako is 'ESW3', BAZAAR component is not recommended to be used
+- ID: com.github.spotbugs:spotbugs+4.5.3
+  additional_info:
+    fossa-attribution:
+      Description: 'SpotBugs: Because it''s easy!'
+      Package: com.github.spotbugs:spotbugs
+      Source: mvn
+      Version: 4.5.3
+      Hash: ''
+      licenses:
+      - LGPL-2.1-only
+      Title: SpotBugs
+  bazaar:
+    register: 'no'
+    prim: 19/CAX1054237
+    community_link: https://github.com/spotbugs/spotbugs
+    community_name: https://github.com/spotbugs/spotbugs
+    community_url: https://github.com/spotbugs/spotbugs
+    component_comment: ''
+    component_highlevel_description: SpotBugs is FindBugs' successor. A tool for Static
+      analysis to look for bugs in Java code.
+    component_name: SpotBugs
+    component_platform: linux
+    component_programing_language: Java
+    component_version: 4.5.3
+    licenses:
+    - 'FAL1159002/21: GNU Lesser General Public License v2.1 only (LGPL-2.1-only)'
+    src_download_link: https://github.com/spotbugs/spotbugs/archive/4.5.3.tar.gz
+    stako_decision_reason: automatic
+    stako: ESW2
+    stako_comment: ''
+    bazaarurl: https://bazaar.internal.ericsson.com/b-view-component.php?componentid=996697
+    recode: ''
+    retext: ''
+    country: US
+    crypto: No Encryption
+    programming_language: Java
+  encryptions:
+    used:
+    - ''
+  evms:
+    register: 'yes'
+    product_name: com.github.spotbugs_spotbugs
+    target_sw: linux
+    vendor: mvn
+    version: 4.5.3
+    web_url: https://spotbugs.github.io/
+  licenses:
+  - LGPL-2.1-only
+  linking: Static
+  name: SpotBugs
+  primary:
+  - this
+  selected_license: LGPL-2.1-only
+  subcomponent: false
+  type: FOSS
+  versions:
+  - 4.5.3
+  mimer:
+    product_number: CAX1054237
+    product_version_label: 4.5.3
+- ID: com.h2database:h2+2.1.210
+  additional_info:
+    fossa-attribution:
+      Description: H2 Database Engine
+      Package: com.h2database:h2
+      Source: mvn
+      Version: 2.1.210
+      Hash: ''
+      licenses:
+      - BSD-3-Clause
+      - EPL-1.0
+      - FTL
+      - MPL-2.0
+      Title: H2 Database Engine
+  bazaar:
+    register: 'no'
+    prim: 27/CAX1054380
+    community_link: https://github.com/h2database/h2database
+    community_name: https://github.com/h2database/h2database
+    community_url: https://github.com/h2database/h2database
+    component_comment: ''
+    component_highlevel_description: H2 database is a relational database management
+      system written in Java. It can be embedded in Java applications or run in the
+      client-server mode.
+    component_name: H2 Database Engine
+    component_platform: linux
+    component_programing_language: Java
+    component_version: 2.1.210
+    licenses:
+    - 'FAL1159005/11: Mozilla Public License 1.1 (MPL-1.1)'
+    - 'FAL1159005/20: Mozilla Public License 2.0 (MPL-2.0)'
+    - 'FAL1159013/10: Eclipse Public License 1.0 (EPL-1.0)'
+    src_download_link: https://github.com/h2database/h2database/archive/version-2.1.210.tar.gz
+    stako_decision_reason: automatic
+    stako: ESW2
+    stako_comment: ''
+    bazaarurl: https://bazaar.internal.ericsson.com/b-view-component.php?componentid=1000515
+    recode: ''
+    retext: ''
+    country: US
+    crypto: No Encryption
+    programming_language: Java
+  encryptions:
+    used:
+    - ''
+  evms:
+    register: 'yes'
+    product_name: com.h2database_h2
+    target_sw: linux
+    vendor: mvn
+    version: 2.1.210
+    web_url: http://www.h2database.com
+  licenses:
+  - BSD-3-Clause
+  - EPL-1.0
+  - FTL
+  - MPL-2.0
+  linking: Static
+  name: H2 Database Engine
+  primary:
+  - this
+  selected_license: EPL-1.0
+  subcomponent: false
+  type: FOSS
+  versions:
+  - 2.1.210
+  mimer:
+    product_number: CAX1054380
+    product_version_label: 2.1.210
+- ID: io.jaegertracing:jaeger-client+1.6.0
+  additional_info:
+    fossa-attribution:
+      Description: Jaeger Java bindings for OpenTracing API
+      Package: io.jaegertracing:jaeger-client
+      Source: mvn
+      Version: 1.6.0
+      Hash: ''
+      licenses:
+      - Apache-2.0
+      Title: jaeger-client
+  bazaar:
+    register: 'no'
+    prim: 8/CTX1022999
+    community_link: https://github.com/jaegertracing/jaeger-client-java
+    community_name: https://github.com/jaegertracing/jaeger-client-java
+    community_url: https://github.com/jaegertracing/jaeger-client-java
+    component_comment: ''
+    component_highlevel_description: Jaeger Bindings for Java OpenTracing API
+    component_name: jaeger-client-java
+    component_platform: linux
+    component_programing_language: Java
+    component_version: RELEASE-1.6.0
+    licenses:
+    - 'FAL1159004/20: Apache License 2.0 (Apache-2.0)'
+    src_download_link: https://github.com/jaegertracing/jaeger-client-java/archive/release-1.6.0.tar.gz
+    stako_decision_reason: automatic
+    stako: ESW2
+    stako_comment: ''
+    bazaarurl: https://bazaar.internal.ericsson.com/b-view-component.php?componentid=985646
+    recode: ''
+    retext: ''
+    country: US
+    crypto: No Encryption
+    programming_language: Java
+  encryptions:
+    used:
+    - ''
+  evms:
+    register: 'yes'
+    product_name: io.jaegertracing_jaeger-client
+    target_sw: linux
+    vendor: mvn
+    version: 1.6.0
+    web_url: https://github.com/jaegertracing/jaeger-client-java
+  licenses:
+  - Apache-2.0
+  linking: Static
+  name: jaeger-client
+  primary:
+  - this
+  selected_license: Apache-2.0
+  subcomponent: false
+  type: FOSS
+  versions:
+  - 1.6.0
+  mimer:
+    product_number: CTX1022999
+    product_version_label: 1.6.0
+- ID: io.micrometer:micrometer-registry-prometheus+1.8.5
+  additional_info:
+    fossa-attribution:
+      Description: Application monitoring instrumentation facade
+      Package: io.micrometer:micrometer-registry-prometheus
+      Source: mvn
+      Version: 1.8.5
+      Hash: ''
+      licenses:
+      - Apache-2.0
+      Title: micrometer-registry-prometheus
+  bazaar:
+    register: 'no'
+    prim: 68/CTX1023759
+    community_link: https://github.com/micrometer-metrics/micrometer
+    community_name: https://github.com/micrometer-metrics/micrometer
+    community_url: https://github.com/micrometer-metrics/micrometer
+    component_comment: ''
+    component_highlevel_description: An application metrics facade for the most popular
+      monitoring tools. Think SLF4J, but for metrics.
+    component_name: Micrometer
+    component_platform: linux
+    component_programing_language: Java
+    component_version: 1.8.5
+    licenses:
+    - 'FAL1159004/20: Apache License 2.0 (Apache-2.0)'
+    src_download_link: https://github.com/micrometer-metrics/micrometer/archive/v1.8.5.tar.gz
+    stako_decision_reason: team
+    stako: ESW3
+    stako_comment: Newer versions exists
+    bazaarurl: https://bazaar.internal.ericsson.com/b-view-component.php?componentid=1007993
+    recode: ''
+    retext: ''
+    country: US
+    crypto: N/A
+    programming_language: Java
+  encryptions:
+    used:
+    - ''
+  evms:
+    register: 'yes'
+    product_name: io.micrometer_micrometer-registry-prometheus
+    target_sw: linux
+    vendor: mvn
+    version: 1.8.5
+    web_url: https://github.com/micrometer-metrics/micrometer
+  licenses:
+  - Apache-2.0
+  linking: Static
+  name: micrometer-registry-prometheus
+  primary:
+  - this
+  selected_license: Apache-2.0
+  subcomponent: true
+  type: FOSS
+  versions:
+  - 1.8.5
+  mimer:
+    product_number: CTX1023759
+    product_version_label: 1.8.5
+  alerts:
+  - Stako is 'ESW3', BAZAAR component is not recommended to be used
+- ID: io.springfox:springfox-swagger-ui+3.0.0
+  additional_info:
+    fossa-attribution:
+      Description: JSON API documentation for spring based applications
+      Package: io.springfox:springfox-swagger-ui
+      Source: mvn
+      Version: 3.0.0
+      Hash: ''
+      licenses:
+      - Apache-2.0
+      Title: springfox-swagger-ui
+  bazaar:
+    register: 'no'
+    prim: 12/CAX1058435
+    community_link: https://github.com/springfox/springfox
+    community_name: https://github.com/springfox/springfox
+    community_url: https://github.com/springfox/springfox
+    component_comment: ''
+    component_highlevel_description: Automated JSON API documentation for API's built
+      with Spring.
+    component_name: SpringFox
+    component_platform: linux
+    component_programing_language: Java
+    component_version: 3.0.0
+    licenses:
+    - 'FAL1159004/20: Apache License 2.0 (Apache-2.0)'
+    src_download_link: https://github.com/springfox/springfox/archive/3.0.0.zip
+    stako_decision_reason: team
+    stako: ESW3
+    stako_comment: Product version is older than 18 months
+    bazaarurl: https://bazaar.internal.ericsson.com/b-view-component.php?componentid=943461
+    recode: ''
+    retext: ''
+    country: US
+    crypto: No Encryption
+    programming_language: Java
+  encryptions:
+    used:
+    - ''
+  evms:
+    register: 'yes'
+    product_name: io.springfox_springfox-swagger-ui
+    target_sw: linux
+    vendor: mvn
+    version: 3.0.0
+    web_url: https://github.com/springfox/springfox
+  licenses:
+  - Apache-2.0
+  linking: Static
+  name: springfox-swagger-ui
+  primary:
+  - this
+  selected_license: Apache-2.0
+  subcomponent: true
+  type: FOSS
+  versions:
+  - 3.0.0
+  mimer:
+    product_number: CAX1058435
+    product_version_label: 3.0.0
+  alerts:
+  - Stako is 'ESW3', BAZAAR component is not recommended to be used
+- ID: io.springfox:springfox-swagger2+3.0.0
+  additional_info:
+    fossa-attribution:
+      Description: JSON API documentation for spring based applications
+      Package: io.springfox:springfox-swagger2
+      Source: mvn
+      Version: 3.0.0
+      Hash: ''
+      licenses:
+      - Apache-2.0
+      Title: springfox-swagger2
+  bazaar:
+    register: 'no'
+    prim: 12/CAX1058435
+    community_link: https://github.com/springfox/springfox
+    community_name: https://github.com/springfox/springfox
+    community_url: https://github.com/springfox/springfox
+    component_comment: ''
+    component_highlevel_description: Automated JSON API documentation for API's built
+      with Spring.
+    component_name: SpringFox
+    component_platform: linux
+    component_programing_language: Java
+    component_version: 3.0.0
+    licenses:
+    - 'FAL1159004/20: Apache License 2.0 (Apache-2.0)'
+    src_download_link: https://github.com/springfox/springfox/archive/3.0.0.zip
+    stako_decision_reason: team
+    stako: ESW3
+    stako_comment: Product version is older than 18 months
+    bazaarurl: https://bazaar.internal.ericsson.com/b-view-component.php?componentid=943461
+    recode: ''
+    retext: ''
+    country: US
+    crypto: No Encryption
+    programming_language: Java
+  encryptions:
+    used:
+    - ''
+  evms:
+    register: 'yes'
+    product_name: io.springfox_springfox-swagger2
+    target_sw: linux
+    vendor: mvn
+    version: 3.0.0
+    web_url: https://github.com/springfox/springfox
+  licenses:
+  - Apache-2.0
+  linking: Static
+  name: springfox-swagger2
+  primary:
+  - this
+  selected_license: Apache-2.0
+  subcomponent: true
+  type: FOSS
+  versions:
+  - 3.0.0
+  mimer:
+    product_number: CAX1058435
+    product_version_label: 3.0.0
+  alerts:
+  - Stako is 'ESW3', BAZAAR component is not recommended to be used
+- ID: io.swagger:swagger-annotations+1.6.2
+  additional_info:
+    fossa-attribution:
+      Description: The fossa information is fetched from  FOSSA service. Don't Edit!
+      Package: io.swagger:swagger-annotations
+      Source: mvn
+      Version: 1.6.2
+      Hash: ''
+      licenses:
+      - Apache-2.0
+      Title: swagger-annotations
+  bazaar:
+    register: 'no'
+    prim: 32/CAX1056692
+    community_link: https://github.com/swagger-api/swagger-core
+    community_name: https://github.com/swagger-api/swagger-core
+    community_url: https://github.com/swagger-api/swagger-core
+    component_comment: ''
+    component_highlevel_description: Examples and server integrations for generating
+      the Swagger API Specification, which enables easy access to your REST API
+    component_name: Swagger-Core
+    component_platform: linux
+    component_programing_language: Java
+    component_version: 1.6.2
+    licenses:
+    - 'FAL1159004/20: Apache License 2.0 (Apache-2.0)'
+    src_download_link: https://github.com/swagger-api/swagger-core/archive/v1.6.2.zip
+    stako_decision_reason: team
+    stako: ESW4
+    stako_comment: Product version is older than 18 months. Newer versions exists
+    bazaarurl: https://bazaar.internal.ericsson.com/b-view-component.php?componentid=941802
+    recode: REL
+    retext: PRODUCT VERSION IS OLDER THAN 18 MONTHS. NEWER VERSIONS EXISTS
+    country: US
+    crypto: No Encryption
+    programming_language: Java
+  encryptions:
+    used:
+    - ''
+  evms:
+    register: 'yes'
+    product_name: io.swagger_swagger-annotations
+    target_sw: linux
+    vendor: mvn
+    version: 1.6.2
+    web_url: https://repo1.maven.org/maven2/io/swagger/swagger-annotations
+  licenses:
+  - Apache-2.0
+  linking: Static
+  name: swagger-annotations
+  primary:
+  - this
+  selected_license: Apache-2.0
+  subcomponent: true
+  type: FOSS
+  versions:
+  - 1.6.2
+  mimer:
+    product_number: CAX1056692
+    product_version_label: 1.6.2
+  alerts:
+  - Stako is 'ESW4', BAZAAR component is not recommended to be used
+- ID: net.logstash.logback:logstash-logback-encoder+7.0.1
+  additional_info:
+    fossa-attribution:
+      Description: Provides logback encoders, layouts, and appenders to log in JSON
+        and other formats supported by Jackson
+      Package: net.logstash.logback:logstash-logback-encoder
+      Source: mvn
+      Version: 7.0.1
+      Hash: ''
+      licenses:
+      - Apache-2.0
+      - MIT
+      Title: Logstash Logback Encoder
+  bazaar:
+    register: 'no'
+    prim: 11/CTX1020602
+    community_link: https://github.com/logstash/logstash-logback-encoder
+    community_name: https://github.com/logstash/logstash-logback-encoder
+    community_url: https://github.com/logstash/logstash-logback-encoder
+    component_comment: ''
+    component_highlevel_description: Logback encoder which creates JSON for use with
+      Logstash.
+    component_name: Logstash Logback Encoder
+    component_platform: linux
+    component_programing_language: Java
+    component_version: 7.0.1
+    licenses:
+    - 'FAL1159004/20: Apache License 2.0 (Apache-2.0)'
+    src_download_link: https://github.com/logstash/logstash-logback-encoder/archive/logstash-logback-encoder-7.0.1.tar.gz
+    stako_decision_reason: automatic
+    stako: ESW2
+    stako_comment: ''
+    bazaarurl: https://bazaar.internal.ericsson.com/b-view-component.php?componentid=999632
+    recode: ''
+    retext: ''
+    country: US
+    crypto: No Encryption
+    programming_language: Java
+  encryptions:
+    used:
+    - ''
+  evms:
+    register: 'yes'
+    product_name: net.logstash.logback_logstash-logback-encoder
+    target_sw: linux
+    vendor: mvn
+    version: 7.0.1
+    web_url: https://github.com/logfellow/logstash-logback-encoder
+  licenses:
+  - Apache-2.0
+  - MIT
+  linking: Static
+  name: Logstash Logback Encoder
+  primary:
+  - this
+  selected_license: Apache-2.0
+  subcomponent: false
+  type: FOSS
+  versions:
+  - 7.0.1
+  mimer:
+    product_number: CTX1020602
+    product_version_label: 7.0.1
+- ID: org.apache.httpcomponents:httpclient+4.5.13
+  additional_info:
+    fossa-attribution:
+      Description: HttpComponents Client
+      Package: org.apache.httpcomponents:httpclient
+      Source: mvn
+      Version: 4.5.13
+      Hash: ''
+      licenses:
+      - Apache-2.0
+      Title: Apache HttpClient
+  bazaar:
+    register: 'no'
+    prim: 41/CAX1053846
+    community_link: https://github.com/apache/httpcomponents-client
+    community_name: https://github.com/apache/httpcomponents-client
+    community_url: https://github.com/apache/httpcomponents-client
+    component_comment: ''
+    component_highlevel_description: The Apache HttpComponents project is responsible
+      for creating and maintaining a toolset of low level Java components focused
+      on HTTP and associated protocols
+    component_name: HTTPComponents HttpClient, Apache
+    component_platform: linux
+    component_programing_language: Java
+    component_version: 4.5.13
+    licenses:
+    - 'FAL1159004/20: Apache License 2.0 (Apache-2.0)'
+    src_download_link: https://mirrors.estointernet.in/apache/httpcomponents/httpclient/source/httpcomponents-client-4.5.13-src.zip
+    stako_decision_reason: team
+    stako: ESW4
+    stako_comment: Product version is older than 18 months. Newer versions exists
+    bazaarurl: https://bazaar.internal.ericsson.com/b-view-component.php?componentid=944490
+    recode: REL
+    retext: PRODUCT VERSION IS OLDER THAN 18 MONTHS. NEWER VERSIONS EXISTS
+    country: US
+    crypto: N/A
+    programming_language: Java
+  encryptions:
+    used:
+    - ''
+  evms:
+    register: 'yes'
+    product_name: org.apache.httpcomponents_httpclient
+    target_sw: linux
+    vendor: mvn
+    version: 4.5.13
+    web_url: http://hc.apache.org/httpcomponents-client
+  licenses:
+  - Apache-2.0
+  linking: Static
+  name: Apache HttpClient
+  primary:
+  - this
+  selected_license: Apache-2.0
+  subcomponent: true
+  type: FOSS
+  versions:
+  - 4.5.13
+  mimer:
+    product_number: CAX1053846
+    product_version_label: rel/v4.5.13
+  alerts:
+  - Stako is 'ESW4', BAZAAR component is not recommended to be used
+- ID: org.openapitools:jackson-databind-nullable+0.2.2
+  additional_info:
+    fossa-attribution:
+      Description: JsonNullable wrapper class and Jackson module to support fields
+        with meaningful null values.
+      Package: org.openapitools:jackson-databind-nullable
+      Source: mvn
+      Version: 0.2.2
+      Hash: ''
+      licenses:
+      - Apache-2.0
+      Title: JsonNullable Jackson module
+  bazaar:
+    register: 'no'
+    prim: 2/CTX1027927
+    community_link: https://github.com/OpenAPITools/jackson-databind-nullable
+    community_name: https://github.com/OpenAPITools/jackson-databind-nullable
+    community_url: https://github.com/OpenAPITools/jackson-databind-nullable
+    component_comment: ''
+    component_highlevel_description: JsonNullable wrapper class and Jackson module
+      to support meaningful null values.
+    component_name: jackson-databind-nullable
+    component_platform: linux
+    component_programing_language: Java
+    component_version: 0.2.2
+    licenses:
+    - 'FAL1159004/20: Apache License 2.0 (Apache-2.0)'
+    src_download_link: https://github.com/OpenAPITools/jackson-databind-nullable/archive/v0.2.2.tar.gz
+    stako_decision_reason: automatic
+    stako: ESW2
+    stako_comment: ''
+    bazaarurl: https://bazaar.internal.ericsson.com/b-view-component.php?componentid=995868
+    recode: ''
+    retext: ''
+    country: FR
+    crypto: No Encryption
+    programming_language: Java
+  encryptions:
+    used:
+    - ''
+  evms:
+    register: 'yes'
+    product_name: org.openapitools_jackson-databind-nullable
+    target_sw: linux
+    vendor: mvn
+    version: 0.2.2
+    web_url: https://github.com/OpenAPITools/jackson-databind-nullable
+  licenses:
+  - Apache-2.0
+  linking: Static
+  name: JsonNullable Jackson module
+  primary:
+  - this
+  selected_license: Apache-2.0
+  subcomponent: true
+  type: FOSS
+  versions:
+  - 0.2.2
+  mimer:
+    product_number: CTX1027927
+    product_version_label: 0.2.2
+- ID: org.projectlombok:lombok+1.18.24
+  additional_info:
+    fossa-attribution:
+      Description: 'Spice up your java: Automatic Resource Management, automatic generation
+        of getters, setters, equals, hashCode and toString, and more!'
+      Package: org.projectlombok:lombok
+      Source: mvn
+      Version: 1.18.24
+      Hash: ''
+      licenses:
+      - MIT
+      Title: Project Lombok
+  bazaar:
+    register: 'no'
+    prim: 19/CAX1056250
+    community_link: https://github.com/rzwitserloot/lombok
+    community_name: https://github.com/rzwitserloot/lombok
+    community_url: https://github.com/rzwitserloot/lombok
+    component_comment: ''
+    component_highlevel_description: 'Project Lombok is a java library that automatically
+      plugs into your editor and build tools, spicing up your java.
+
+      Never write another getter or equals method again. Early access to future java
+      features such as val, and much more.'
+    component_name: Lombok
+    component_platform: linux
+    component_programing_language: Java
+    component_version: 1.18.24
+    licenses:
+    - 'FAL1159008: MIT License (MIT)'
+    src_download_link: https://github.com/rzwitserloot/lombok/archive/v1.18.24.tar.gz
+    stako_decision_reason: automatic
+    stako: ESW2
+    stako_comment: ''
+    bazaarurl: https://bazaar.internal.ericsson.com/b-view-component.php?componentid=1007979
+    recode: ''
+    retext: ''
+    country: NL
+    crypto: N/A
+    programming_language: Java
+  encryptions:
+    used:
+    - ''
+  evms:
+    register: 'yes'
+    product_name: org.projectlombok_lombok
+    target_sw: linux
+    vendor: mvn
+    version: 1.18.24
+    web_url: https://projectlombok.org
+  licenses:
+  - MIT
+  linking: Static
+  name: Project Lombok
+  primary:
+  - this
+  selected_license: MIT
+  subcomponent: false
+  type: FOSS
+  versions:
+  - 1.18.24
+  mimer:
+    product_number: CAX1056250
+    product_version_label: 1.18.24
+- ID: org.springdoc:springdoc-openapi-ui+1.6.6
+  additional_info:
+    fossa-attribution:
+      Description: The fossa information is fetched from  FOSSA service. Don't Edit!
+      Package: org.springdoc:springdoc-openapi-ui
+      Source: mvn
+      Version: 1.6.6
+      Hash: ''
+      licenses:
+      - Apache-2.0
+      Title: springdoc-openapi-ui
+  bazaar:
+    register: 'no'
+    prim: 15/CTX1027933
+    community_link: https://github.com/springdoc/springdoc-openapi
+    community_name: https://github.com/springdoc/springdoc-openapi
+    community_url: https://github.com/springdoc/springdoc-openapi
+    component_comment: ''
+    component_highlevel_description: The springdoc-openapi Java library helps automating
+      the generation of API documentation using Spring Boot projects.
+    component_name: springdoc-openapi
+    component_platform: linux
+    component_programing_language: Java
+    component_version: 1.6.6
+    licenses:
+    - 'FAL1159004/20: Apache License 2.0 (Apache-2.0)'
+    src_download_link: https://github.com/springdoc/springdoc-openapi/archive/v1.6.6.tar.gz
+    stako_decision_reason: automatic
+    stako: ESW2
+    stako_comment: ''
+    bazaarurl: https://bazaar.internal.ericsson.com/b-view-component.php?componentid=1001414
+    recode: ''
+    retext: ''
+    country: CH
+    crypto: No Encryption
+    programming_language: Java
+  encryptions:
+    used:
+    - ''
+  evms:
+    register: 'yes'
+    product_name: org.springdoc_springdoc-openapi-ui
+    target_sw: linux
+    vendor: mvn
+    version: 1.6.6
+    web_url: https://repo1.maven.org/maven2/org/springdoc/springdoc-openapi-ui
+  licenses:
+  - Apache-2.0
+  linking: Static
+  name: springdoc-openapi-ui
+  primary:
+  - this
+  selected_license: Apache-2.0
+  subcomponent: true
+  type: FOSS
+  versions:
+  - 1.6.6
+  mimer:
+    product_number: CTX1027933
+    product_version_label: 1.6.6
+- ID: org.springframework.boot:spring-boot-starter-actuator+2.6.8
+  additional_info:
+    fossa-attribution:
+      Description: Starter for using Spring Boot's Actuator which provides production
+        ready features to help you monitor and manage your application
+      Package: org.springframework.boot:spring-boot-starter-actuator
+      Source: mvn
+      Version: 2.6.8
+      Hash: ''
+      licenses:
+      - Apache-2.0
+      Title: spring-boot-starter-actuator
+  bazaar:
+    register: 'no'
+    prim: 140/CAX1058168
+    community_link: https://github.com/spring-projects/spring-boot
+    community_name: https://github.com/spring-projects/spring-boot
+    community_url: https://github.com/spring-projects/spring-boot
+    component_comment: ''
+    component_highlevel_description: Spring Boot makes it easy to create Spring-powered,
+      production-grade applications and services with absolute minimum fuss. It takes
+      an opinionated view of the Spring platform so that new and existing users can
+      quickly get to the bits they need.
+    component_name: Spring Boot, Spring
+    component_platform: linux
+    component_programing_language: Java
+    component_version: 2.6.8
+    licenses:
+    - 'FAL1159004/20: Apache License 2.0 (Apache-2.0)'
+    src_download_link: https://github.com/spring-projects/spring-boot/archive/v2.6.8.tar.gz
+    stako_decision_reason: team
+    stako: ESW3
+    stako_comment: Copyleft license found.
+    bazaarurl: https://bazaar.internal.ericsson.com/b-view-component.php?componentid=1012208
+    recode: ''
+    retext: ''
+    country: US
+    crypto: 'NO'
+    programming_language: Java
+  encryptions:
+    used:
+    - ''
+  evms:
+    register: 'yes'
+    product_name: org.springframework.boot_spring-boot-starter-actuator
+    target_sw: linux
+    vendor: mvn
+    version: 2.6.8
+    web_url: https://spring.io/projects/spring-boot
+  licenses:
+  - Apache-2.0
+  linking: Static
+  name: spring-boot-starter-actuator
+  primary:
+  - this
+  selected_license: Apache-2.0
+  subcomponent: true
+  type: FOSS
+  versions:
+  - 2.6.8
+  mimer:
+    product_number: CAX1058168
+    product_version_label: 2.6.8
+  alerts:
+  - Stako is 'ESW3', BAZAAR component is not recommended to be used
+- ID: org.springframework.boot:spring-boot-starter-data-jpa+2.6.8
+  additional_info:
+    fossa-attribution:
+      Description: Starter for using Spring Data JPA with Hibernate
+      Package: org.springframework.boot:spring-boot-starter-data-jpa
+      Source: mvn
+      Version: 2.6.8
+      Hash: ''
+      licenses:
+      - Apache-2.0
+      Title: spring-boot-starter-data-jpa
+  bazaar:
+    register: 'no'
+    prim: 140/CAX1058168
+    community_link: https://github.com/spring-projects/spring-boot
+    community_name: https://github.com/spring-projects/spring-boot
+    community_url: https://github.com/spring-projects/spring-boot
+    component_comment: ''
+    component_highlevel_description: Spring Boot makes it easy to create Spring-powered,
+      production-grade applications and services with absolute minimum fuss. It takes
+      an opinionated view of the Spring platform so that new and existing users can
+      quickly get to the bits they need.
+    component_name: Spring Boot, Spring
+    component_platform: linux
+    component_programing_language: Java
+    component_version: 2.6.8
+    licenses:
+    - 'FAL1159004/20: Apache License 2.0 (Apache-2.0)'
+    src_download_link: https://github.com/spring-projects/spring-boot/archive/v2.6.8.tar.gz
+    stako_decision_reason: team
+    stako: ESW3
+    stako_comment: Copyleft license found.
+    bazaarurl: https://bazaar.internal.ericsson.com/b-view-component.php?componentid=1012208
+    recode: ''
+    retext: ''
+    country: US
+    crypto: 'NO'
+    programming_language: Java
+  encryptions:
+    used:
+    - ''
+  evms:
+    register: 'yes'
+    product_name: org.springframework.boot_spring-boot-starter-data-jpa
+    target_sw: linux
+    vendor: mvn
+    version: 2.6.8
+    web_url: https://spring.io/projects/spring-boot
+  licenses:
+  - Apache-2.0
+  linking: Static
+  name: spring-boot-starter-data-jpa
+  primary:
+  - this
+  selected_license: Apache-2.0
+  subcomponent: true
+  type: FOSS
+  versions:
+  - 2.6.8
+  mimer:
+    product_number: CAX1058168
+    product_version_label: 2.6.8
+  alerts:
+  - Stako is 'ESW3', BAZAAR component is not recommended to be used
+- ID: org.springframework.boot:spring-boot-starter-jersey+2.6.8
+  additional_info:
+    fossa-attribution:
+      Description: Starter for building RESTful web applications using JAX-RS and
+        Jersey. An alternative to spring-boot-starter-web
+      Package: org.springframework.boot:spring-boot-starter-jersey
+      Source: mvn
+      Version: 2.6.8
+      Hash: ''
+      licenses:
+      - Apache-2.0
+      Title: spring-boot-starter-jersey
+  bazaar:
+    register: 'no'
+    prim: 140/CAX1058168
+    community_link: https://github.com/spring-projects/spring-boot
+    community_name: https://github.com/spring-projects/spring-boot
+    community_url: https://github.com/spring-projects/spring-boot
+    component_comment: ''
+    component_highlevel_description: Spring Boot makes it easy to create Spring-powered,
+      production-grade applications and services with absolute minimum fuss. It takes
+      an opinionated view of the Spring platform so that new and existing users can
+      quickly get to the bits they need.
+    component_name: Spring Boot, Spring
+    component_platform: linux
+    component_programing_language: Java
+    component_version: 2.6.8
+    licenses:
+    - 'FAL1159004/20: Apache License 2.0 (Apache-2.0)'
+    src_download_link: https://github.com/spring-projects/spring-boot/archive/v2.6.8.tar.gz
+    stako_decision_reason: team
+    stako: ESW3
+    stako_comment: Copyleft license found.
+    bazaarurl: https://bazaar.internal.ericsson.com/b-view-component.php?componentid=1012208
+    recode: ''
+    retext: ''
+    country: US
+    crypto: 'NO'
+    programming_language: Java
+  encryptions:
+    used:
+    - ''
+  evms:
+    register: 'yes'
+    product_name: org.springframework.boot_spring-boot-starter-jersey
+    target_sw: linux
+    vendor: mvn
+    version: 2.6.8
+    web_url: https://spring.io/projects/spring-boot
+  licenses:
+  - Apache-2.0
+  linking: Static
+  name: spring-boot-starter-jersey
+  primary:
+  - this
+  selected_license: Apache-2.0
+  subcomponent: true
+  type: FOSS
+  versions:
+  - 2.6.8
+  mimer:
+    product_number: CAX1058168
+    product_version_label: 2.6.8
+  alerts:
+  - Stako is 'ESW3', BAZAAR component is not recommended to be used
+- ID: org.springframework.boot:spring-boot-starter-web+2.6.8
+  additional_info:
+    fossa-attribution:
+      Description: Starter for building web, including RESTful, applications using
+        Spring MVC. Uses Tomcat as the default embedded container
+      Package: org.springframework.boot:spring-boot-starter-web
+      Source: mvn
+      Version: 2.6.8
+      Hash: ''
+      licenses:
+      - Apache-2.0
+      Title: spring-boot-starter-web
+  bazaar:
+    register: 'no'
+    prim: 140/CAX1058168
+    community_link: https://github.com/spring-projects/spring-boot
+    community_name: https://github.com/spring-projects/spring-boot
+    community_url: https://github.com/spring-projects/spring-boot
+    component_comment: ''
+    component_highlevel_description: Spring Boot makes it easy to create Spring-powered,
+      production-grade applications and services with absolute minimum fuss. It takes
+      an opinionated view of the Spring platform so that new and existing users can
+      quickly get to the bits they need.
+    component_name: Spring Boot, Spring
+    component_platform: linux
+    component_programing_language: Java
+    component_version: 2.6.8
+    licenses:
+    - 'FAL1159004/20: Apache License 2.0 (Apache-2.0)'
+    src_download_link: https://github.com/spring-projects/spring-boot/archive/v2.6.8.tar.gz
+    stako_decision_reason: team
+    stako: ESW3
+    stako_comment: Copyleft license found.
+    bazaarurl: https://bazaar.internal.ericsson.com/b-view-component.php?componentid=1012208
+    recode: ''
+    retext: ''
+    country: US
+    crypto: 'NO'
+    programming_language: Java
+  encryptions:
+    used:
+    - ''
+  evms:
+    register: 'yes'
+    product_name: org.springframework.boot_spring-boot-starter-web
+    target_sw: linux
+    vendor: mvn
+    version: 2.6.8
+    web_url: https://spring.io/projects/spring-boot
+  licenses:
+  - Apache-2.0
+  linking: Static
+  name: spring-boot-starter-web
+  primary:
+  - this
+  selected_license: Apache-2.0
+  subcomponent: true
+  type: FOSS
+  versions:
+  - 2.6.8
+  mimer:
+    product_number: CAX1058168
+    product_version_label: 2.6.8
+  alerts:
+  - Stako is 'ESW3', BAZAAR component is not recommended to be used
+- ID: org.springframework.cloud:spring-cloud-starter-sleuth+3.1.1
+  additional_info:
+    fossa-attribution:
+      Description: Spring Cloud Starter Sleuth with Brave
+      Package: org.springframework.cloud:spring-cloud-starter-sleuth
+      Source: mvn
+      Version: 3.1.1
+      Hash: ''
+      licenses:
+      - Apache-2.0
+      Title: Spring Cloud Starter Sleuth with Brave
+  bazaar:
+    register: 'no'
+    prim: 13/CTX1028605
+    community_link: https://github.com/spring-cloud/spring-cloud-sleuth/
+    community_name: https://github.com/spring-cloud/spring-cloud-sleuth/
+    community_url: https://github.com/spring-cloud/spring-cloud-sleuth/
+    component_comment: ''
+    component_highlevel_description: Distributed tracing for spring cloud
+    component_name: Spring Cloud Sleuth
+    component_platform: linux
+    component_programing_language: Java
+    component_version: 3.1.1
+    licenses:
+    - 'FAL1159004/20: Apache License 2.0 (Apache-2.0)'
+    src_download_link: https://github.com/spring-cloud/spring-cloud-sleuth/archive/v3.1.1.tar.gz
+    stako_decision_reason: automatic
+    stako: ESW2
+    stako_comment: ''
+    bazaarurl: https://bazaar.internal.ericsson.com/b-view-component.php?componentid=1004025
+    recode: ''
+    retext: ''
+    country: US
+    crypto: N/A
+    programming_language: Java
+  encryptions:
+    used:
+    - ''
+  evms:
+    register: 'yes'
+    product_name: org.springframework.cloud_spring-cloud-starter-sleuth
+    target_sw: linux
+    vendor: mvn
+    version: 3.1.1
+    web_url: https://repo1.maven.org/maven2/org/springframework/cloud/spring-cloud-starter-sleuth
+  licenses:
+  - Apache-2.0
+  linking: Static
+  name: Spring Cloud Starter Sleuth with Brave
+  primary:
+  - this
+  selected_license: Apache-2.0
+  subcomponent: false
+  type: FOSS
+  versions:
+  - 3.1.1
+  mimer:
+    product_number: CTX1028605
+    product_version_label: 3.1.1
+- ID: org.springframework.retry:spring-retry+1.3.3
+  additional_info:
+    fossa-attribution:
+      Description: Spring Retry provides an abstraction around retrying failed operations,
+        with anemphasis on declarative control of the process and policy-based behaviour
+        that iseasy to extend and customize. For instance, you can configure a plain
+        POJOoperation to retry if it fails, based on the type of exception, and with
+        a fixedor exponential backoff.
+      Package: org.springframework.retry:spring-retry
+      Source: mvn
+      Version: 1.3.3
+      Hash: ''
+      licenses:
+      - Apache-2.0
+      Title: Spring Retry
+  bazaar:
+    register: 'no'
+    prim: 17/CAX1056595
+    community_link: https://github.com/spring-projects/spring-retry
+    community_name: https://github.com/spring-projects/spring-retry
+    community_url: https://github.com/spring-projects/spring-retry
+    component_comment: ''
+    component_highlevel_description: Spring Retry provides an abstraction around retrying
+      failed operations, with an emphasis on declarative control of the process and
+      policy-based bahaviour that is easy to extend and customize. For instance, you
+      can configure a plain POJO operation to retry if it fails, based on the type
+      of exception, and with a fixed or exponential backoff.
+    component_name: spring-retry
+    component_platform: linux
+    component_programing_language: Java
+    component_version: 1.3.3
+    licenses:
+    - 'FAL1159004/20: Apache License 2.0 (Apache-2.0)'
+    src_download_link: https://github.com/spring-projects/spring-retry/archive/v1.3.3.tar.gz
+    stako_decision_reason: automatic
+    stako: ESW2
+    stako_comment: ''
+    bazaarurl: https://bazaar.internal.ericsson.com/b-view-component.php?componentid=1007990
+    recode: ''
+    retext: ''
+    country: US
+    crypto: N/A
+    programming_language: Java
+  encryptions:
+    used:
+    - ''
+  evms:
+    register: 'yes'
+    product_name: org.springframework.retry_spring-retry
+    target_sw: linux
+    vendor: mvn
+    version: 1.3.3
+    web_url: https://www.springsource.org
+  licenses:
+  - Apache-2.0
+  linking: Static
+  name: Spring Retry
+  primary:
+  - this
+  selected_license: Apache-2.0
+  subcomponent: false
+  type: FOSS
+  versions:
+  - 1.3.3
+  mimer:
+    product_number: CAX1056595
+    product_version_label: 1.3.3

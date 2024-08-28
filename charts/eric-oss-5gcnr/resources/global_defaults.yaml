@@ -1,0 +1,61 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+global:
+  annotations: {}
+  labels: {}
+  timezone: UTC
+  nodeSelector: {}
+  #Secret must be manually created in the namespace, no default value
+  pullSecret: ""
+  # The IP family the service belongs to when service.type is set to ClusterIP.
+  # Options are: IPv4, IPv6
+  internalIPFamily: ""
+  registry:
+    url: armdocker.rnd.ericsson.se
+    imagePullPolicy: IfNotPresent
+  serviceMesh:
+    enabled: false
+    ingress:
+      enabled: false
+  security:
+    policyBinding:
+      create: true
+    tls:
+      enabled: false
+  fsGroup:
+    namespace: false
+  iam:
+    clientId: eo
+    adminSecret: eric-sec-access-mgmt-creds
+    userKey: kcadminid
+    passwordKey: kcpasswd
+    cacert:
+      secretName: iam-cacert-secret
+      key: tls.crt
+      filePath: iam/ca.crt
+  systemUser:
+    secret: eric-oss-system-user-secret
+    userKey: system-user
+    passwordKey: system-user-pwd
+  schemes:
+    iam: "https"
+    pf: "https"
+  hosts:
+    iam: ""
+    pf: ""
+  log:
+    streamingMethod: "direct"

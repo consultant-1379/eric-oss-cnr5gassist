@@ -1,0 +1,57 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+modelVersion: 2.0
+uses_encryption:
+  - product_number: CXU1011245
+# In this example we specify which encryption we use.
+#    encryptions:
+#        # Explain how the encryption is used
+#      - usage: |-
+#           The microservice counts the words in the request body and
+#           encrypts the result using TLS
+#       purpose: "Data confidentiality, OAM only"
+#        # Encryption Protocols
+#        protocols:
+#          # E.g. TLS
+#        - protocol: TLS 1.3
+#          # Provide a description of how the protocol is used
+#          usage: "Traffic data termination and transmission"
+#          # Provide the name of the standard specifying the protocol
+#          standard: "IETF"
+#        - protocol: TLS 1.2
+#          # Provide a description of how the protocol is used
+#          usage: "Traffic data termination and transmission"
+#          # Provide the name of the standard specifying the protocol
+#          standard: "IETF"
+#        crypto_algorithms:
+#          # Algorithm Name: The identifier of algorithm. For full list see Mimer documentation in elex (mandatory)
+#          # Key length: only mention same algorithm ones with the longes key (optional)
+#          # Encryption Mode: specify the encryption mode which is free text (optional)
+#        - name: ECDHE
+#        - name: ECDSA
+#        - name: RSA
+#        - name: Chacha20-Poly1305
+#        - name: AES
+#          key_length: 256
+#          encryption_mode: CBC
+#        - name: AES
+#          key_length: 256
+#          encryption_mode: GCM
+#        - name: SHA
+#          key_length: 384
+# Following empty encryption row is comment out to avoid doing trade approval
+# - product_number: CXC2012032

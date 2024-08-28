@@ -1,0 +1,124 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+# *****************************************************************************
+# Json import collector
+---
+#- json_import_collector__DPRAF
+- json_import_collector__MANUAL
+
+# *****************************************************************************
+#  Git collectors used
+#- git_collector__Feature
+#- git_collector__Bug
+#- git_collector__Deprecation
+#- git_collector__Abrupt_nbc
+#- git_collector__Nuc
+
+# *****************************************************************************
+#- jira_collector__No_feature_in_jira:
+#    depends_on:
+#      - git_collector__Feature
+
+
+#- jira_collector__Feature_in_jira:
+#    depends_on:
+#      - git_collector__Feature
+
+# *****************************************************************************
+#- jira_collector__Bug:
+#    depends_on:
+#      - git_collector__Bug
+
+# *****************************************************************************
+#- jira_collector__Unfinished_tasks:
+#    depends_on:
+#      - git_collector__Bug
+#      - git_collector__Feature
+#      - git_collector__Deprecation
+
+# *****************************************************************************
+#- jira_collector__Deprecation_done:
+#    depends_on:
+#      - git_collector__Deprecation
+
+# *****************************************************************************
+#- jira_collector__Deprecation_approved
+
+
+# *****************************************************************************
+# All open bugs according to search querry in config.yaml
+- jira_collector__Open_bug
+
+# *****************************************************************************
+#- jira_collector__Abrupt_nbc:
+#    depends_on:
+#      - git_collector__Abrupt_nbc
+
+# *****************************************************************************
+#- jira_collector__Nuc:
+#    depends_on:
+#      - git_collector__Nuc
+
+# *****************************************************************************
+- html_generator:
+    depends_on:
+#      - json_import_collector__DPRAF
+      - json_import_collector__MANUAL
+#      - jira_collector__No_feature_in_jira
+#      - jira_collector__Feature_in_jira
+#      - jira_collector__Deprecation_done
+#      - jira_collector__Deprecation_approved
+#      - jira_collector__Bug
+      - jira_collector__Open_bug
+#      - jira_collector__Unfinished_tasks
+#      - jira_collector__Abrupt_nbc
+#      - jira_collector__Nuc
+
+# *****************************************************************************
+- pdf_generator:
+    depends_on:
+#      - json_import_collector__DPRAF
+      - json_import_collector__MANUAL
+#      - jira_collector__No_feature_in_jira
+#      - jira_collector__Feature_in_jira
+#      - jira_collector__Deprecation_done
+#      - jira_collector__Deprecation_approved
+#      - jira_collector__Bug
+      - jira_collector__Open_bug
+#      - jira_collector__Unfinished_tasks
+#      - jira_collector__Abrupt_nbc
+#      - jira_collector__Nuc
+
+# *****************************************************************************
+- json_generator:
+    depends_on:
+#      - jira_collector__No_feature_in_jira
+#      - jira_collector__Feature_in_jira
+#      - jira_collector__Deprecation_done
+#      - jira_collector__Deprecation_approved
+#      - jira_collector__Bug
+      - jira_collector__Open_bug
+#      - jira_collector__Unfinished_tasks
+#      - json_import_collector__DPRAF
+      - json_import_collector__MANUAL
+#      - jira_collector__Abrupt_nbc
+#      - jira_collector__Nuc
+#      - git_collector__Feature
+#      - git_collector__Bug
+#      - git_collector__Deprecation
+#      - git_collector__Abrupt_nbc
+#      - git_collector__Nuc

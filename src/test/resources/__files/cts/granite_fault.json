@@ -1,0 +1,11 @@
+{
+  "type": "GraniteFaultStack",
+  "messageText": "Error processing URL parameter",
+  "faults": [
+    {
+      "exceptionClassName": "java.lang.Exception",
+      "messageText": "Error processing URL parameter",
+      "uiPresentable": false
+    }
+  ]
+}

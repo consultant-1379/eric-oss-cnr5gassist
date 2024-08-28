@@ -1,0 +1,29 @@
+{
+    "erienmnrmlrat:ENodeBFunction": [
+        {
+            "id": "1",
+            "erienmnrmlrat:GUtranSyncSignalFrequency": [
+                {
+                    "id": "431554",
+                    "attributes": {
+                        "GUtranSyncSignalFrequencyId": 431554,
+                        "arfcn": 431554,
+                        "reservedBy": [
+                            "SubNetwork=SMO,MeContext=LTE05ERBS00008,ManagedElement=1,ENodeBFunction=1,GUtraNetwork=1,ExternalGNodeBFunction=NR01gNodeBRadio00008,ExternalGUtranCell=NR01gNodeBRadio00004-1"
+                        ]
+                    }
+                },
+                {
+                    "id": "431596",
+                    "attributes": {
+                        "GUtranSyncSignalFrequencyId": 431596,
+                        "arfcn": 431596,
+                        "reservedBy": [
+                            "SubNetwork=SMO,MeContext=LTE05ERBS00008,ManagedElement=1,ENodeBFunction=1,GUtraNetwork=1,ExternalGNodeBFunction=NR01gNodeBRadio00008,ExternalGUtranCell=NR01gNodeBRadio00008-1"
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}

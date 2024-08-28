@@ -1,0 +1,8 @@
+{
+  "model_version" : "1.5",
+  "service_apr_product" : "APR 201 618/1",
+  "pm_metrics" : "https://arm.seli.gic.ericsson.se/artifactory/proj-eric-oss-dev-generic-local/eric-oss-cnr5gassist/documents/eric-oss-5gcnr-pm-metrics.json",
+  "characteristic_report" : "https://arm.seli.gic.ericsson.se/artifactory/proj-eric-oss-dev-generic-local/eric-oss-cnr5gassist/documents/eric-oss-5gcnr-characteristic-report.json",
+  "foss_license_agreement" : "https://arm.seli.gic.ericsson.se/artifactory/proj-eric-oss-dev-generic-local/eric-oss-cnr5gassist/documents/license-agreement.json",
+  "service_ports" : "https://arm.seli.gic.ericsson.se/artifactory/proj-eric-oss-released-generic-local/eric-oss-cnr5gassist/documents/service-ports.json"
+}

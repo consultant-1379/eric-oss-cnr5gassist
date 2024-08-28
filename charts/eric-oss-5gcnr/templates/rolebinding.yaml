@@ -1,0 +1,36 @@
+{{- $global := fromJson (include "eric-oss-5gcnr.global" .) }}
+{{- if $global.security.policyBinding.create -}}
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "eric-oss-5gcnr.name" . }}-security-policy
+  labels:
+    {{- include "eric-oss-5gcnr.labels" . | nindent 4 }}
+  annotations:
+    {{- $default := include "eric-oss-5gcnr.annotations" . | fromYaml -}}
+    {{- $securityPolicy := include "eric-oss-5gcnr.securityPolicy.annotations" . | fromYaml -}}
+    {{- include "eric-oss-5gcnr.mergeAnnotations" (dict "location" .Template.Name "sources" (list $securityPolicy $default)) | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "eric-oss-5gcnr.securityPolicy.reference" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "eric-oss-5gcnr.name" . }}
+{{- end -}}

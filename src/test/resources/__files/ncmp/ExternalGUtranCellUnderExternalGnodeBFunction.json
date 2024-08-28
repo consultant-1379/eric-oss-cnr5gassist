@@ -1,0 +1,52 @@
+{
+    "erienmnrmlrat:ExternalGNodeBFunction": [
+        {
+            "id": "1",
+            "erienmnrmlrat:ExternalGUtranCell": [
+                {
+                    "id": "1",
+                    "attributes": {
+                        "externalGUtranCellId": 1,
+                        "absTimeOffset": 0,
+                        "absSubFrameOffset": 0,
+                        "gUtranSyncSignalFrequencyRef": "SubNetwork=NoNetsim,SubNetwork=4G,ManagedElement=ENodeB15,ENodeBFunction=1,GUtraNetwork=1,GUtranSyncSignalFrequency=431554",
+                        "localCellId": 1,
+                        "physicalLayerCellIdGroup": 333,
+                        "physicalLayerSubCellId": 0,
+                        "plmnIdList": [
+                            {
+                                "mncLength": 2,
+                                "mcc": 128,
+                                "mnc": 49
+                            }
+                        ]
+                    }
+                },
+                {
+                    "id": "2",
+                    "attributes": {
+                        "externalGUtranCellId": 2,
+                        "absTimeOffset": 0,
+                        "absSubFrameOffset": 0,
+                        "gUtranSyncSignalFrequencyRef": "SubNetwork=NoNetsim,ManagedElement=ENodeB15,ENodeBFunction=1",
+                        "localCellId": 5,
+                        "physicalLayerCellIdGroup": 31,
+                        "physicalLayerSubCellId": 1,
+                        "plmnIdList": [
+                            {
+                                "mncLength": 2,
+                                "mcc": 128,
+                                "mnc": 49
+                            },
+                            {
+                                "mncLength": 5,
+                                "mcc": 124,
+                                "mnc": 53
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}

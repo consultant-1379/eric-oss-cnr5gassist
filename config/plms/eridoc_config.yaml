@@ -1,0 +1,70 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+repository: eridoca
+folderId: 0b004cffca667778
+
+# 5g CNR Microservice PRI folder:
+documents:
+
+  - title: "5G CNR Assist {semver} - PRI"
+    file: "./docs/target/generated-docs/software-vendor-list/software-vendor-list.html"
+    decimal-class: "10921"
+    strategy: "ordinal"
+    class-prefix: ""
+    individual-number: "APR 201 618/1"
+    eri_document_type: "Product Revision Information"
+    lang: "en"
+    format: "pdf"
+
+  - title: "5G CNR Assist {semver} - Software vendor list"
+    file: "./docs/target/generated-docs/software-vendor-list/software-vendor-list.html"
+    decimal-class: "00651"
+    class-prefix: "1"
+    individual-number: "APR 201 618/1"
+    eri_document_type: "List"
+    lang: "en"
+    format: "html"
+
+  - title: "5G CNR Assist {semver} - Troubleshooting guide"
+    file: "./docs/target/generated-docs/troubleshooting-guide/troubleshooting-guide.html"
+    decimal-class: "15451"
+    class-prefix: "1"
+    individual-number: "APR 201 618/1"
+    eri_document_type: "Troubleshooting"
+    lang: "en"
+    format: "html"
+
+  - title: "5G CNR Assist {semver} - User Guide"
+    file: "./docs/target/generated-docs/user-guide/user-guide.html"
+    source_files:
+      - "./docs/target/generated-docs/user-guide/components.svg"
+    decimal-class: "1553"
+    class-prefix: ""
+    individual-number: "APR 201 618/1"
+    eri_document_type: "User Guide"
+    lang: "en"
+    format: "html"
+
+  - title: "5G CNR Assist {semver} - Characteristics Report"
+    file: "./docs/target/generated-docs/characteristics_report/characteristics_report.pdf"
+    strategy: "ordinal"
+    decimal-class: "152 83"
+    class-prefix: "2"
+    individual-number: "APR 201 618/1"
+    eri_document_type: "Test Report"
+    lang: "en"
+    format: "pdf"

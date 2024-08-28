@@ -1,0 +1,97 @@
+{
+    "ericsson-enm-ComTop:ManagedElement": [
+        {
+            "id": "NR45gNodeBRadio00022",
+            "erienmnrmgnbcucp:GNBCUCPFunction": [
+                {
+                    "id": "1",
+                    "erienmnrmgnbcucp:ResourcePartitions": [
+                        {
+                            "id": "1",
+                            "erienmnrmgnbcucp:ResourcePartition": [
+                                {
+                                    "id": "1",
+                                    "erienmnrmgnbcucp:ResourcePartitionMember": [
+                                        {
+                                            "id":"ERR_ELEMENT_SHOULD_BE_REMOVED",
+                                            "attributes": "xxx"
+                                        },
+                                        {
+                                            "id":"ERR_0",
+                                            "attributes": {
+                                                "endpointResourceRef": "null",
+                                                "pLMNIdList": [
+                                                    {
+                                                        "mcc": "null",
+                                                        "mnc": "null"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "id":"ERR_1",
+                                            "attributes": {
+                                                "endpointResourceRef": "SubNetwork=Europe,SubNetwork=Ireland,MeContext=NR45gNodeBRadio00022,ManagedElement=NR45gNodeBRadio00022,GNBCUCPFunction=1,EndpointResource=ERR2",
+                                                "pLMNIdList": "null"
+                                            }
+                                        },
+                                        {
+                                            "id":"ERR_2",
+                                            "attributes": {
+                                                "endpointResourceRef": "SubNetwork=Europe,SubNetwork=Ireland,MeContext=NR45gNodeBRadio00022,ManagedElement=NR45gNodeBRadio00022,GNBCUCPFunction=1,EndpointResource=ERR3",
+                                                "pLMNIdList": "[{mcc=128, mnc=49}]"
+                                            }
+                                        },
+                                        {
+                                            "id":"ERR_3",
+                                            "attributes": {
+                                                "endpointResourceRef": "SubNetwork=Europe,SubNetwork=Ireland,MeContext=NR45gNodeBRadio00022,ManagedElement=NR45gNodeBRadio00022,GNBCUCPFunction=1,EndpointResource=ERR3",
+                                                "pLMNIdList": "[{mcc=128, xxx=42}]"
+                                            }
+                                        },
+                                        {
+                                            "id": "PLMN_1",
+                                            "attributes": {
+                                                "endpointResourceRef": "SubNetwork=Europe,SubNetwork=Ireland,MeContext=NR45gNodeBRadio00022,ManagedElement=NR45gNodeBRadio00022,GNBCUCPFunction=1,EndpointResource=PLMN1",
+                                                "pLMNIdList": [
+                                                    {
+                                                        "mcc": "240",
+                                                        "mnc": "80"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "id": "PLMN_2",
+                                            "attributes": {
+                                                "endpointResourceRef": "SubNetwork=Europe,SubNetwork=Ireland,MeContext=NR45gNodeBRadio00022,ManagedElement=NR45gNodeBRadio00022,GNBCUCPFunction=1,EndpointResource=PLMN2",
+                                                "pLMNIdList": [
+                                                    {
+                                                        "mcc": "310",
+                                                        "mnc": "14"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "id": "PLMN_3",
+                                            "attributes": {
+                                                "endpointResourceRef": "SubNetwork=Europe,SubNetwork=Ireland,MeContext=NR45gNodeBRadio00022,ManagedElement=NR45gNodeBRadio00022,GNBCUCPFunction=1,EndpointResource=PLMN3",
+                                                "pLMNIdList": [
+                                                    {
+                                                        "mcc": "313",
+                                                        "mnc": "990"
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

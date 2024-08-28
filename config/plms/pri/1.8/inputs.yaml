@@ -1,0 +1,91 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+---
+jira-username:
+  help: Jira user
+  mandatory: true
+  mask-in-log: true
+  allow-env: true
+  export: true
+jira-password:
+  help: Jira password
+  mandatory: true
+  mask-in-log: true
+  allow-env: true
+  export: true
+gerrit-username:
+  help: Gerrit user
+  mandatory: true
+  mask-in-log: true
+  allow-env: true
+  export: true
+gerrit-password:
+  help: Gerrit password
+  mandatory: true
+  mask-in-log: true
+  allow-env: true
+  export: true
+jira-component-long-name:
+  help: Components full name in ADPPRG project. This value will be added to
+        the title
+  mandatory: true
+  export: true
+gerrit-url:
+  help: gitiles URL of the projects gerrit page
+  mandatory: true
+  export: true
+from-change:
+  help: commit-id or tag to start collecting work items from
+  export: true
+to-change:
+  help: commit-id or tag to stop collecting work items to
+  mandatory: true
+  default: HEAD
+  export: true
+pri-manual-json:
+  help: path to the PRI manual input json file
+  export: true
+pri-config-extra:
+  help: path to the PRI extra configuration file
+  export: true
+checksum:
+  help: Checksum of images and helm charts as key-value pairs
+  kwpair: true
+  export: true
+documents:
+  help: Path to documents.yaml or set DOCUMENTS-YAML env variable
+        To write generated document number/title/revision
+  export: true
+product-release-number:
+  help: Product semantic version to be released
+  mandatory: true
+  export: true
+product-image-tag:
+  help: Product semantic version to be released
+  export: true
+product-number:
+  help: Product number to be released
+  export: true
+product-name:
+  help: Product name to be released
+  export: true
+product-revision:
+  help: Product name to be released
+  export: true
+helm-chart-versions:
+  help: Multiple helm chart versions
+  export: true

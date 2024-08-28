@@ -1,0 +1,22 @@
+{
+  "request" : {
+    "urlPathPattern" : "/ncmp/v1/ch/\\w+/data/ds/ncmp-datastore:passthrough-running",
+    "method" : "POST",
+    "headers" : {
+      "Content-Type" : {
+        "matches" : "application/yang-data\\+json.*"
+      }
+    },
+    "queryParameters" : {
+      "resourceIdentifier" : {
+        "matches" : "/([\\w\\-]+:)?ManagedElement(=\\w+|\\[@?id=\\w+])"
+      }
+    },
+    "bodyPatterns" : [ {
+      "equalToJson" : "{\"erienmnrmgnbcucp:LocalSctpEndpoint\": [{\"id\": \"0\", \"attributes\": {\"sctpEndpointRef\": \"SubNetwork=Europe,SubNetwork=Ireland,MeContext=NR45gNodeBRadio00022,ManagedElement=NR45gNodeBRadio00022,Transport=1,SctpEndpoint=NRAT\", \"interfaceUsed\": \"X2\"}}]}"
+    } ]
+  },
+  "response" : {
+    "status" : 201
+  }
+}

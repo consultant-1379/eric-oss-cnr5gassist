@@ -1,0 +1,143 @@
+[
+    {
+        "Impact_on_Users_Deprecation": [
+            "No User impact",
+            "No APIs were deprecated in this version"
+        ],
+        "Exemptions": [
+            "No specific exemption is created for this release."
+        ],
+        "New_and_Updated_2PP_3PP": [
+            {
+                "Name": "Micrometer",
+                "Product_id": "68/CTX 102 3759",
+                "Old_version": "-",
+                "New_version": "1.8.5",
+                "Comments": "3PP"
+            },
+            {
+                "Name": "Lombok",
+                "Product_id": "19/CAX 105 6250",
+                "Old_version": "-",
+                "New_version": "1.18.24",
+                "Comments": "3PP"
+            },
+            {
+                "Name": "Spring Boot, Spring",
+                "Product_id": "135/CAX 105 8168",
+                "Old_version": "-",
+                "New_version": "2.6.6",
+                "Comments": "3PP"
+            },
+            {
+                "Name": "swagger-annotations",
+                "Product_id": "11/CAX 105 6693",
+                "Old_version": "-",
+                "New_version": "1.6.2",
+                "Comments": "3PP"
+            },
+            {
+                "Name": "Springfox",
+                "Product_id": "12/CAX 105 8435",
+                "Old_version": "-",
+                "New_version": "3.0.0",
+                "Comments": "3PP"
+            },
+            {
+                "Name": "Spring Cloud Sleuth",
+                "Product_id": "11/CTX 102 8605",
+                "Old_version": "-",
+                "New_version": "3.1.0",
+                "Comments": "3PP"
+            },
+            {
+                "Name": "Spring-Retry",
+                "Product_id": "15/CAX 105 6595",
+                "Old_version": "-",
+                "New_version": "1.3.1RELEASE",
+                "Comments": "3PP"
+            },
+            {
+                "Name": "HTTPComponents HttpClient, Apache",
+                "Product_id": "41/CAX 105 3846",
+                "Old_version": "-",
+                "New_version": "4.5.13",
+                "Comments": "3PP"
+            },
+            {
+                "Name": "Logstash Logback Encoder",
+                "Product_id": "11/CTX 102 0602",
+                "Old_version": "-",
+                "New_version": "7.0.1",
+                "Comments": "3PP"
+            },
+            {
+                "Name": "jaeger-client-java",
+                "Product_id": "8/CTX 102 2999",
+                "Old_version": "-",
+                "New_version": "RELEASE-1.6.0",
+                "Comments": "3PP"
+            }
+        ],
+        "Repository_helm_link": [
+            {
+                "Title": "5G CNR Assist Helm Chart",
+                "Folder_Link": "https://arm.seli.gic.ericsson.se/artifactory/proj-eric-oss-drop-helm/eric-oss-5gcnr",
+                "Chart_Name": "eric-oss-5gcnr"
+            }
+        ],
+        "Upgrade_Information": [
+            "This is a new product."
+        ],
+        "Marketplace": {
+            "service_url": "https://adp.ericsson.se/marketplace/5g-cnr-assist"
+        },
+        "PRA_Checklist": [
+            {
+                "document_number": "15311-FCP1322463",
+                "revision": "A"
+            }
+        ],
+        "Release_criteria_unfulfillments": [
+            "Reason A",
+            "Reason B"
+        ],
+        "SW_Library": [
+        ],
+        "CPI": [
+            {
+                "cpi_elex_lib": "http://calstore.internal.ericsson.com/elex?LI=EN/LZN7950000*."
+            }
+        ],
+        "Product_Description": [
+            "5G Centralized Neighbor Relations (CNR) rApp is a microservices supporting LTE to 5G FR2 cell relationship creation. It provides the information needed by the LTE nodes for ANR on the node to work with 5G FR2 cells."
+        ],
+        "Support_link": {
+            "title": "OSS Support ???",
+            "url": "https://eteamproject.internal.ericsson.com/projects/OSSSUPP/summary ???"
+        },
+        "Reusable_Images": [
+            {
+                "Name": "5G CNR Assist Image",
+                "Product_Number": "CXU 101 1245",
+                "Changes": "No change in reusable image implemented in this release"
+            }
+        ],
+        "Unsupported_Upgrade_Rollback_Path": [
+            {
+                "Oldest_version_which_supports_upgrade": "1.1.70",
+                "Oldest_version_which_supports_rollback": "1.1.70"
+            }
+        ],
+        "Reason_For_Major_Version_Update":[
+        ],
+        "Restrictions_Limitations":[
+        ],
+        "Stakeholder_Verification":[
+        ],
+        "Support":[
+        ],
+        "References":[
+        ]
+    }
+]

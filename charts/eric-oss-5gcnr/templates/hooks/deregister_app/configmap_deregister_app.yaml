@@ -1,0 +1,37 @@
+{{- if eq (include "eric-oss-5gcnr.hook.register" .) "true" }}
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+{{- $global := fromJson (include "eric-oss-5gcnr.global" .) }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "eric-oss-5gcnr.name" . }}-deregister-app-config
+  labels:
+    {{- include "eric-oss-5gcnr.labels" . | indent 4 }}
+    {{- include "eric-oss-5gcnr.config-labels" . | indent 4 }}
+  annotations:
+    {{- include "eric-oss-5gcnr.product-info" . | indent 4 }}
+    {{- include "eric-oss-5gcnr.config-annotations" . | indent 4 }}
+    "helm.sh/hook": post-delete
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": before-hook-creation, hook-succeeded, hook-failed
+data:
+{{- range $path, $_ := (.Files.Glob "resources/deregister_app/*") }}
+  {{ trimPrefix "resources/deregister_app/" $path }}: |
+  {{- tpl ($.Files.Get $path) $ | nindent 4 }}
+{{- end }}
+{{- end }}

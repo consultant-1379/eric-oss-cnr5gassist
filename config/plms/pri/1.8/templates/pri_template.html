@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="version" content="1.0">
+        <meta name="Content-Script-Type" content="text/javascript">
+        <title th:text="${arguments.PRI_TITLE}"></title>
+        <style>
+            body {
+                margin: 18mm;
+                margin-left: 5%;
+                counter-reset: h2counter;
+            }
+
+            h1 {
+                padding-left: 55px;
+            }
+
+            h2 {
+              counter-reset: h3counter;
+            }
+
+            h3 {
+              counter-reset: h4counter;
+            }
+
+            h2::before {
+                counter-increment: h2counter;
+                content: counter(h2counter) "\0000a0\0000a0\0000a0\0000a0\0000a0\0000a0";
+            }
+
+            h3::before {
+                counter-increment: h3counter;
+                content: counter(h2counter) "." counter(h3counter) "\0000a0\0000a0\0000a0\0000a0\0000a0";
+            }
+
+            h4::before {
+                counter-increment: h4counter;
+                content: counter(h2counter) "." counter(h3counter) "." counter(h4counter) "\0000a0\0000a0\0000a0\0000a0";
+            }
+
+            p#content {
+                font-family: "Ericsson Hilda", Arial, Helvetica;
+                font-size: 11pt;
+                padding-left: 48px;
+            }
+            p#indented {
+                padding-left: 57px;
+            }
+
+            .header_value {
+                font-family: "Ericsson Hilda", Arial, Helvetica;
+                font-size: 8pt;
+                border-width: 0px 1px 1px 1px;
+                border-collapse: collapse;
+                padding: 1mm;
+                padding-left: 1.5mm;
+            }
+
+            #page_number.header_value::before {
+                counter-increment: page;
+                content: counter(page);
+            }
+
+            .header_header {
+                font-family: "Ericsson Hilda", Arial, Helvetica;
+                font-size: 6pt;
+                border-width: 1px 1px 0px 1px;
+                border-collapse: collapse;
+                padding: 1mm;
+                padding-left: 1.5mm;
+            }
+
+            .header_logo {
+                border: none 0px white;
+                padding-left: 9mm;
+            }
+
+            .header {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .preline {
+                white-space: pre-line;
+            }
+
+            .wordwrap {
+                word-wrap: break-word;
+            }
+
+            table { -fs-table-paginate: paginate }
+            tr    { page-break-inside:avoid; page-break-after:auto }
+            th    { page-break-inside:avoid }
+            thead { display:table-header-group }
+            tfoot { display:table-header-group }
+
+            table#e_table, td, th {
+                border: 2px solid black;
+                border-collapse: collapse;
+                margin-left: 55px;
+            }
+
+            table#e_table th {
+                background-color: gray;
+            }
+
+            ol#support {
+                margin-left: 50px;
+            }
+
+            ol#e_ref {
+                counter-reset: list;
+                 margin-left: 20px;
+            }
+            ol#e_ref > li {
+                list-style: none;
+            }
+            ol#e_ref > li:before {
+                content: "[" counter(list) "] ";
+                counter-increment: list;
+            }
+
+            a:link {
+                color: blue;
+                background-color: transparent;
+                text-decoration: none;
+            }
+
+            a:visited {
+                color: pink;
+                background-color: transparent;
+                text-decoration: none;
+            }
+
+            a:hover {
+                color: red;
+                background-color: transparent;
+                text-decoration: none;
+            }
+
+            a:active {
+                color: yellow;
+                background-color: transparent;
+                text-decoration: none;
+            }
+
+            @page {
+                size: A4 portrait;
+                margin-top: 70mm;
+                margin-bottom: 25mm;
+                margin-left: 21mm;
+                margin-right: 10mm;
+
+                @top-center {
+                    content: element(header);
+                    border: 0px solid white;
+                }
+            }
+
+            #header {
+                position: running(header);
+                font-size: 11pt;
+                height: 25mm;
+            }
+
+            #header small {
+                font-size: 12px;
+            }
+
+            #header #e_header_box td {
+                height: 5.6mm;
+            }
+
+
+            #toc_container {
+                font-size: 11pt;
+                margin-top: 5em;
+                margin-bottom: 1em;
+                padding-left: 20px;
+                width: auto;
+            }
+
+          .toc_title {
+                text-align: left;
+                content: unset;
+                font-size: 1.5em;
+                font-weight: bolder ;
+                margin-left: 40px;
+            }
+
+          #toc_container li, #toc_container ul, #toc_container ul li{
+              list-style: outside none none !important;
+          }
+        </style>
+    </head>
+
+    <!-- ***************************-->
+    <!--    Ericsson header part    -->
+    <!-- ***************************-->
+
+    <body>
+        <div id="header">
+            <table id="e_header_box" class="header">
+                <tr>
+                    <td width="18mm" class="header_header">Confidentiality Class</td>
+                    <td width="40mm" class="header_header">External Confidentiality Label</td>
+                    <td width="71mm" class="header_header" colspan="4">Document Type</td>
+                    <td width="13mm" class="header_header">Page</td>
+                    <td width="18mm" class="header_logo" rowspan="6" valign="top">
+<img height="7mm" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAoAAAANfBAMAAAC7/HFeAAAAMFBMVEUVFhQbHBosLSs7PTpJS0hZW1hoamd6e3mJi4iYmpeoqqe5u7jJy8jZ29fo6uf+//x9wZomAAAAAWJLR0QAiAUdSAAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAAd0SU1FB+MJAg4zI6ePUD4AAAAdaVRYdENvbW1lbnQAAAAAAENyZWF0ZWQgd2l0aCBHSU1QZC5lBwAAIABJREFUeNrt3XuQXmV9B/DnbC5cYjrneTe3itB3ITeshH1DJYm2sFm0cmnNZToWiBgIZUa5GEIyo20SIwGsDglREsbWIayaoNYKK7UQ2lHWa0h0Ji+x1exmNG+FFjc3zyiBXHbf8+t72SSb5D2X97md33P5/Q/z7iffc55zfr/nnEPA1fD63a9/+o93XTfz0kuvev9H/3VfkPwfEGd2usL/uGtmGyGEVssnpOXPbi46wNR1+Im2Ot2w8r05JQeYqnb+3bl81SKtdwcOMLEOLKTRNaHoAOPr4ArfiwH0R6x3gHFLxyaaWLc5wOiTX4eXDEgWOcDGNbjEp6nqvQ6w0dHbm/fS+VH/Ngd4Tg3cmTJ+1fI+7gDPit+ePG2quhzgGfFb7jfnR0cWHeDp2tNGm65JDvB0/EjzftT/KwdYr18yxC/iNGgj4KGHCKMfHR04QNjOGr9qvct6wENrCeWpHssBXyh4XH50otWAh9dy8lVW4jUWA24rcPtROiqwFbD8gAC+SgQXWwooJH61O7rARsDyA1RYzbMPMHyx3RMHeEYErQAcXEKF1mK7AMMdeU8s4GirAAfupMJrjT2A4uNXrQutAWxq6tFEdVsC2OzUI3VdYQVg81OP9FcyNgDuaaPSyl9qPODB5YRKrItMB9zeRqVWzmxAjqlHsz0Z4uLHVm83F5B36pHyGA5MBXyh4CnwO7UOmwZ4+AElfJUaYyTgtoIqPzrOQMDyMmV8lWO42zjAbe0K/Si90jBA0W3nlCN2UwDFTj2auJAhLn7MJ8EuYwDDHcrjV60/MQVw8E6fZlHnmwHYxLMeMk6C2gMOZBS/k3sFdQfckx1ffcCuN+DAcpKhHx2rO6CKvl/SDgWNAQ9mG7+hVYS4+PHN13UFlD/1SFNLtQXc3uYh8Ks2ZIiLH19XWkfAFwoeDj86SkdApW3n5GVYO8Bt7Xj8qjdzmgGK3GwvojboBRjiil/tblgnwCzazgk1QyPAjNrOSe0E4uLHUxfoAogyfrULQT0As2w7x5cWgGEvVj7ql4gO8SMULWAPfkBpz3qIGa5jB8y+7ZzQEUQO+Ms2irsWowY8+BBB7kfnERc/rroGL+Ah/PGr3gyjBdxe8KgDZK7DD2rBR+nFOAFfKGjihxOw/IAufJSORQi4raCPH30bwRc/qlONwQb4YrvnADnit4RqVqgAsbaddQFM/WEFB9i47Zz39PPDswrjnXrocR3Ym6d6Fo47kYEVPnWAHFOPNqptIejGDGjR98PbUNU5fggAD2kdv+xnItv1jl/WU7nDa4nufnRNhoAvFDzt/TLcmSDgwwoYAItZAW4rmOBHaZANoE5Tj9jKZbM/cFuHIX70vCwANZt6xNaF6gF1bDtH1yXKAQeXUJPqWsWAct5sn2EtVQs4eKdPzaoulYCaTj1iq6QQUOKb7TOrVoUPXO/JU/PqfGWAGk894mqsKsA91Myapwbw4EPEUMANSgD1bztHVlEB4CFj41dbhKUDbi9Qc+tC6YAmTD1i6krZgKa0nWPWEJmA5bVm89FcSSqg6fGjdDxIBCwvo8bXWImAL7Z7xvvVv0slBdCwtnN0L0sOoFlTj4RToARAS+I3dAoUDmhL/E591ksw4OBy35L8nfywnFBAE6cekTUJhAMO2BO/yhF8rXDAPRbxnbyIEQg4sIJY5TcRxALuaaN21QyhgCa3nSOqKBJwu23xO7UGCwG0MH7UnycOcHvBs87v1OeZ+QEPWxi/Sr0LBAG+YGP8Tn0alxuw/KCVfJT+MQgBNGezfbMBXCMC0KTN9k3WecAPGL7Y7tnqN9QJ5AIsL6H21ijgBbSn7dywlvICavmKITlnQBbAsNfq+NV3xHAAmvesR5N1EXAB9ubt5qOtJR7AgeXEcj//I8ABuKeN2l6TgB3QxY/SET3sgC5+DQ7g9ICHHnLxo/7lwAr4Sxe/So0OGAHLG138KtXSBWyAewqe06scwI8BE2C41cWvVh8EJsATC51fLX83ARNgf97Z1eqdwAT4tO/oavmbEzABPu7o6nV5JFEc4OBat/rW83cDsACWFzi6ut97gQVw8HaXv/r18yJgARyY6/xq5W0GFsByh6OrHb6XdQEL4OACl79qkdlFYAEMb3d2tbop8U63MaC7fqkdvuM3AxvgjxxetWYHwAb4ustfJX7j1qVqNTcAPOH0Kn7TA2AELLsFpBK/VWlnbecC/ps7gMmcEjADHrPez79sdRObDYi7Azk7fjeUgAPwOdv9WpuJ37mAx2zvHFxfBC7A+Xb75ZqM3zmA/2f1CkKajt/ZgGHBZr+Wx1g23J8B+F82n/0+UARewLK9O4j8EU8xPnE0HPA1e4/eWUXgByy3Wxu/zQACAK0N4KwSCAG08xrQH/kk1yPnpwHfsvMacFoJBAF+wcr4rQMQBDhoYwDTtp3TAL5qX/zGccdvOOAC6/zmBCAQ8LhnW/xWAYgE/IFljZc5JRALaNcR3LoaQCygVUcwmbMLRAPutsgvJy5+pwHvsCd+1xdBPOCgPfF7DEAC4BuWnAI9wfE7Bfh5S/qmTwFIAbRjmMQ69UgBOGDBEczVdk4CfMOC+M0qgTzAL1sQvwAkAhp/CpwmKX5DgAOGx49z6pEM+Jbh8QtAMuBvjI7fOgDZgPcb7Dc9AOmAobFbYoS1neMBjV1D/DklUAF41FC+VvnxqwP+wdC28z5QBPh9I+O3GkAVoIGPdpEbiqAM0MBFOPcpAHWAxi3C5PoiqAQ07dka4VOPJMA3XduZD9CobVkt6wFUA77i4scHaMxETmLbORbQlMtAb5b6+NUA2wyJ35MBZAIYmjHSlDj1SAA0YSYsve0cB2jCzsDpAWQHqP1EScxme3ZA3W9E/OklyBTwiJt68AFq/Ywmmb4PsgbU+FZY0dTDWEBVU48EwN3a9v1WAzhATdrOcYCvuPjxAeo41PSwxE9TQPVtZ6MAs2g7mwSIKn76AWbUdjYFMJuph0GXMbKe9bADUO5mewvuRKaVwAHq2nbWvxszvQRYAV9z8TMd0J8eAGLAI+jjtwowF/apHI62cxwg6qdEmvuwQjaAJzzM8dsF6AERv3ixFX38qoDgph6cgEj3B+Z0iF8N8H4XPz5AjK/saHkMQBtAfA/8I5t6JAFie+uOrFcMSQNEtsMS39QjCfAYsvgFoBkgqpcvYpx6JAHiuRD0R6wLQENANBeC07SLXx0Qx1wuy2c9OAFRXMfgbjvHAyJYhrG3neMBs1+GBX1YQUiFP/viXdddVan3ffRbab+xXsiYrxVL/MJffeNOSggZamgQ7wNPltIAZvvINZqpR/j169r8s/5t6WV3B8mAv3dtZ4DDT+dJ49Pz5kTAo9l19clsHFOPgUcKJOoM03J9KQEwu1UESds5fJrE/syRxXjArFYRJG3n8OtzSdI95vp4wG9nEz8cbeeBuWl+7MdjAbPY3oHkWY/y036qFcBbFQeYwUkQydRjf/qz18djAGGu6vh9AEv8mvjNT8UAqp3MYWk793c2d8XaHQ14ROmV4NU44rfVb/J3jw4iAcv2tZ37O0nTP/3ySECFX/WaiqLtHG4lLP/4H4kEVDRdx9J27l1I2K4duqMAFe0SnIaj77eF+Q+YGAWo4tuaWDbb9y1gT4v/11GAu22ZeoQb+e4/SxGAst9BhmXqsXcB5x/69ghAyccwwfGoUfgw/y6CDRGAP5c69bgXR/zmCzjOzosAlPgiRiRt5/DhvJC/cWljQHhQWt/vPhTxO9AhKCKjIgAl3Q+T2TjufB/JC/v7FjcGlLNLS+WHFeLi1y7wbxoVAShhGUEy9Sg/4Ys8vPyljQHFfxcjh+MdL020nZtfiIcBwlfMbDs/4YsOht/VGFDs3QiSVwztnynhzH5RY0CRVzJINts3NfVookqNAY8Ly3jLeh2nHunrmsaAsExQ/HBMPdjazunGIxGAQiKY2YcVzm47d0rzo/6GxoBCFmIcm+3DLVIbdO+IABzgvR3BMvXoW0Bk+tHWCEDu2xEkfb8tVHKduhs5GzCcb0DbuW+B/BnZRRGAPNtVfSTx20gVVGsUIHyVURDLZvu9C5SMaE+uw+cChh2MU499OOKn6tnJd0QBwtE2lvjhmHocmK9sm9S4SED476Z/BJJXDJUfzqvbZub3RALC4832/XBsthc29UhXV0YDlpt6hBhL2/mRvNrnXc6PBoTBgn7xK1DF1RpEA8KJtEsxls32T+SVP27ld8cAwol8qv/JCEOnHulPglGAlQwm/pP6LTcb3XZOqgtiAaGcdElFJuB4UPD4TJpN1U6CJOaifnnMP6zvTcZx51Z+mtCsqiceEMIdkWdmMh5H1xn6OzN8A+fSBMDK5czyhrd1uSlIXlEiceqRpv4oERBg78N5Mvzf2Cdk8t9/Dwcf82Z7kTsUSPJJ5mvDZ4OTb8aiV4lf1u/PzQVpACu/9PBP/+WfPvGJz37um99F9FbsvozjN7SKENC0tlAEtUZbQEVt5xT3InoCbkTyyr636Qm4dz6Wt6+P1hEwfDhPsVRlGdYOUHHbOXEZ1gxQ6dQjRW3QDPDAXIqrFmsFmEXbOaGu1QnwRIGiq7H6AAp+1kNYU1oXwOMI41e7ENQDMMu2c/yFoB6A/TMp0vIDDQDLWwlFC9iDH7C3E/GH2/wu7IAh4vjV5krIATG0neNvRXADbqHYax5mQNnPeoioaxADbqQa1Ay0gHjazloChg+1US3qYpyAe+d61AFyTD00iV+1n4UQENfUI2mwiQ4wxNd2jqsxBF38qFaFDLCsV/zQAWKcemgEmNVme1MA98+kGhaaVVjL+CG6DpT2iiE77kTC533qADnOfguJrn4YujHYpx7YG6p9C3X2yx5wC9W7Mp6JINlsr+tULtxIta81xMWPpzLcmRBuatM/fxnujTEhftXKaHdWuClvhl9G+wMPdpjBl9EOVf3aztF1YQaAGrado+sS5YA4N9szl/LnRPbPpUaV4ieVdG07R5faZ+X2d1LTqqgQ0Lz4VS8D1QHu7yTG+VVfHKMIMHzeQD6F70zoXWikX+UqRglguJUaWhuUAPYZGr/aIiwf0Nz41RZh6YB7FxBzAS+QDmhG2zmyrpQNaErbOarWyAU0PH71NUQi4MH5nuF+te85yALE9oohSfch0gAPdBjPR+k8aYAmTT0SToFSAA/MpTZU/ZM2xMWPtcbIATRq6BZX/mIZgCa2naOqJAHw+Exr+OhEEA5Yfp7Y40dnCAfs77TJb+iraOIA9d5s33xNALGABredG9fFQgFNbjtHHMHdIgGti9+pNVgM4BZqX80QB2h62znuKloE4MY2C/lOfSCcG3DvfBvjR/01YgAxfVhBaZ0HQgCtaDs3rMUiAJV/zxdPjQoEAFrSdm5Y84Ab0Jq2c6MaEXADWtN2TgwgE6BNbeeEMyAToE1t5/hrQCZAtB9WUN5GYAPs76SWVw8PYLjVt93vXcAB2L+Q2O43OmAHDP/d+vhR2gXMgH0uftT/c2AG3OLSd84K3ARg3wIXP0pH9rACuvjVDuANwAZ48A7P6VXqw8AG+Hybs2u8gKQCLD/u4lfzmwZMgCc6nV/Nb1LABNjrrp3rNT7CLwHw6byjq+VvdBFYAL/qDt+E/MUCltc6v3r+ppeAATC8w9HV6/K4ozQSsHy/y1+tvFuBBTBc4ujqfquBBTB80OWvdvqb/BQwAT7g/BKXjzjAHzm/auUWJXcKGgL+wtnVrp5fAjbAYy5/1ZqTqlXaAHCgw+FRMn4zsAIuc3yUviftrIi4BaRB/KZsBmbA4y593k0BMAOGt7v4PdbMbo2zAX9kffxuDIADcMB2v8lNxe9cQMtXYHJrCbgAj9q9Al/W1fx+3TMAw/lWn/2aj9/ZgEds9mvtZnpgYThgaO89nN9ySwm4AS0O4LhnWZ/YIu4MWInfzSUQAPimrX4jmeN3JuD9dvq1XB+AEEA7rwH9Uc/wPbN/GvA5G/1ycwAEAZZtvHOb8AwIA3zVQsAbBbw05xSgdTthyNTNIBDwhHVLyE0BiATcbVn8pgiJ3zDABXb5CYrfacABm45gkrhjqHlAm9ZgsigA4YDL7PFjaTsnAtpzFe3dXQIJgEdsOQWO6waQAfhtS/p+ouN3CtCSzy88CyAHcNCK+N1SAlmAFgxD+NrOSYDftyB+AUgENP0U6I96CUAioOmnwNwNAFIBj5odPwFt5wTAPxgdvxsDkA34aZPbzlLjNwRo8Fs5JMevDmjsGiKu7RwPeNTFjw/wDRc/PkAj70PEtp3jAQ3cVOSJnHokApq3CHuLSqAO0LxFWF38aoDHDLtzY9tszwFo2MbUcc8CqAU06SpGVts5FvA3JsWvG0A54Jdd/PgATXlAWGbbORbQjMtAP3dDAJkAhkZsSvDHZxK/KuCgCYBZxa8KeFx/QMlTjwRAA7qBN0KGRXS/ESFZxq8KeMTFjw/wNdd2thdQWds5DvBVjeP3FGRfZLe+becAHKAmbec4wFf0jJ/atrNxgJO7AEsRDafC3t0lcIDs1doN4ADZ284fK4ED5Jh69AA4QI6pRwDYADVahbNrOxsB6OfwxU+nOxGU8dMIUOqzHuZ3Y/yM287a9wPfA+AA2ft+U58BxID4ZyI3AebCPpXD0XbWdy6MpO2s684ED3v8kO+NwR+/KmDoph58gFj3B5J7SqAHIM4dqrjazrGACPdIS3nFkDRAhLv00bWdYwHfQBe/jwWgEyCyWxGsfb9owGO44ndLAJoBDrr48QHiuRD0M9xszwOI5ULQH/09AB0BkUyGczcC6AmI4joGd9s5HhBFR/AmAG0BBxDE71k8Iod/9s1//uxnP/m5L313X0rA7JdhPH2/Q5+5bpjG5BS35Nm/vQ3P1ONXX+z0yfD+sk9abv5eCsBM2wkES/x6FzY8EnOziomAb2XIh6TtHP50IYmYbfgj1gUJgNmtIuQeHPHr7fRjRkPerCAeEApZTT1wtJ0PLSMJ90ijSvGAmTSlsbSdy4/kEweT/sjuWMBM3kKLpO28P93h19IdB6j+k16V+KE4+w0+7Kf8xVEZrAGGBUvj19vEPURrMRoQPm9l23lwE2nmZ08sRQMqbchk9Iqhc+q3zd7CXh4NOGhf/MrNxa/202+LBFT3XT5/NI747ZnJsHDmNkQC7rar7Xx4I2H6+aOCKEA1uwTJVBxTj5fnMv65/jujANV8kwVH/MqPs6fFXxMF+ANrph475vIcbeccxCcB5X+iHsfUI1zL+WdcEQEo+RhG8Iqhevw6eIOS64kAlHoMI9ntzB2/ar09AlDiOoxl6rGzQ8jf2NUYUN43CZBMPcrLfTF/z6QIQEkPzXk43vES9rULO8S6GgOWZYyHfQ/H1GNwhS/uj5rUGFDKMoJk6tHXLjQVXY0BhfelsUw90redGRbiYYDC26rjcMSvPy/8xNTTGFDo3Yix8TvrdmQ4oNC9quNxTD36peycykUAvuUJi5+WU4/0f9+8xoCiIuhP2IWj7Sxt496kCEAhm1X93K1at51T/Y3FxoAitgr6E3BMPV4uyOzQXREBeIL//IojfmWJ8avWhAhAeI7vn037qUfTdyNnA/Lt8kAydAsflz8juzgCEF73OOJnwtQj7XVuFCB8wfapR8pjuDsKcKCdMX44nvUQ1HZOrkuiANkOYu/DONrOD1BVNSESEL7TtKA3BUX8wp3tCreKliIBw2Yvp5G0ncvLqcIauh8mDe/Bm7uWwRE/6GtXu1N5TDQgnMjrF78VPlVb42IA4VjqPgaSqcf+dqq8ijGA0Jsqg37LP5jbdk6seXGA6d6GMqFocNs53UmQRB8USVekZMqjgCN+JBO/+kmQxJyWb/dij957cTwo+NvsnhcvxgNC+ETkU2TksltwHL2yph6pVoA1CYAAB5c0/HmkdeU+FHywp0AzrD9JBAR4+Tp6Zgp9eum71yF5yFx22zmpzk8BCOHezxQIqf1QnxAv97dPIglfJX6dGb9AN5cGsFq/+sZd77vqqve9/5Nf2gVoKsw4fkOrCAFNS0nbOak2aAsYrkXx+utrdQXc0YHj9eFj9QRUNPVIUedpCbizA83b63MaAqptOycvw7oB9nWg+njCBs0Ay8vzFFUt1Qtwfzu2b3dcqxPg4AqfYqtLNALcn6f46kJtALOZeqS4ENQEsB/pZ2NyegAObvIp0gp0AMy27Rzf1S/iByxvIhQvYBd6wD0zKeZagxywvJGg9qOLcQO+3Onh9qPzMAOq2GzPW9cgBkQx9dAXEE/bObZmEBc/rroYJ2D4ENWkcALu7PB0ARyLELC8vI1qU2/DB9inT/wwApZX5KlONQYZIL6ph1aASNvO2gD2t1PqAG2KH6pFpL9AdSws14GDm4iWfljuRDSNHxbAsq7xq9QVCACZPqzg2lnaTD2QN1Rfnuvp7Jf1TKS8UW++rKdyO+bq7keXZgioT9s5uvwN2QHu1D9+1ff5ZgWoydAtEbCUEaBebeeYymZ/ILrN9sw1KhPAvnZD4kfpBRkAYtxsz97NUg/Y104NqhmqAfVsO8fciCgGTPk5aX1K7bNypsWvUj0qAfvbTOOjuUAd4OAmYpxf5TJQGSDyzfaMNUYVoOZt58i6UhHgnrmekX50qRJAU+NXW4QVAO4wNX61RVg6YLjRWL7aa2NkAxocP1p/nb5UQEPaznFriFTAnR2e2YA9UgHD5W1m89FWkAnYZ3r8qq/skAdYXmF6/Or3IbIA97Z75vvVPwokA7D8cJ5aUK2BJMD97dSKugCkABrYdo44gq+VAtjfRm2pogRAI9vOETX0ZT7i4sdYFwsHLFsUv+rOQNGAZk49ImsciAUsbyVW+dF3iAXs7fTs8jt5BIsBDDdaFr/TR7AQQLPbzo3rCnGA4ePUvvJ7hAHu7PAsBJwEggBNn3pE1WJBgHbGj9KRIASwvLzNzvzRa4QA7rU0fpS2lAQAWtJ2blh/AfyAB9o9a/1yRW5Aa9rOiQFkA9yft5ivtieLC9Du+FH/g8AHqO87XsTUqIALEPGHFRTVGuABtD1+QxtiWAHtmno0rBFFDsDemZ7tfv6ngBkw3GJ9/Kj/TmAGtLHtfO4KXGIF1OHDCgqqCxgBXfxqB/BtwAYYbnR41fpTYAPcu8DFr5q/aQEb4E/aHF6DW7i0gOWN7uKlVuN6gAXwRKc7fBvfgaQDPJB3dLVq7QYWwJ84v3qNfAlYAH/sDt+h818RWAC3uuWjfv0yMcYvBvCrjq5e0wNgAdzqjt9aebfG+kUCfsfR1arlUwkXyhGAP3H5q53+pnQDE+Cbzq5a5D0BMAHu9x1eJX6tq1O0qhoBDrQ7vUr8Zu8DRsD7nR6lufvS9eobAG5xC0glfruAFfAt50dzqwFYAQc7XPxm9QA74Bdc/NLHrwHg656LH3AAhgXbb93WN7ld7SzAH9odQO/qInABnrD71mPE+gD4AD9vdfymNh2/swGPWh2/dQHwAt5uMeDUEtsDM8MBj3r2xu/RAPgB7W0iTGOM35mAtgbQH7mS45HVYYBfsdRvUgmEAA5YGUC/9R6+Z/ZPA/7czr7fPhAFWLAxfvdyv7TkFOCbnoXx2wXiAO3rA+b44zcMcNC+vt9LIBLwDy5+fIAPuvhxAZbtalytBhAM+IZFa7DX5NQjFaA9R7Dfsj4A4YChNQ/TeFeLjN8pQFsaMaxt50TAVyzJH9PUIw3gAhc/LsCyix8foAUbsvwRKwOQBvg/5sdvYglAHuB84/t+KwEkApYNvwr0p5VAKuBxw+N3D4BcwDeMbrxM3wWyAb9tsF/rvQDSAQsuflyA5l5G52THrw5o6hpCZr8ESgCPGAq4GkAN4G7XduYD/LSBfi1q4lcHLLj4cQGatwgLnnokAZq2CAufeiQBvmXWnW/LugDUApp1FSOn7RwL+BuT2s6PBqAc0KBWgsy+XzTg/cbEbyVAFoCGXAb6WcSvBmhI2zmT+FUBB00YafrT90FWgCc8A+J3D2RWRP9HXBW0neMAtX/PWO7DkGURzW9EhDzrwQX4v3rH7z7IuMhrOsdPYd8vEvBVFz8+QG0f0vQQxK8KuFvbqUcADlCXtnMcoJb7y731AWAB/L6GfFOwxE9LQDmb7S0CZH3FkAMcajsH4ACNiZ9mgBlNPYy5jPEnlgAhoC4X0pm2nQ0A9CfuA5yAr+oRv0UADlDTqYf+DVUVm+0Nnomo2Wxv7lQORds5DhD3/kqBrxiSBXgc884EbxVgL4L4zZ8ETds5DrCMFtBbHYAGgFi3t3k6xK8GiPKFCco323MAovyCg/LN9hyA+PpZWWy25wB81cWPD/BNbPFbGYBWgMi2qE7QKX41wBO44gegG2Doph58gGguBLFOPRIBkTwsh7ntHA+I4jrGR912jgfE0BHMfLM9DyCCZVjX+NUBM3+JNP62czxg1t/j0zh+Q4CvuPjxAWZ5N+ytBtAeMLtVRJe2cwJgZqtIy6oATADM6L0T3lTt43cS8PeZTD0MiN9JwCyG61NMiN9JQOUnQb9lZQAGAcIyN/XgA1T6VTndph5pAFW++8SfUAIwDRDmurYzH6CqrrQ/bRcYCajmmzbGxe80oJILGWJc/E4DqvhCfW4RgLmA0j9wTaa9BCYDguRjOOM3XCkAfM61nfkApa7D9wEYDwgd0vp+OF4xJB1Q1jugWlYDWAEoZzJiwNQjLSB82U09+AAlLCNTDI/fmYCidyj45sfvLEDBA/YpRQC7AEOBVzJmtZ1TAor8tIhZbee0gKIiqOFmezGAgnoy/tQSWAoYCtix77feDWArIBzljqBvYts5PSDviB3xK4YUAQ64qQcfIPzQTT34AEPmGzqD287NADJ/KjJ3H4ADrNaPPab49YADHKoHXfz4AAeavaPzru4GBzj8NOg357cqAAd4Rr3ehKD37h4AB3hW/SLtQuJbHb9oQPhOyvhNsTp+MYCwnaSI38gnA3CAEfWLZMDZ1vPFAUIkI9FUAAAAZUlEQVRvhxd78pv1jOOLBYTBO+Jmbs86vCRACL9WaHgmJLm/fNLRpQAEKG/yzzmOScstuxxcSsDKcfzIdXlC6oqEkJbLPvRoybE1AVg5kA//52f+ZmZb7tLJH/rkt379O2d2Rv0/6hajiGwjYzUAAAAASUVORK5CYII=">
+                    </td>
+                </tr>
+                <tr>
+                    <td width="18mm" class="header_value">Ericsson Internal</td>
+                    <td width="40mm" class="header_value">Ericsson Internal</td>
+                    <td width="71mm" class="header_value" colspan="4">Product Revision Information</td>
+                    <td id="page_number" width="13mm" class="header_value"></td>
+                </tr>
+                <tr>
+                    <td width="58mm" class="header_header" colspan="2">Prepared By (Subject Responsible)</td>
+                    <td width="60mm" class="header_header" colspan="3">Approved By (Document Responsibile)</td>
+                    <td width="24mm" class="header_header" colspan="2">Checked</td>
+                </tr>
+                <tr>
+                    <td width="58mm" class="header_value" colspan="2"><span th:text="${arguments.DOC_PREPARED}"></td>
+                    <td width="60mm" class="header_value" colspan="3"><span th:text="${arguments.DOC_APPROVER}"></span></td>
+                    <td width="24mm" class="header_value" colspan="2"><span th:text="${arguments.DOC_APPROVER}"></span></td>
+                </tr>
+                <tr>
+                    <td width="58mm" class="header_header" colspan="2">Document Number</td>
+                    <td width="19mm" class="header_header">Revision</td>
+                    <td width="27mm" class="header_header">Date</td>
+                    <td width="58mm" class="header_header" colspan="3">Reference</td>
+                </tr>
+                <tr>
+                    <td width="58mm" class="header_value" colspan="2"><span th:text="${arguments.DOC_NUMBER}"></td>
+                    <td width="19mm" class="header_value"><span th:text="${arguments.DOC_VERSION}"></td>
+                    <td width="27mm" class="header_value"><span th:text="${arguments.DATE_ARG}"></td>
+                    <td width="58mm" class="header_value" colspan="3"></td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- ***************************-->
+        <!--    Document content part   -->
+        <!-- ***************************-->
+        <main>
+
+            <h1 style="margin-top: 30mm;" ><span th:text="${arguments.PRODUCT_NAME}"></span> <span th:text="${arguments.PRODUCT_VERSION}"></span> PRI</h1>
+
+            <p id="indented">
+            <!-- TODO: Fix index and revision. This information is most likely already known by the stage performing the PRIM/GASK   automation (DP-RAF) -->
+            <b><span class="emphasis"></span><span th:text="${arguments.PRODUCT_NUMBER}"></span>, <span th:text="${arguments.PRODUCT_REVISION}"></span></b>
+            <br/>
+            <b><span class="emphasis"></span><span th:text="${arguments.PRODUCT_NAME}"></span>, <span th:text="${arguments.PRODUCT_RELEASE_NUMBER}"></span></b>
+            </p>
+
+            <div id="toc_container">
+            <p class="toc_title">Contents</p>
+            <ul class="toc_list">
+              <li><a href="#Reason_for_Revision">1 Reason for Revision</a></li>
+              <li><a href="#Evidence_of_Conformity_with_the_Acceptance_Criteria">2 Evidence of Conformity with the Acceptance Criteria</a></li>
+              <li><a href="#Technical_Solution">3 Technical Solution</a>
+                <ul>
+                    <li><a href="#Implemented_MR">3.1 Implemented Requirements</a></li>
+                    <li><a href="#Implemented_Additional_Features">3.2 Implemented additional features</a></li>
+                    <li><a href="#Implemented_API_Changes">3.3 Implemented API Changes</a></li>
+                    <li><a href="#SW_Library">3.4 SW Library</a></li>
+                    <li><a href="#Reusable_Images">3.5 Reusable Images</a></li>
+                    <li><a href="#Impact_on_Users_Abrupt_NBC">3.6 Impact on Users: Abrupt NBC</a></li>
+                    <li><a href="#Impact_on_Users_NUC_NRC">3.7 Impact on Users: NUC/NRC</a></li>
+                    <li><a href="#Impact_on_Users_end">3.8 Impact on Users: NBC (Deprecation ended)</a></li>
+                    <li><a href="#Impact_on_Users_approved">3.9 Impact on Users: Starting/ongoing deprecation</a></li>
+                    <li><a href="#Corrected_TR">3.10 Corrected Trouble Reports</a></li>
+                      <ul>
+                        <li><a href="#Corrected_Vulnerability_Trouble_Reports">3.10.1 Corrected Vulnerability Trouble Reports</a></li>
+                      </ul>
+                    <li><a href="#Restrictions_and_Limitations">3.11 Restrictions and Limitations</a></li>
+                      <ul>
+                        <li><a href="#Exemptions">3.11.1 Exemptions</a></li>
+                        <li><a href="#Open_TRs">3.11.2 Open Trouble Reports</a></li>
+                        <li><a href="#Backward_Incompatibilities">3.11.3 Backward Incompatibilities</a></li>
+                        <li><a href="#Unsupported_Upgrade_Rollback_paths">3.11.4 Unsupported Upgrade/Rollback Paths</a></li>
+                      </ul>
+                </ul>
+              </li>
+              <li><a href="#Product_Deliverables">4 Product Deliverables</a>
+                <ul>
+                  <li><a href="#Software_Products">4.1 Software Products</a></li>
+                  <li><a href="#New_and_Updated_2PP_3PP">4.2 New and Updated 2PP/3PP</a></li>
+                  <li><a href="#Helm_Chart">4.3 Helm Chart</a></li>
+                  <li><a href="#Related_documents">4.4 Related documents</a></li>
+                </ul>
+              </li>
+              <li><a href="#Product_Documentation">5 Product Documentation</a>
+                <ul>
+                    <li><a href="#Developer_Product_Information">5.1 Developer Product Information</a></li>
+                    <li><a href="#Customer_Product_Information">5.2 Customer Product Information</a></li>
+                  </ul>
+              </li>
+              <li><a href="#Deployment_Information">6 Deployment Information</a>
+                <ul>
+                  <li><a href="#Deployment_Guide">6.1 Deployment Instruction</a></li>
+                  <li><a href="#Upgrade_Information">6.2 Upgrade Information</a></li>
+                </ul>
+              </li>
+              <li><a href="#Verification_Status">7 Verification Status</a>
+                <ul>
+                  <li><a href="#Stakeholder_Verification">7.1 Stakeholder Verification</a></li>
+                </ul>
+              </li>
+              <li><a href="#Support">8 Support</a></li>
+              <li><a href="#References">9 References</a></li>
+            </ul>
+            </div>
+
+            <h2 id="Reason_for_Revision">Reason for Revision</h2><!-- TODO: Version exists in repository in file VERSION_PREFIX-->
+            <p id="content">This is the <span th:text="${arguments.TYPE_OF_RELEASE}"></span> release of the <span th:text="${arguments.PRODUCT_NAME}"></span> product (version <span th:text="${arguments.PRODUCT_VERSION}"></span>).</p>
+
+            <div th:if="${not arguments.IS_PRA}">
+               <div style="background-color: red;">
+               <div th:switch="${not #lists.isEmpty(jira_collector__Unfinished_tasks)}">
+                   <h3 id="Corrected_TR_with_open_JIRA">Issues that are "work in progress"</h3>
+                   <!--
+                   To get input to this table:
+                   1.) commit message has to include "Troublereport/Feature: <id> source: jira" and reference to jira (id)
+                   2.) referred jira has to be in a non-closed state
+
+                   For more information see config.yaml
+                   -->
+                   <div th:case="true">
+                       <p id="content" align="center">!!!!!!!!!! This section is not included in the PRA version of the document !!!!!!!!!!</p>
+                       <p id="content">The table below lists the Trouble Reports/Tasks/User stories/Sub-tasks that have a commit mentioning them
+                         since the last PRA tag in <a href="https://jira-oss.seli.wh.rnd.internal.ericsson.com/projects/IDUN">JIRA</a> related to
+                         <span th:text="${arguments.PRODUCT_NAME}"></span> <span th:text="${arguments.PRODUCT_RELEASE_NUMBER}"></span>
+                         but their respective JIRA task has not reached closed status</p>
+                       <table id="e_table">
+                           <thead>
+                               <tr>
+                                   <th style="width: 30%">JIRA-id</th>
+                                   <th style="width: 70%">Heading</th>
+                               </tr>
+                           </thead>
+                           <!-- jira_collector take everything in git history. We should only search within certain time frame -->
+                           <tr th:each="item: ${jira_collector__Unfinished_tasks}">
+                               <td><a th:href="@{__${item.link}__}"><strong th:text="${item.id}"></strong></a></td>
+                               <td><span th:text="${item.heading}"></span></td>
+                               <td><span th:text="${item.status}"></span></td>
+                           </tr>
+                       </table>
+                   </div>
+                   <div th:case="false">
+                       <p id="content">All work items mentioned in commits since the last PRA tag are in closed status.</p>
+                   </div>
+                   <div th:case="*">
+                       <p id="content">PRI GENERATION ERROR: Template programming error detected!</p>
+                   </div>
+                   <p id="content" align="center">!!!!!!!!!! This section is not included in the PRA version of the document !!!!!!!!!!</p>
+               </div>
+               </div>
+            </div>
+
+            <h2 id="Evidence_of_Conformity_with_the_Acceptance_Criteria">Evidence of Conformity with the Acceptance Criteria</h2>
+
+            <th:block th:each="items: ${json_import_collector__MANUAL}">
+                <!-- Read PRA_Checklist -->
+                <div th:each="PRA_Checklist_items: ${items.PRA_Checklist}">
+                    <p id="content">This release has been done in accordance with <a th:href="@{https://document.internal.ericsson.com/Download?DocNo=__${PRA_Checklist_items.document_number}__&Lang=EN&Rev=__${PRA_Checklist_items.revision}__}">
+                        PRA Checklist, revision <span th:text="${PRA_Checklist_items.revision}"></span></a>.</p>
+                </div>
+
+                <!-- Print if array is empty -->
+                <div th:if="${#arrays.isEmpty(items.Release_criteria_unfulfillments)}">
+                    <p id="content">The release criteria has been fulfilled.</p>
+                </div>
+
+                <!-- Print if array is not empty -->
+                <div th:if="not ${#arrays.isEmpty(items.Release_criteria_unfulfillments)}">
+                    <p id="content">The release criteria have been fulfilled except for:</p>
+
+                    <div th:each="Release_criteria_unfulfillments_items: ${items.Release_criteria_unfulfillments}">
+                        <ul id="content">
+                            <li id="content">
+                                <p id="content" th:text="${Release_criteria_unfulfillments_items}"></p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </th:block>
+
+            <p id="content">The release decision has been taken by the approver of this document.</p>
+
+            <h2 id="Technical_Solution">Technical Solution</h2>
+            <h3 id="Implemented_MR">Implemented Requirements</h3>
+            <!--
+
+            To get input to this table:
+            1.) commit message has to include "Requirement: <id> source: focalpoint" and reference to jira (id)
+            2.) referred jira has to be of type "Feature" and status "FA" or "FG"
+
+            For more information’s see config.yaml
+            -->
+            <div th:switch="${not #lists.isEmpty(jira_collector__Feature_in_jira)}">
+                <div th:case="true">
+                    <p id="content">
+                    <table id="e_table">
+                        <thead>
+                            <tr>
+                                <th style="width: 40%">REQUIREMENT ID (MR/JIRA ID)</th>
+                                <th style="width: 60%">HEADING/DESCRIPTION</th>
+                            </tr>
+                        </thead>
+                        <!-- TODO: fetch MR, This can probably be taken from the Git collector if the commit messages use 'focalpoint' as source. Alternatively, the JIRA collector can be used in combination to the type 'feature' -->
+                        <tr th:each="item: ${jira_collector__Feature_in_jira}">
+                            <td><a th:href="@{__${item.link}__}"><strong th:text="${item.focal_point_id}"></strong></a></td>
+                            <td><span th:text="${item.heading}"></span></td>
+                        </tr>
+                    </table>
+                    </p>
+                </div>
+                <div th:case="false">
+                    <p id="content">No requirements implemented in this release.</p>
+                </div>
+                <div th:case="*">
+                    <p id="content">PRI GENERATION ERROR: Template programming error detected!</p>
+                </div>
+            </div>
+
+            <h3 id="Implemented_Additional_Features">Implemented additional features</h3><!-- This is new features that is not a MR -->
+            <!--
+
+            To get input to this table:
+            1.) commit message has to include "Requirement: <id> source: jira" and reference to jira (id)
+            2.) referred jira has to be type =! Bug and status = Done
+
+            For more information’s see config.yaml
+            -->
+            <div th:switch="${not #lists.isEmpty(jira_collector__No_feature_in_jira)}">
+                <div th:case="true">
+                    <table id="e_table">
+                        <thead>
+                            <tr>
+                                <th style="width: 40%">Jira-id</th>
+                                <th style="width: 60%">Jira heading/description</th>
+                            </tr>
+                        </thead>
+                        <!-- jira_collector take everything in git history. We should only search within sertain time frame -->
+                        <tr th:each="item: ${jira_collector__No_feature_in_jira}"><!-- TODO: fetch MR, This can probably be taken from the Git collector if the commit messages use 'focalpoint' as source. Alternatively, the JIRA collector can be used in combination to the type 'feature' -->
+                            <td><a th:href="@{__${item.link}__}"><strong th:text="${item.id}"></strong></a></td>
+                            <td><span th:text="${item.heading}"></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div th:case="false">
+                    <p id="content">No additional features implemented in this release.</p>
+                </div>
+                <div th:case="*">
+                    <p id="content">PRI GENERATION ERROR: Template programming error detected!</p>
+                </div>
+            </div>
+
+            <h3 id="Implemented_API_Changes">Implemented API Changes</h3>
+            <div th:each="item : ${json_import_collector__MANUAL}">
+                <div th:if="${not #lists.isEmpty(item.API)}">
+                    <div th:each="subitem: ${item.API}">
+                        <h4><span th:text="${subitem.Title}"></span></h4>
+                        <div th:switch="${not #lists.isEmpty(subitem.Changes)}">
+                            <div th:case="true">
+                                <ul>
+                                    <div th:each="Changes_items: ${subitem.Changes}">
+                                        <li><p id="content" th:text="${Changes_items}"></p></li>
+                                    </div>
+                                </ul>
+                            </div>
+                            <div th:case="false">
+                                <p id="content">No API change implemented in this release.</p>
+                            </div>
+                        </div>
+                        <p id="content">API Documentation:</p>
+                        <table id="e_table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 15%">DOCUMENT ID</th>
+                                    <th style="width: 25%">TITLE</th>
+                                    <th style="width: 10%">REV</th>
+                                    <th style="width: 10%">SUPPORT/OTHER</th>
+                                </tr>
+                            </thead>
+                                <tr>
+                                    <td><span th:text="${subitem.Document_Number}"></span></td>
+                                    <td><span th:text="${subitem.Title}"></span></td>
+                                    <td><span th:text="${subitem.Document_Revision}"></span></td>
+                                    <td><span th:text="${subitem.Support_Other}"></span></td>
+                                </tr>
+                        </table>
+                    </div>
+                </div>
+                <div th:unless="${not #lists.isEmpty(item.API)}">
+                    <p id="content">No  API exists for this product.</p>
+                </div>
+            </div>
+
+            <h3 id="SW_Library">SW Library</h3>
+            <div th:each="item : ${json_import_collector__MANUAL}">
+                <div th:switch="${not #lists.isEmpty(item.SW_Library)}">
+                    <div th:case="true">
+                    <p id="content">This release has been verified to be compatible from the versions of each SW library product up to the latest versions.</p>
+                        <table id="e_table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 15%">SW LIBRARY NAME</th>
+                                    <th style="width: 25%">PRODUCT NUMBER</th>
+                                    <th style="width: 10%">OLDEST COMPATIBLE VERSION</th>
+                                </tr>
+                            </thead>
+                                <tr th:each="subitem: ${item.SW_Library}">
+                                    <td><span th:text="${subitem.Name}"></span></td>
+                                    <td><span th:text="${subitem.Product_Number}"></span></td>
+                                    <td><span th:text="${subitem.Oldest_Compatible_Version}"></span></td>
+                                </tr>
+                        </table>
+                        <div th:each="subitem: ${item.SW_Library}">
+                          <h4 id="SW_Library_Name_Changes"><span th:text="${subitem.Name}"></span></h4>
+                          <p id="content" th:text="${subitem.Changes}"></p>
+                        </div>
+                    </div>
+                    <div th:case="false">
+                        <p id="content">No SW library product for this service.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 id="Reusable_Images">Reusable Images</h3>
+            <div th:each="item : ${json_import_collector__MANUAL}">
+                <div th:switch="${not #lists.isEmpty(item.Reusable_Images)}">
+                    <div th:case="true">
+                        <table id="e_table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 15%">NAME</th>
+                                    <th style="width: 25%">PRODUCT NUMBER</th>
+                                </tr>
+                            </thead>
+                                <tr th:each="subitem: ${item.Reusable_Images}">
+                                    <td><span th:text="${subitem.Name}"></span></td>
+                                    <td><span th:text="${subitem.Product_Number}"></span></td>
+                                </tr>
+                        </table>
+                    <div th:each="subitem: ${item.Reusable_Images}">
+                        <h4 id="Reusable_Image"><span th:text="${subitem.Name}"></span></h4>
+                        <p id="content" th:text="${subitem.Changes}"></p>
+                        <div>
+                          <table id="e_table">
+                            <tr th:each="data : ${subitem.Compatibility_aspects}">
+                                <td style="width: 50%"><span th:text="${data.key}"></span></td>
+                                <td style="width: 50%"><span th:text="${data.value}"></span></td>
+                            </tr>
+                          </table>
+                        </div>
+                    </div>
+                    </div>
+                    <div th:case="false">
+                        <p id="content">No reusable images products for this service</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 id="Impact_on_Users_Abrupt_NBC">Impact on Users: Abrupt NBC</h3>
+            <div th:switch="${not #lists.isEmpty(jira_collector__Abrupt_nbc)}">
+                <div th:case="true">
+                    <p id="content">The tables below describe the abrupt non-backward compatible changes (Abrupt NBC)introduced in this service version. These functions have been modified and require their users to adapt in this version of the service.</p>
+                    <div th:each="item: ${jira_collector__Abrupt_nbc}">
+                      <table id="e_table">
+                      <thead></thead>
+                        <tr>
+                          <th style="width: 30%"><a th:href="@{__${item.link}__}"><strong th:text="${item.id}"></strong></a></th>
+                          <td style="width: 70%"><span th:text="${item.heading}"></span></td>
+                        </tr>
+                        <tr>
+                          <th style="width: 30%">Impact on other ADP Service Components</th>
+                          <td style="width: 70%"><span th:text="${item.gs_impact}"></span></td>
+                        </tr>
+                        <tr>
+                          <th style="width: 30%">Impact on interface users</th>
+                          <td style="width: 70%"><span th:text="${item.int_impact}"></span></td>
+                        </tr>
+                        <tr>
+                          <th style="width: 30%">Impact on end-customers</th>
+                          <td style="width: 70%"><span th:text="${item.end_impact}"></span></td>
+                        </tr>
+                      </table>
+                    </div>
+                </div>
+                <div th:case="false">
+                    <p id="content">No Abrupt NBC introduced in this release.</p>
+                </div>
+                <div th:case="*">
+                    <p id="content">PRI GENERATION ERROR: Template programming error detected!</p>
+                </div>
+            </div>
+
+            <h3 id="Impact_on_Users_NUC_NRC">Impact on Users: NUC/NRC</h3>
+            <div th:switch="${not #lists.isEmpty(jira_collector__Nuc)}">
+                <div th:case="true">
+                    <p id="content">The tables below describe the Non-upgradeable (NUC) and Non-rollbackable (NRC)changes introduced in this service version.</p>
+                    <div th:each="item: ${jira_collector__Nuc}">
+                      <table id="e_table">
+                        <tr>
+                          <th style="width: 30%"><a th:href="@{__${item.link}__}"><strong th:text="${item.id}"></strong></a></th>
+                          <td style="width: 70%"><span th:text="${item.heading}"></span></td>
+                        </tr>
+                        <tr>
+                          <th style="width: 30%">Impact on end-customers</th>
+                          <td style="width: 70%"><span th:text="${item.customer_impact}"></span></td>
+                        </tr>
+                      </table>
+                    </div>
+                </div>
+                <div th:case="false">
+                    <p id="content">No NUC introduced in this release.</p>
+                </div>
+                <div th:case="*">
+                    <p id="content">PRI GENERATION ERROR: Template programming error detected!</p>
+                </div>
+            </div>
+
+            <h3 id="Impact_on_Users_end">Impact on Users: NBC (Deprecation ended)</h3>
+            <div th:switch="${not #lists.isEmpty(jira_collector__Deprecation_done)}">
+                <div th:case="true">
+                    <p id="content">The table below gives a summary of the non-backward compatible changes
+                      (NBC) introduced in this service version. These functions have been
+                      deprecated and are now removed in this version and can no longer be used.</p>
+                    <div th:each="item: ${jira_collector__Deprecation_done}">
+                      <table id="e_table">
+                        <tr>
+                          <th style="width: 30%"><a th:href="@{__${item.link}__}"><strong th:text="${item.id}"></strong></a></th>
+                          <td style="width: 70%"><span th:text="${item.heading}"></span></td>
+                        </tr>
+                        <tr>
+                          <th style="width: 30%">Impact on other ADP Service Components</th>
+                          <td style="width: 70%"><span th:text="${item.gs_impact}"></span></td>
+                        </tr>
+                        <tr>
+                          <th style="width: 30%">Impact on interface users</th>
+                          <td style="width: 70%"><span th:text="${item.int_impact}"></span></td>
+                        </tr>
+                        <tr>
+                          <th style="width: 30%">Impact on end-customers</th>
+                          <td style="width: 70%"><span th:text="${item.end_impact}"></span></td>
+                        </tr>
+                      </table>
+                    </div>
+                </div>
+                <div th:case="false">
+                    <p id="content">No NBC is implemented in this release.</p>
+                </div>
+                <div th:case="*">
+                    <p id="content">PRI GENERATION ERROR: Template programming error detected!</p>
+                </div>
+            </div>
+
+            <h3 id="Impact_on_Users_approved">Impact on Users: Started/Ongoing Deprecations</h3>
+            <div th:switch="${not #lists.isEmpty(jira_collector__Deprecation_approved)}">
+                <div th:case="true">
+                    <p id="content">The table below gives a summary of the started deprecations for this service.
+                      As a user of a deprecated function, please ensure to stop using the deprecated function
+                      as early as possible. For more details, see the JIRA ticket(s) below.</p>
+                    <div th:each="item: ${jira_collector__Deprecation_approved}">
+                      <table id="e_table">
+                        <tr>
+                          <th style="width: 30%"><a th:href="@{__${item.link}__}"><strong th:text="${item.id}"></strong></a></th>
+                          <td style="width: 70%"><span th:text="${item.heading}"></span></td>
+                        </tr>
+                        <tr>
+                          <th style="width: 30%">Start Date</th>
+                          <td style="width: 70%"><span th:text="${item.start_date}"></span></td>
+                        </tr>
+                        <tr>
+                          <th style="width: 30%">End Date</th>
+                          <td style="width: 70%"><span th:text="${item.end_date}"></span></td>
+                        </tr>
+                        <tr>
+                          <th style="width: 30%">Impact on other ADP Service Components</th>
+                          <td style="width: 70%"><span th:text="${item.gs_impact}"></span></td>
+                        </tr>
+                        <tr>
+                          <th style="width: 30%">Impact on interface users</th>
+                          <td style="width: 70%"><span th:text="${item.int_impact}"></span></td>
+                        </tr>
+                        <tr>
+                          <th style="width: 30%">Impact on end-customers</th>
+                          <td style="width: 70%"><span th:text="${item.end_impact}"></span></td>
+                        </tr>
+                      </table>
+                    </div>
+                </div>
+                <div th:case="false">
+                    <p id="content">No Jira tracked deprecation is announced in this release.</p>
+                </div>
+                <div th:case="*">
+                    <p id="content">PRI GENERATION ERROR: Template programming error detected!</p>
+                </div>
+            </div>
+
+            <h3 id="Corrected_TR">Corrected Trouble Reports</h3>
+            <!--
+
+            To get input to this table:
+            1.) commit message has to include "Troublereport: <id> source: jira" and reference to jira (id)
+            2.) referred jira has to be type = Bug, Task, Sub-task, Story)
+
+            For more information see config.yaml
+            -->
+            <div th:switch="${not #lists.isEmpty(jira_collector__Bug)}">
+                <div th:case="true">
+                    <p id="content">The table below lists the Trouble Reports that are reported in <a href="https://jira-oss.seli.wh.rnd.internal.ericsson.com/projects/IDUN">JIRA</a> and are corrected in <span th:text="${arguments.PRODUCT_NAME}"></span> <span th:text="${arguments.PRODUCT_RELEASE_NUMBER}"></span>:</p>
+                    <table id="e_table">
+                        <thead>
+                            <tr>
+                                <th style="width: 30%">TR-id</th>
+                                <th style="width: 70%">TR heading</th>
+                            </tr>
+                        </thead>
+
+                        <!-- jira_collector take everything in git history. We should only search within certain time frame -->
+                        <tr th:each="item: ${jira_collector__Bug}">
+                            <td><a th:href="@{__${item.link}__}"><strong th:text="${item.id}"></strong></a></td>
+                            <td><span th:text="${item.heading}"></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div th:case="false">
+                    <p id="content">No troublereports fixed in this release.</p>
+                </div>
+                <div th:case="*">
+                    <p id="content">PRI GENERATION ERROR: Template programming error detected!</p>
+                </div>
+            </div>
+            <h4 id="Corrected_Vulerabilities">Corrected Vulnerability Trouble Reports</h4>
+            <!--
+                To get input to this table:
+                1.) commit message has to include "Vulernabilities: <id> source: jira" and reference to jira (id)
+                2.) referred jira has to be type = Bug, Task, Sub-task, Story)
+    
+                For more information see config.yaml
+            -->
+            <div th:switch="${not #lists.isEmpty(jira_collector__Vulnerabilities)}">
+                <div th:case="true">
+                    <p id="content">The table below lists the Vulnerability Trouble Reports that are reported in <a
+                            href="https://jira-oss.seli.wh.rnd.internal.ericsson.com/projects/IDUN">JIRA</a> and are corrected in
+                        <span th:text="${arguments.PRODUCT_NAME}"></span> <span
+                            th:text="${arguments.PRODUCT_RELEASE_NUMBER}"></span>:</p>
+                    <table id="e_table">
+                        <thead>
+                            <tr>
+                                <th style="width: 30%">Vulnerability ID(s)</th>
+                                <th style="width: 50%">Vulnerability Description</th>
+                                <th style="width: 20%">TR ID</th>
+                            </tr>
+                        </thead>
+
+                        <!-- jira_collector take everything in git history. We should only search within certain time frame -->
+                        <tr th:each="item: ${jira_collector__Vulnerabilities}">
+                            <td class="preline"><span th:text="${item.vulnerabilities}"></span></td>
+                            <td><span th:text="${item.heading}"></span></td>
+                            <td><a th:href="@{__${item.link}__}"><strong th:text="${item.id}"></strong></a></td>
+                        </tr>
+                    </table>
+                </div>
+                <div th:case="false">
+                    <p id="content">No vulnerability trouble reports fixed in this release.</p>
+                </div>
+                <div th:case="*">
+                    <p id="content">PRI GENERATION ERROR: Template programming error detected!</p>
+                </div>
+            </div>
+            <h3 id="Restrictions_and_Limitations">Restrictions and Limitations</h3>
+            <h4 id="Exemptions">Exemptions</h4>
+            <div th:each="item : ${json_import_collector__MANUAL}">
+                <div th:each="subitem: ${item.Exemptions}">
+                    <p id="content" th:text="${subitem}"></p>
+                </div>
+            </div>
+
+            <!--
+            To get input to this table:
+            List of open Bug-s in JIRA with  Matching component name
+
+            For more information see config.yaml
+            -->
+            <h4 id="Open_TRs">Open Trouble Reports</h4>
+            <div th:switch="${not #lists.isEmpty(jira_collector__Open_bug)}">
+                <div th:case="true">
+                    <p id="content">The table below lists JIRA trouble reports that are currently open in <span th:text="${arguments.PRODUCT_NAME}"></span> <span th:text="${arguments.PRODUCT_RELEASE_NUMBER}"></span>:</p>
+                    <!--
+                        To get input to this table:
+                        A jira issue needs to be created that matches the jql written in the environment variable ${JIRA_COLLECTOR__BUG_JQL} or the default in pri.py
+                        default_config_variables["jira_collector__open_bug"]["jql"]
+                    -->
+                    <table id="e_table">
+                        <thead>
+                            <tr>
+                                <th style="width: 10%">TR-id</th>
+                                <th style="width: 50%">Description</th>
+                                <th style="width: 5%">Priority</th>
+                            </tr>
+                        </thead>
+                        <tr th:each="item: ${jira_collector__Open_bug}">
+                            <td><a th:href="@{__${item.link}__}"><strong th:text="${item.id}"></strong></a></td>
+                            <td><span th:text="${item.heading}"></span></td>
+                            <td><span th:text="${item.priority}"></span></td>
+                        </tr>
+                    </table>
+                </div>
+                <div th:case="false">
+                    <p id="content">No open trouble reports for this release.</p>
+                </div>
+                <div th:case="*">
+                    <p id="content">PRI GENERATION ERROR: Template programming error detected!</p>
+                </div>
+            </div>
+
+            <h4 id="Backward_Incompatibilities">Backward Incompatibilities</h4>
+            <div th:switch="${not #lists.isEmpty(jira_collector__Deprecation_done)}">
+                <div th:case="true">
+                  <p id="content">For the list of non-backward compatible changes (NBC) introduced in this  release refer to  chapters 3.6 and 3.8.</p>
+                </div>
+                <div th:case="false">
+                    <div th:if="${not #lists.isEmpty(jira_collector__Abrupt_nbc)}">
+                        <p id="content">For the list of non-backward compatible changes (NBC) introduced in this  release refer to  chapters 3.6 and 3.8.</p>
+                    </div>
+                    <div th:if="${#lists.isEmpty(jira_collector__Abrupt_nbc)}">
+                        <p id="content">No NBC introduced in  this release.</p>
+                    </div>
+                </div>
+                <div th:case="*">
+                    <p id="content">PRI GENERATION ERROR: Template programming error detected!</p>
+                </div>
+            </div>
+
+            <h4 id="Unsupported_Upgrade_Rollback_paths">Unsupported Upgrade/Rollback Paths</h4>
+            <div th:each="item : ${json_import_collector__MANUAL}">
+              <div th:switch="${not #lists.isEmpty(item.Unsupported_Upgrade_Rollback_Path)}">
+                <div th:case="true">
+                  <table id="e_table">
+                    <thead>
+                      <tr>
+                        <th style="width: 50%">Oldest version for which upgrade to this release is supported</th>
+                        <th style="width: 50%">Oldest version for which rollback from this release is supported</th>
+                      </tr>
+                    </thead>
+                    <tr th:each="subitem: ${item.Unsupported_Upgrade_Rollback_Path}">
+                      <td><span th:text="${subitem.Oldest_version_which_supports_upgrade}"></span></td>
+                      <td><span th:text="${subitem.Oldest_version_which_supports_rollback}"></span></td>
+                    </tr>
+                  </table>
+                  <p id="content">For the list of Non-Upgradeable (NUC) and Non-Rollbackable (NRC) changes introduced in this release refer to chapter 3.7.</p>
+                </div>
+                <div th:case="false">
+                    <p id="content">No NUC/NRC introduced in this release.</p>
+                </div>
+                <div th:case="*">
+                    <p id="content">PRI GENERATION ERROR: Template programming error detected!</p>
+                </div>
+              </div>
+            </div>
+            <h2 id="Product_Deliverables">Product Deliverables</h2>
+            <h3 id="Software_Products">Software Products</h3>
+            <p id="content">The following table shows the software products of this release:</p>
+            <th:block th:each="dpraf_json_items: ${json_import_collector__DPRAF}">
+                <table id="e_table">
+                    <thead>
+                        <tr>
+                            <th style="width: 10%">Product Type</th>
+                            <th style="width: 25%">Name</th>
+                            <th style="width: 20%">Product id</th>
+                            <th style="width: 5%">New R-state</th>
+                            <th style="width: 25%">SHA256 Checksum</th>
+                        </tr>
+                    </thead>
+                    <tr th:each="item: ${dpraf_json_items.Software_Products}">
+                        <td><span th:text="${item.Product_Type}"></span></td>
+                        <td><span th:text="${item.Name}"></span></td>
+                        <td><span th:text="${item.Product_id}"></span></td>
+                        <td><span th:text="${item.New_Rstate}"></span></td>
+                        <td class="wordwrap"><span th:text="${item.Checksum}"></span></td>
+                    </tr>
+                </table>
+            </th:block>
+
+            <h3 id="New_and_Updated_2PP_3PP">New and Updated 2PP/3PP</h3>
+            <div th:switch="${not #lists.isEmpty(json_import_collector__MANUAL)}">
+                <div th:case="true">
+                    <p id="content">The following 2PP/3PP’s are new or updated:</p>
+                    <th:block th:each="manual_json_items: ${json_import_collector__MANUAL}">
+                        <table id="e_table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 25%">Name</th>
+                                    <th style="width: 35%">Product id</th>
+                                    <th style="width: 20%">Old version</th>
+                                    <th style="width: 20%">New version</th>
+                                    <th style="width: 20%">Comments</th>
+                                </tr>
+                            </thead>
+                            <tr th:each="item: ${manual_json_items.New_and_Updated_2PP_3PP}">
+                                <td><span th:text="${item.Name}"></span></td>
+                                <td><span th:text="${item.Product_id}"></span></td>
+                                <td><span th:text="${item.Old_version}"></span></td>
+                                <td><span th:text="${item.New_version}"></span></td>
+                                <td><span th:text="${item.Comments}"></span></td>
+                            </tr>
+                        </table>
+                    </th:block>
+                </div>
+                <div th:case="false">
+                    <p id="content">No new or updated 2PP/3PP's in this release.</p>
+                </div>
+                <div th:case="*">
+                    <p id="content">PRI GENERATION ERROR: Template programming error detected!</p>
+                </div>
+            </div>
+
+            <h3 id="Helm_Chart">Helm Chart</h3>
+            <p id="content">The following table shows the repository links of this release:</p>
+            <th:block th:each="items: ${json_import_collector__MANUAL}">
+                <table id="e_table">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%">Release</th>
+                            <th style="width: 70%">HELM Package Link</th>
+                        </tr>
+                    </thead>
+                    <tr th:each="item: ${items.Repository_helm_link}">
+                        <td><span th:text="${item.Title}"></span> <span th:text="${#strings.arraySplit(#strings.arraySplit(item.Chart_Version, '+')[0], '-')[0]}"></span></td>
+                        <td>
+                            <a th:href="@{__${item.Folder_Link}__/__${item.Chart_Name}__-__${item.Chart_Version}__.tgz}">
+                                <span th:text="${item.Folder_Link}"></span>/<span th:text="${item.Chart_Name}">
+                                </span>-<span th:text="${item.Chart_Version}">
+                                </span>.tgz
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </th:block>
+
+            <h3 id="Related_documents">Related documents</h3>
+            <p id="content">The following list contains all the document deliverables. The documents are stored in Eridoc. All the documents are accessible from Marketplace, see chapter "Product Documentation" for details.</p>
+            <th:block th:each="dpraf_json_items: ${json_import_collector__DPRAF}">
+                <table id="e_table">
+                    <thead>
+                        <tr>
+                            <th style="width: 25%">Document id</th>
+                            <th style="width: 40%">Title</th>
+                            <th style="width: 5%">Rev</th>
+                        </tr>
+                    </thead>
+                    <tr th:each="item: ${dpraf_json_items.Related_documents}">
+                        <td><a th:href="@{https://document.internal.ericsson.com/Download?DocNo=__${item.Document_id.replaceAll('/', '%2F').replaceAll(' ', '')}__&Lang=EN&Rev=__${item.Rev}__}"><span th:text="${item.Document_id}"></span></a></td>
+                        <td><span th:text="${item.Title}"></span></td>
+                        <td><span th:text="${item.Rev}"></span></td>
+                    </tr>
+                </table>
+            </th:block>
+
+            <h2 id="Product_Documentation">Product Documentation</h2>
+            <h3 id="Developer_Product_Information">Developer Product Information</h3>
+            <p id="content">The Developer Product Information (DPI) documentation can be accessed using the following link:
+            <br>
+            <a th:href="@{__${arguments.MARKETPLACE_URL}__/documentation/__${arguments.PRODUCT_VERSION}__}">
+               <span th:text="@{__${arguments.MARKETPLACE_URL}__/documentation/__${arguments.PRODUCT_VERSION}__}"></a>
+            </a>
+            </p>
+            <h3 id="Customer_Product_Information">Customer Product Information</h3>
+            <div th:each="item : ${json_import_collector__MANUAL}">
+                <div th:switch="${not #lists.isEmpty(item.CPI)}">
+                    <div th:each="subitem: ${item.CPI}">
+                        <div th:case="true">
+                            <p id="content">The service provides reusable Customer Product Information (CPI) content that can be reused in ADP application CPI libraries. This content is published in an ADP specific ELEX library to show how the information could be reused. It helps applications to produce their own CPI libraries based on the reusable content. The ELEX library can be accessed using the following link:
+                                <br>
+                                <a th:href="@{__${subitem.cpi_elex_lib}__}">
+                                    <span th:text="@{__${subitem.cpi_elex_lib}__}"></a>
+                                 </a>
+                            </p>
+                            <p id="content">The ADP example documents in this ELEX library are only used to illustrate how CPI topics from DITA CMS DRM "ADP Content for Reuse" could be reused in ADP application documents. The ADP example documents must in general not be published in CPI libraries of ADP applications. How ADP CPI is to be reused by ADP applications is described in the ELEX library, see HOW TO REUSE OVERVIEW
+                                <br>
+                                <a th:href="@{__${subitem.cpi_how_to_reuse_overview}__}">
+                                    <span th:text="@{__${subitem.cpi_how_to_reuse_overview}__}"></a>
+                                 </a>
+                            </p>
+                        </div>
+                    </div>
+                    <div th:case="false">
+                        <p id="content">The service does not provide any CPI content.</p>
+                    </div>
+
+            <h2>Deployment Information</h2>
+            </p>
+
+            <p id="content">The <span th:text="${arguments.PRODUCT_NAME}"></span> Service can be deployed in a Kubernetes environment.</p>
+
+            <h3 id="Deployment_Guide">Deployment Instructions</h3>
+            <thead th:each="item: ${json_import_collector__DPRAF}">
+                <p id="content">The target group for the deployment instructions is only application developers and application integrators. Deployment instruction can be found in
+                <a th:href="@{__${arguments.MARKETPLACE_URL}__/documentation/__${arguments.PRODUCT_VERSION}__}">
+                    <span th:text="${item.Installation_Instruction_Title}"></a>
+                 </a>
+                </p>
+            </thead>
+
+            <h3 id="Upgrade_Information">Upgrade Information</h3>
+            <div th:each="item : ${json_import_collector__MANUAL}">
+                <div th:each="subitem: ${item.Upgrade_Information}">
+                    <p id="content" th:text="${subitem}"></p>
+                </div>
+            </div>
+
+            <h2 id="Verification_Status">Verification Status</h2>
+            <div th:each="item: ${json_import_collector__DPRAF}">
+                <p id="content">The verification status is described in the
+                    <a th:href="@{https://document.internal.ericsson.com/Download?DocNo=__${item.Verification_Report_Document_id.replaceAll('/', '%2F').replaceAll(' ', '')}__&Lang=EN&Rev=__${item.Verification_Report_Rev}__}">
+                    <span th:text="${item.Verification_Report_Title}"></a>
+                    </a>
+                </p>
+            </div>
+
+            <h3 id="Stakeholder_Verification">Stakeholder Verification</h3>
+            <div th:switch="${'true' == arguments.MANUAL_STAKEHOLDER_VERIFICATION_INFO}">
+                <div th:case="true">
+                    <div th:each="item : ${json_import_collector__MANUAL}">
+                        <div th:each="subitem: ${item.Stakeholder_Verification}">
+                            <p id="content" th:text="${subitem}"></p>
+                        </div>
+                    </div>
+                </div>
+                <div th:case="*">
+                    <p id="content">It is verified in ADP CICD pipeline as part of the ADP staging phase and in additional to application staging pipelines.
+                        See <a href="https://cicd-ng.web.adp.gic.ericsson.se">CI/CD Dashboard</a>
+                        for further understanding.
+                        <br>
+                        Note: The result shown in the CI/CD Dashboard pipeline
+                        will always be the result of the latest build and is not referring to this specific <span th:text="${arguments.TYPE_OF_RELEASE}"></span>
+                        release.
+                    </p>
+                </div>
+            </div>
+
+            <h2 id="Support">Support</h2>
+            <div th:switch="${'true' == arguments.MANUAL_SUPPORT_INFO}">
+                <div th:case="true">
+                    <div th:each="item : ${json_import_collector__MANUAL}">
+                        <div th:each="subitem: ${item.Support}">
+                            <p id="content" th:text="${subitem}"></p>
+                        </div>
+                    </div>
+                </div>
+                <div th:case="*">
+                    <p id="content">For support use the
+                    <a href="https://jira-oss.seli.wh.rnd.internal.ericsson.com/secure/CreateIssue.jspa?pid=24430&issuetype=5">
+                       Generic Services Support JIRA
+                       </a> project,
+                       please also see  the <span th:text="${arguments.PRODUCT_NAME}"></span>
+                       troubleshooting guidelines in Marketplace where you will find more detailed support information.
+                    </p>
+                </div>
+            </div>
+
+            <h2 id="References">References</h2>
+            <div th:switch="${'true' == arguments.MANUAL_REFERENCES_INFO}">
+                <div th:case="true">
+                    <div th:each="item : ${json_import_collector__MANUAL}">
+                        <div th:each="subitem: ${item.References}">
+                            <p id="content" th:text="${subitem}"></p>
+                        </div>
+                    </div>
+                </div>
+                <div th:case="*">
+                    <ol id="e_ref">
+                       <li>
+                           JIRA: (<a href="https://jira-oss.seli.wh.rnd.internal.ericsson.com/projects/IDUN/summary">https://jira-oss.seli.wh.rnd.internal.ericsson.com/projects/IDUN/summary</a>)
+                       </li>
+                       <li>
+                           Market Place: (<a href="https://adp.ericsson.se/marketplace">https://adp.ericsson.se/marketplace</a>)
+                       </li>
+                    </ol>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

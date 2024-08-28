@@ -1,0 +1,57 @@
+{
+  "type": "ctw/nrcell",
+  "id": 23,
+  "href": "ctw/nrcell/23",
+  "externalId": "ew345/_3gpp-common-managed-element:ManagedElement=me01/_3gpp-nr-nrm-gnbdufunction:GNBDUFunction=02400710001_5GDU_PHO_3RD_ST_TAYLOR_SC/_3gpp-nr-nrm-nrcelldu:NRCellDU=0240071_0001_0001_04",
+  "name": "NorthAmerica/USA/MKT_024/0240071_5GNB_PHO_3RD_ST_TAYLOR_SC/gnbdu=0240071_5GNB_PHO_3RD_ST_TAYLOR_SC/0240071_0001_0001_04",
+  "createdOn": "2021-08-26T15:47:25.247Z",
+  "createdBy": "sysadm",
+  "status": "operating",
+  "lastModifiedOn": "2021-08-26T15:47:25.247Z",
+  "lastModifiedBy": "sysadm",
+  "versionNumber": 1,
+  "revisionNumber": 1,
+  "revisionGroupKey": {
+    "type": "revisionGroupKey",
+    "keyValue": 23
+  },
+  "localCellIdNci": 20,
+  "physicalCellIdentity": 63,
+  "trackingAreaCode": 6151,
+  "downlinkEARFCN": 2244997,
+  "key": {
+    "type": "ctw/nrcellKey",
+    "keyValue": 23
+  },
+  "gnbdu": [
+    {
+      "mode": "LOADED",
+      "value": {
+        "type": "ctw/gnbdu",
+        "id": 17,
+        "href": "ctw/gnbdu/17",
+        "externalId": "ew345/_3gpp-common-managed-element:ManagedElement=0240071_5GNB_PHO_3RD_ST_TAYLOR_SC/_3gpp-nr-nrm-gnbdufunction:GNBDUFunction=02400710001_5GDU_PHO_3RD_ST_TAYLOR_SC",
+        "name": "NorthAmerica/USA/MKT_024/0240071_5GNB_PHO_3RD_ST_TAYLOR_SC/gnbdu=0240071_5GNB_PHO_3RD_ST_TAYLOR_SC",
+        "revisionNumber": 1,
+        "createdOn": "2021-08-26T15:47:24.939Z",
+        "createdBy": "sysadm",
+        "status": "operating",
+        "lastModifiedOn": "2021-08-26T15:47:24.939Z",
+        "lastModifiedBy": "sysadm",
+        "revisionGroupKey": {
+          "type": "revisionGroupKey",
+          "keyValue": 17
+        },
+        "administrativeState": "UNLOCKED",
+        "operationalState": "ENABLED",
+        "versionNumber": 1,
+        "gnbduId": 240071,
+        "gNodeBId": 123456,
+        "key": {
+          "type": "ctw/gnbduKey",
+          "keyValue": 17
+        }
+      }
+    }
+  ]
+}

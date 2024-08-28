@@ -1,0 +1,28 @@
+{
+  "type": "ctg/geographicsite",
+  "id": 1,
+  "href": "ctg/geographicsite/1",
+  "externalId": "externalId1",
+  "status": "operating",
+  "name": "geosite1",
+  "siteId": "site1",
+  "locatedAt": [
+    {
+      "mode": "LOADED",
+      "value": {
+        "type": "ctg/geographiclocation",
+        "id": 2,
+        "href": "ctg/geographiclocation/2",
+        "externalId": "externalId2",
+        "status": "operating",
+        "name": "geosite2",
+        "geospatialData": {
+          "type": "Point",
+          "coordinates": [
+            33.07502079415546,-96.83138032951078
+          ]
+        }
+      }
+    }
+  ]
+}

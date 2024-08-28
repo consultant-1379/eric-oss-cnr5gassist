@@ -1,0 +1,50 @@
+{
+    "ManagedElement": [
+        {
+            "id": "NR01gNodeBRadio00008",
+            "GNBCUCPFunction": [
+                {
+                    "id": "1",
+                    "EndpointResource": [
+                        {
+                            "id": "PLMN3",
+                            "erienmnrmgnbcucp:LocalSctpEndpoint": [
+                                {
+                                    "id": "PLMN3",
+                                    "attributes": {
+                                        "sctpEndpointRef": "SubNetwork=Europe,SubNetwork=Ireland,MeContext=NR01gNodeBRadio00008,ManagedElement=NR01gNodeBRadio00008,Transport=1,SctpEndpoint=3",
+                                        "interfaceUsed": "X2"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "id": "PLMN2",
+                            "erienmnrmgnbcucp:LocalSctpEndpoint": [
+                                {
+                                    "id": "PLMN2",
+                                    "attributes": {
+                                        "sctpEndpointRef": "SubNetwork=Europe,SubNetwork=Ireland,MeContext=NR01gNodeBRadio00008,ManagedElement=NR01gNodeBRadio00008,Transport=1,SctpEndpoint=2",
+                                        "interfaceUsed": "X2"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "id": "PLMN1",
+                            "erienmnrmgnbcucp:LocalSctpEndpoint": [
+                                {
+                                    "id": "PLMN1",
+                                    "attributes": {
+                                        "sctpEndpointRef": "SubNetwork=Europe,SubNetwork=Ireland,MeContext=NR01gNodeBRadio00008,ManagedElement=NR01gNodeBRadio00008,Transport=1,SctpEndpoint=1",
+                                        "interfaceUsed": "X2"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,40 @@
+[
+  {
+    "type": "ctw/ltecell",
+    "id": 7,
+    "href": "ctw/ltecell/7",
+    "cellType": "FDD",
+    "externalId": "ew345/_3gpp-common-managed-element:ManagedElement=me01/_3gpp-LTE-LTEm-enodebfunction:enodebFunction=enodeb01/_3gpp-LTE-LTEm-ltecelldu:ltecellDU=LTE-Cell-04",
+    "cellLocalId": 4,
+    "FDDearfcnDl": 324,
+    "FDDearfcnUl": 325,
+    "status": "operating",
+    "name": "Europe/Ireland/LTE001/me01/enodeb01/LTE-Cell-04",
+    "objectInstId": 102
+  },
+  {
+    "type": "ctw/ltecell",
+    "id": 8,
+    "href": "ctw/ltecell/8",
+    "cellType": "FDD",
+    "externalId": "ew345/_3gpp-common-managed-element:ManagedElement=me01/_3gpp-LTE-LTEm-enodebfunction:enodebFunction=enodeb01/_3gpp-LTE-LTEm-ltecelldu:ltecellDU=LTE-Cell-05",
+    "cellLocalId": 5,
+    "FDDearfcnDl": 326,
+    "FDDearfcnUl": 327,
+    "status": "operating",
+    "name": "Europe/Ireland/LTE001/me01/enodeb01/LTE-Cell-05",
+    "objectInstId": 103
+  },
+  {
+    "type": "ctw/ltecell",
+    "id": 9,
+    "href": "ctw/ltecell/9",
+    "cellType": "TDD",
+    "externalId": "ew345/_3gpp-common-managed-element:ManagedElement=me01/_3gpp-LTE-LTEm-enodebfunction:enodebFunction=enodeb01/_3gpp-LTE-LTEm-ltecelldu:ltecellDU=LTE-Cell-06",
+    "cellLocalId": 6,
+    "TDDearfcn": 328,
+    "status": "operating",
+    "name": "Europe/Ireland/LTE001/me01/enodeb01/LTE-Cell-06",
+    "objectInstId": 104
+  }
+]

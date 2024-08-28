@@ -1,0 +1,28 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+documents:
+  - name: user-guide
+    files:
+      - User_Guide/5GCNR_Assist_User_Guide.md
+      - User_Guide/5GCNR_architecture_overview.png
+      - User_Guide/5GCNR_deployment_overview.png
+  - name: developers-guide
+    files:
+      - Developers_Guide/Developers_Guide.md
+  - name: vulnerability-report
+    files:
+      - Vulnerability_Report/5GCNR_Assist_Vulnerability_Report.md

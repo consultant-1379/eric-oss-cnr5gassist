@@ -1,0 +1,17 @@
+{
+    "erienmnrmlrat:ExternalGNodeBFunction": [
+        {
+            "id": "1",
+            "erienmnrmlrat:TermPointToGNB": [
+                {
+                    "id": "1",
+                    "attributes": {
+                        "termPointToGNBId": 1,
+                        "administrativeState": "UNLOCKED",
+                        "ipAddress": "10.55.168.50"
+                    }
+                }
+            ]
+        }
+    ]
+}

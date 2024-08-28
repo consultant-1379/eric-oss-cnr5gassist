@@ -1,0 +1,374 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+openapi: "3.0.2"
+info:
+  title: "5G CNR CTS Client schemas"
+  description: "OpenAPI file which contains schemas for 5G CNR CTS Client"
+  version: "0.0.1"
+  license:
+    name: "COPYRIGHT Ericsson 2021"
+    url: "https://www.ericsson.com/en/legal"
+  termsOfService: "https://www.ericsson.com/en/legal"
+components:
+  schemas:
+    Resource:
+      type: object
+      required:
+        - type
+        - id
+        - href
+      properties:
+        type:
+          type: string
+          example: ctc/resource
+        id:
+          type: integer
+          format: int64
+          example: 797
+        href:
+          type: string
+          example: ctc/resource/13
+        externalId:
+          type: string
+          example: any string
+        name:
+          type: string
+          example: any string
+        comments:
+          type: string
+          example: any string
+      discriminator:
+        propertyName: type
+        mapping:
+          ctw/gnbdu: '#/components/schemas/Gnbdu'
+          ctw/nrcell: '#/components/schemas/NrCell'
+          ctw/enodeb: '#/components/schemas/ENodeB'
+          ctw/ltecell: '#/components/schemas/LteCell'
+          ctw/nrsectorcarrier: '#/components/schemas/NrSectorCarrier'
+          ctw/wirelessnetwork: '#/components/schemas/WirelessNetwork'
+          ctg/geographicsite: '#/components/schemas/GeographicSite'
+          ctg/geographiclocation: '#/components/schemas/GeographicLocation'
+    Association:
+      type: object
+      required:
+        - mode
+        - value
+      properties:
+        mode:
+          type: string
+          example: 'LOADED'
+          default: 'NOT_LOADED'
+        value:
+          $ref: '#/components/schemas/Resource'
+    Gnbdu:
+      allOf:
+        - $ref: '#/components/schemas/Resource'
+        - type: object
+          required:
+            - gnbduId
+          properties:
+            gnbduId:
+              type: integer
+              format: int64
+              example: 59
+            gNodeBId:
+              type: integer
+              format: int64
+              example: 123456
+            wirelessNetworks:
+              type: array
+              items:
+                $ref: '#/components/schemas/Association'
+    NrCell:
+      allOf:
+        - $ref: '#/components/schemas/Resource'
+        - type: object
+          properties:
+            localCellIdNci:
+              type: integer
+              format: int64
+              example: 979
+            physicalCellIdentity:
+              type: integer
+              format: int32
+              example: 206
+            downlinkEARFCN:
+              type: integer
+              format: int32
+              example: 100000
+            trackingAreaCode:
+              type: integer
+              format: int32
+              example: 100000
+            gnbdu:
+              type: array
+              minItems: 0
+              maxItems: 1
+              items:
+                $ref: '#/components/schemas/Association'
+            geographicSite:
+              type: array
+              items:
+                $ref: '#/components/schemas/Association'
+            nrSectorCarriers:
+              type: array
+              items:
+                $ref: '#/components/schemas/Association'
+    NrSectorCarrier:
+      allOf:
+        - $ref: '#/components/schemas/Resource'
+        - type: object
+          properties:
+            essScPairId:
+              type: integer
+              format: int64
+              example: 979
+            arfcnDL:
+              type: integer
+              format: int32
+              example: 979
+    WirelessNetwork:
+      allOf:
+        - $ref: '#/components/schemas/Resource'
+        - type: object
+          required:
+            - mcc
+            - mnc
+          properties:
+            mcc:
+              type: integer
+              format: int32
+              example: 206
+            mnc:
+              type: integer
+              format: int32
+              example: 206
+    GeographicSite:
+      allOf:
+        - $ref: '#/components/schemas/Resource'
+        - type: object
+          properties:
+            siteId:
+              type: string
+              example: any string
+            locatedAt:
+              type: array
+              items:
+                $ref: '#/components/schemas/Association'
+    GeographicLocation:
+      allOf:
+        - $ref: '#/components/schemas/Resource'
+        - type: object
+          properties:
+            geospatialData:
+              $ref: '#/components/schemas/GeospatialData'
+            situatedSite:
+              $ref: '#/components/schemas/GeographicSite'
+    GeospatialData:
+      type: object
+      properties:
+        type:
+          type: string
+          example: any string
+        coordinates:
+          type: array
+          items:
+            type: number
+            format: float
+            example: 12.3
+    ENodeB:
+      allOf:
+        - $ref: '#/components/schemas/Resource'
+        - type: object
+          properties:
+            eNodeBId:
+              type: integer
+              format: int64
+              example: 123
+            status:
+              type: string
+              example: any string
+            objectInstId:
+              type: integer
+              format: int64
+              example: 123
+            lteCells:
+              type: array
+              items:
+                $ref: '#/components/schemas/Association'
+    LteCell:
+      allOf:
+        - $ref: '#/components/schemas/Resource'
+        - type: object
+          properties:
+            cellType:
+              type: string
+              enum:
+                - TDD
+                - FDD
+            cellLocalId:
+              type: integer
+              format: int64
+              example: 123
+            FDDearfcnDl:
+              type: integer
+              format: int64
+              example: 324
+            FDDearfcnUl:
+              type: integer
+              format: int64
+              example: 362
+            TDDearfcn:
+              type: integer
+              format: int64
+              example: 384
+            status:
+              type: string
+              example: any string
+            objectInstId:
+              type: integer
+              format: int64
+              example: 123
+            geographicSite:
+              type: array
+              items:
+                $ref: '#/components/schemas/Association'
+    GraniteFault:
+      type: object
+      properties:
+        exceptionClassName:
+          type: string
+          example: any string
+        messageCode:
+          type: string
+          example: any string
+        messageText:
+          type: string
+          example: any string
+        messageDetails:
+          $ref: '#/components/schemas/StructuredData'
+        uiPresentable:
+          type: boolean
+          example: false
+        severity:
+          type: string
+          example: ERROR
+          enum:
+            - ERROR
+            - WARNING
+    GraniteFaultStack:
+      type: object
+      properties:
+        messageText:
+          type: string
+          example: any string
+        faults:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraniteFault'
+    StructuredData:
+      type: object
+      properties:
+        any:
+          type: object
+    ManagedObjectFetchSpec:
+      allOf:
+        - $ref: '#/components/schemas/FetchSpec'
+        - type: object
+          properties:
+            type:
+              type: string
+              example: sdk/managedobjectFetchSpec
+            dynamicAssociationFetchRules:
+              type: array
+              items:
+                $ref: '#/components/schemas/DynamicAssociationFetchRule'
+            defaultDynamicallyAssociatedObjectFetchSpec:
+              $ref: '#/components/schemas/ManagedObjectFetchSpec'
+            bindings:
+              type: array
+              items:
+                $ref: '#/components/schemas/ManagedObjectFetchSpec'
+            fetchInaccessibleObjectsAsPlaceholders:
+              type: boolean
+              example: false
+            fetchTimeSliceRevisions:
+              type: boolean
+              example: false
+            timeSliceDate:
+              type: string
+              format: date-time
+              example: 2017-07-21T17:32:28Z
+            fetchDerivedAttributes:
+              type: boolean
+              example: false
+            fromArchive:
+              type: boolean
+              example: false
+            fetchComputedAttributes:
+              type: boolean
+              example: false
+    FetchSpec:
+      type: object
+      properties:
+        mode:
+          type: string
+          example: KEY
+          enum:
+            - KEY
+            - ATTRIBUTES
+            - ASSOCIATIONS
+            - CUSTOM
+        fetchDynamicAttributes:
+          type: boolean
+          example: false
+        fetchArchived:
+          type: boolean
+          example: false
+        orderByList:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderBy'
+        caseInsensitive:
+          type: boolean
+          example: false
+    OrderBy:
+      type: object
+      properties:
+        attributeName:
+          type: string
+          example: any string
+        orderType:
+          type: string
+          example: ASCENDING
+          enum:
+            - ASCENDING
+            - DESCENDING
+    DynamicAssociationFetchRule:
+      type: object
+      properties:
+        associationName:
+          type: string
+          example: any string
+        associatedObjectFetchSpec:
+          $ref: '#/components/schemas/ManagedObjectFetchSpec'
+    QueryCriteria:
+      type: object
+      properties:
+        whereClause:
+          type: string
+          example: '"any example of WHERE statement in SQL query"'

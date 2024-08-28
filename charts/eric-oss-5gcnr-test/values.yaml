@@ -1,0 +1,33 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+service:
+  instance: eric-oss-5gcnr-staging
+  name: 5gcnr-test-job
+  port: 8080
+
+cnr5gmain:
+  instance: eric-oss-5gcnr-staging
+  name: eric-oss-5gcnr
+  port: 8080
+
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 250m
+  limits:
+    memory: 512Mi
+    cpu: 500m

@@ -1,0 +1,86 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+repository: eridoca
+folderId: 0b004cffca66632c
+documents:
+  # List the documents you want to upload to Eridoc.
+  - title: "5G CNR Assist User guide"
+    folderId: 0b004cffca667778
+    file: "build/doc/pdf/user-guide/5GCNR_Assist_User_Guide.pdf"
+    class-prefix: ""
+    decimal-class: "1553"
+    individual-number: "APR201618/1"
+    strategy: latest
+    eri_document_type: "User Guide"
+    format: "pdf"
+    eri_audience: "Workgroup Members - Searchable"
+    eri_category: "Research & Development"
+    eri_subject_responsible: "System & Application Software Development"
+    eri_conf_class: "Ericsson Confidential"
+  - title: "5G CNR Assist Vulnerability Analysis Report"
+    folderId: 0b004cffca6ab66d
+    file: "../Vulnerability_Report/5GCNR_Assist_Vulnerability_Report.md"
+    class-prefix: ""
+    decimal-class: "1597"
+    individual-number: "APR201618/1"
+    strategy: latest
+    eri_document_type: "Test Analysis"
+    format: "md"
+    eri_audience: "Workgroup Members - Searchable"
+    eri_category: "Research & Development"
+    eri_subject_responsible: "System & Application Software Development"
+    eri_conf_class: "Ericsson Confidential"
+  - title: "5G CNR Assist K6 Test Report"
+    folderId: 0b004cffca667778
+    file: "test/k6-test-results.html"
+    class-prefix: "1"
+    decimal-class: "15283"
+    individual-number: "APR201618/1"
+    assume-fixed-individual-number: True
+    strategy: ordinal
+    eri_document_type: "Test Report"
+    format: "html"
+    eri_audience: "Workgroup Members - Searchable"
+    eri_category: "Research & Development"
+    eri_subject_responsible: "System & Application Software Development"
+    eri_conf_class: "Ericsson Internal"
+  - title: "5G CNR Assist PRI"
+    folderId: 0b004cffca667778
+    file: "build/pri/5GCNR_Assist_PRI.pdf"
+    class-prefix: ""
+    decimal-class: "10921"
+    individual-number: "APR201618/1"
+    strategy: ordinal
+    eri_document_type: "Product Revision Information"
+    format: "pdf"
+    eri_audience: "Workgroup Members - Searchable"
+    eri_category: "Research & Development"
+    eri_subject_responsible: "System & Application Software Development"
+    eri_conf_class: "Ericsson Internal"
+  - title: "5G CNR Assist Characteristics Report"
+    folderId: 0b004cffca667778
+    file: "doc/target/generated-docs/characteristics_report/5GCNR_Assist_characteristics_report.pdf"
+    class-prefix: "2"
+    decimal-class: "15283"
+    individual-number: "APR201618/1"
+    strategy: ordinal
+    eri_document_type: "Test Report"
+    format: "pdf"
+    eri_audience: "Workgroup Members - Searchable"
+    eri_category: "Research & Development"
+    eri_subject_responsible: "System & Application Software Development"
+    eri_conf_class: "Ericsson Internal"

@@ -1,0 +1,27 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+modelVersion: 2.0
+fosses:
+  - product_number: CTX1022386
+    # Selected License
+    license: Apache-2.0
+    # Explain how to license obligations are fullfilled (Max 1000 characters, no linefeed)
+    obligation: |
+      "Including the full license text in a prominent place with the software when the FOSS is distributed. This fulfills the following: Ericsson must give any recipients of the software a copy of the Apache License. Ericsson must cause any modified files to carry prominent notices stating that Ericsson changed the files. In any source form Ericsson distributes, all copyright, patent, trademark and attribution notices must be retained. If the software includes a NOTICE text file as part of its distribution, then any derivative work Ericsson distributes must include a readable copy of the attribution notices contained within such NOTICE file"
+    # Explain how the FOSS is used (Max 1000 characters)
+    usage: |
+      "This FOSS evaluation concerns the free open software called Contour. Contour is an Ingress controller for Kubernetes that works by deploying the Envoy proxy as a reverse proxy and load balancer. Contour provides layer-7 traffic load-balancing functionality. The supported protocols are HTTP/HTTPS (v1.1 and v1.2). The FOSS software can also manage Transport Layer Security (TLS) in the COP cluster."

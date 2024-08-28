@@ -1,0 +1,52 @@
+{{- if .Values.networkPolicy.enabled }}
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: {{ include "eric-oss-5gcnr.name" . }}-trafic
+  labels:
+    {{- include "eric-oss-5gcnr.labels" . | nindent 4 }}
+  annotations:
+    {{- include "eric-oss-5gcnr.annotations" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels: {{- include "eric-oss-5gcnr.selectorLabels" . | nindent 6 }}
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels: {{- include "eric-oss-5gcnr.selectorLabels" . | nindent 14 }}
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: {{ .Values.apiGateway.name }}
+        - podSelector:
+            matchLabels:
+              app: {{ .Values.pmServer.name }}
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: 5gcnr-test-job
+        {{- range .Values.additionalIngresses }}
+        - podSelector:
+            matchLabels:
+              app: {{ . }}
+        {{- end }}
+      ports:
+        - protocol: TCP
+          port: {{ .Values.service.port }}
+  policyTypes:
+    - Ingress
+{{- end }}

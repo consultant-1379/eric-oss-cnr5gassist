@@ -1,0 +1,121 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "eric-oss-stub-runner.name" . }}-config
+  labels:
+    {{- include "eric-oss-stub-runner.labels" . | indent 4 }}
+    {{- include "eric-oss-stub-runner.config-labels" . | indent 4 }}
+  annotations:
+    {{- include "eric-oss-stub-runner.product-info" . | indent 4 }}
+    {{- include "eric-oss-stub-runner.config-annotations" . | indent 4 }}
+data: {{ (.Files.Glob "resources/*").AsConfig | nindent 2 }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "eric-oss-stub-runner.name" . }}
+  labels:
+    {{- include "eric-oss-stub-runner.labels" . | indent 4 }}
+    {{- include "eric-oss-stub-runner.config-labels" . | indent 4 }}
+  annotations:
+    {{- include "eric-oss-stub-runner.product-info" . | indent 4 }}
+    {{- include "eric-oss-stub-runner.config-annotations" . | indent 4 }}
+spec:
+  selector:
+    matchLabels: {{ include "eric-oss-stub-runner.selectorLabels" . | nindent 6 }}
+  strategy: {{ toYaml .Values.updateStrategy | nindent 4 }}
+  template:
+    metadata:
+      labels:
+        {{- include "eric-oss-stub-runner.labels" . | indent 8 }}
+        {{- include "eric-oss-stub-runner.config-labels" . | indent 8 }}
+      annotations:
+        {{- include "eric-oss-stub-runner.product-info" . | indent 8 }}
+        {{- include "eric-oss-stub-runner.config-annotations" . | indent 8 }}
+    spec:
+      {{- if include "eric-oss-stub-runner.pullSecret" . }}
+      imagePullSecrets:
+        - name: {{ include "eric-oss-stub-runner.pullSecret" . | quote }}
+      {{- end }}
+      serviceAccountName: {{ include "eric-oss-stub-runner.name" . }}
+      {{- $image := merge (dict "imageName" "wiremock") . }}
+      initContainers:
+        - name: init
+          image: {{ include "eric-oss-stub-runner.image" $image }}
+          imagePullPolicy: IfNotPresent
+          securityContext: {{ toYaml .Values.containerSecurityContext | nindent 12 }}
+          command: ["/entrypoint/entrypoint.sh"]
+          args:
+            - "-d"
+            - "/home/wiremock/mappings/"
+            - "-r"
+            - {{ .Values.wiremock.repoPath | quote }}
+            - "-i"
+            - {{ .Values.wiremock.ids | quote }}
+          env:
+            - name: REPO_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "eric-oss-stub-runner.name" . }}
+                  key: username
+            - name: REPO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "eric-oss-stub-runner.name" . }}
+                  key:  password
+          volumeMounts:
+            - name: configmap-volume
+              mountPath: /entrypoint
+            - name: mapping-volume
+              mountPath: /home/wiremock/mappings
+      containers:
+        - name: wiremock
+          image: {{ include "eric-oss-stub-runner.image" $image }}
+          imagePullPolicy: IfNotPresent
+          securityContext: {{ toYaml .Values.containerSecurityContext | nindent 12 }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - name: mapping-volume
+              mountPath: /home/wiremock/mappings
+      nodeSelector: {{ include "eric-oss-stub-runner.nodeSelector" . | nindent 8 }}
+      volumes:
+        - name: mapping-volume
+          emptyDir: {}
+        - name: configmap-volume
+          configMap:
+            name: {{ include "eric-oss-stub-runner.name" . }}-config
+            defaultMode: 0755
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ template "eric-oss-stub-runner.name" . }}
+  labels:
+    {{- include "eric-oss-stub-runner.labels" . | indent 4 }}
+      {{- include "eric-oss-stub-runner.config-labels" . | indent 4 }}
+  annotations:
+    {{- include "eric-oss-stub-runner.product-info" . | indent 4 }}
+      {{- include "eric-oss-stub-runner.config-annotations" . | indent 4 }}
+spec: {{- toYaml .Values.podDisruptionBudget | nindent 2 }}
+  selector:
+    matchLabels: {{ include "eric-oss-stub-runner.selectorLabels" . | nindent 6 }}

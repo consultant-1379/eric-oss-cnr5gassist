@@ -1,0 +1,12 @@
+{
+    "erienmnrmrtnsctp:SctpEndpoint": [
+        {
+            "id": "NRAT",
+            "attributes": {
+                "localIpAddress": [
+                    "SubNetwork=Europe,SubNetwork=Ireland,MeContext=NR45gNodeBRadio00022,ManagedElement=NR45gNodeBRadio00022,Transport=1,Router=VR_INNER,InterfaceIPv4=NRAT_CP,AddressIPv4=1"
+                ]
+            }
+        }
+    ]
+}

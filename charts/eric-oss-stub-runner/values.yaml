@@ -1,0 +1,53 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+updateStrategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
+
+podDisruptionBudget:
+  minAvailable: "40%"
+
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  privileged: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: false
+  capabilities:
+    drop:
+      - all
+
+imageCredentials:
+  wiremock:
+
+wiremock:
+  repoPath: https://arm.seli.gic.ericsson.se/artifactory/proj-eric-oss-dev-local
+  ids: com.ericsson.oss.apps.stubs:eric-oss-cnr5gassist:+:stubs
+
+credentials:
+  username: ""
+  password: ""
+
+images:
+  wiremock:
+
+annotations: {}
+
+labels: {}
+
+nodeSelector: {}

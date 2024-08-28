@@ -1,0 +1,27 @@
+{
+  "type": "ctw/ltecell",
+  "id": 7,
+  "href": "ctw/ltecell/7",
+  "cellType": "FDD",
+  "externalId": "ew345/_3gpp-common-managed-element:ManagedElement=me01/_3gpp-LTE-LTEm-enodebfunction:enodebFunction=enodeb01/_3gpp-LTE-LTEm-ltecelldu:ltecellDU=LTE-Cell-04",
+  "cellLocalId": 4,
+  "FDDearfcnDl": 324,
+  "FDDearfcnUl": 325,
+  "status": "operating",
+  "name": "Europe/Ireland/LTE001/me01/enodeb01/LTE-Cell-04",
+  "objectInstId": 102,
+  "geographicSite": [
+    {
+      "mode": "LOADED",
+      "value": {
+        "type": "ctg/geographicsite",
+        "id": 2,
+        "href": "ctg/geographicsite/2",
+        "externalId": "externalId2",
+        "status": "operating",
+        "name": "geosite2",
+        "siteId": "site2"
+      }
+    }
+  ]
+}

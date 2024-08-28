@@ -1,0 +1,40 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+zapConfig:
+  baseUrl: "http://eric-oss-5gcnr:8080"
+  scanType: "api"
+  config_dir: "va-configs"
+  globalConfig:
+  - id: "100001"
+    action: "IGNORE"
+    message: "Unexpected Content-Type was returned"
+  endpoints:
+    - name: "startNRC"
+      url: "/api/v1/nrc/startNrc"
+    - name: "Monitoring"
+      url: "/api/v1/nrc/monitoring:"
+    - name: "id"
+      url: "/api/v1/nrc/monitoring/{id}"
+  report:
+    dir: ".bob/va-reports/zap-scan"
+    format:
+      - html
+      - json
+      - md
+      - xml
+  properties:
+    zap_container_port: 9625

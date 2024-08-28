@@ -1,0 +1,708 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+# *****************************************************************************
+# Collector to import PRI_MANUAL_JSON
+#
+---
+- name: json_import_collector__MANUAL
+  type: JsonImportCollector
+  arguments:
+    - PRI_MANUAL_JSON
+  json_path: "${PRI_MANUAL_JSON}"
+  output_mapping:
+    Exemptions: "/Exemptions"
+    New_and_Updated_2PP_3PP: "/New_and_Updated_2PP_3PP"
+    Repository_helm_link: "/Repository_helm_link"
+    Upgrade_Information: "/Upgrade_Information"
+    Marketplace: "/Marketplace"
+    PRA_Checklist: "/PRA_Checklist"
+    Release_criteria_unfulfillments: "/Release_criteria_unfulfillments"
+    API: "/API"
+    SW_Library: "/SW_Library"
+    CPI: "/CPI"
+    Reusable_Images: "/Reusable_Images"
+    Unsupported_Upgrade_Rollback_Path: "/Unsupported_Upgrade_Rollback_Path"
+
+# *****************************************************************************
+# Collector to import DPRAF_REPORT_JSON
+#
+- name: json_import_collector__DPRAF
+  type: JsonImportCollector
+  arguments:
+    - DPRAF_REPORT_JSON
+  json_path: "${DPRAF_REPORT_JSON}"
+  output_mapping:
+    Software_Products: "/Software_Products"
+    Related_documents: "/Related_documents"
+    Installation_Instruction_Document_id: "/Installation_Instruction/Document_id"
+    Installation_Instruction_Title: "/Installation_Instruction/Title"
+    Installation_Instruction_Rev: "/Installation_Instruction/Rev"
+    Verification_Report_Document_id: "/Verification_Report/Document_id"
+    Verification_Report_Title: "/Verification_Report/Title"
+    Verification_Report_Rev: "/Verification_Report/Rev"
+# *****************************************************************************
+# Collector to search for all finished jira features in git
+# (FROM_CHANGE..TO_CHANGE)
+#
+- name: git_collector__Feature
+  type: GitCollector
+  arguments:
+    - FROM_CHANGE
+    - TO_CHANGE
+  repository: "${GERRIT_URL}"
+  # -----------------
+  # String for specifying the range of commits in Git.
+  #
+  log_selector: "${FROM_CHANGE}..${TO_CHANGE}"
+  # -----------------
+  # Regular expression used to extract issue ID-s from commit messages
+  #
+  id_pattern: "${GIT_COLLECTOR__FEATURE_ID_PATTERN}"
+  # -----------------
+  # Regular expression for matching whole reverted commits containing relevant
+  # information to be removed from the output of this collector. Must differ
+  # from \u2018pattern\u2019.
+  #
+  # This is how to recognize the revert commits, so it can be removed from the
+  # commit list.
+  # If in the scanned range you have a ADP-10 and a Revert ADP-10 than it
+  # won't be listed in the resulting array. For this to work the row must
+  # start with "Revert"
+  revert_pattern: "^Revert\\s*(.+?)\\s*($)"
+  output_mapping:
+    id: "/id"
+    commit: "/commit"
+    message: "/message"
+    author_name: "/author_name"
+    author_email: "/author_email"
+    author_time: "/author_time"
+    committer_name: "/committer_name"
+    committer_email: "/committer_email"
+    committer_time: "/committer_time"
+  operators:
+    - type: DuplicateRemoverOperator
+      field: "/id"
+# *****************************************************************************
+# Collector to search for all finished bugs in git (FROM_CHANGE..TO_CHANGE)
+#
+- name: git_collector__Bug
+  type: GitCollector
+  arguments:
+    - FROM_CHANGE
+    - TO_CHANGE
+  repository: "${GERRIT_URL}"
+  # -----------------
+  # String for specifying the range of commits in Git.
+  #
+  log_selector: "${FROM_CHANGE}..${TO_CHANGE}"
+  # -----------------
+  # Regular expression for matching whole commit messages containing relevant
+  # information/ID to be added to the output of this collector
+  #
+  # This selects the string which contains one or more IDs from in the commit
+  # message.
+  # For example if you have a commit message like:
+  # "adfadsfsd [ADP-10,APD-12,HW123143] # asdfadf asd dagdfg sfd sfdg"
+  # it will return the [ADP-10,ADP-12,HW123143]
+  id_pattern: "${GIT_COLLECTOR__BUG_ID_PATTERN}"
+  # -----------------
+  # Regular expression for matching whole reverted commits containing relevant
+  # information to be removed from the output of this collector. Must differ
+  # from \u2018pattern\u2019.
+  #
+  # This is how to recognize the revert commits, so it can be removed from the
+  # commit list.
+  # If in the scanned range you have a ADP-10 and a Revert ADP-10 than it
+  # won't be listed
+  # in the resulting array. For this to work the row must start with "Revert"
+  revert_pattern: "^Revert\\s*(.+?)\\s*($)"
+  output_mapping:
+    id: "/id"
+    commit: "/commit"
+    message: "/message"
+    author_name: "/author_name"
+    author_email: "/author_email"
+    author_time: "/author_time"
+    committer_name: "/committer_name"
+    committer_email: "/committer_email"
+    committer_time: "/committer_time"
+  operators:
+    - type: DuplicateRemoverOperator
+      field: "/id"
+# *****************************************************************************
+# Collector to search for all finished deprecation in git
+# (FROM_CHANGE..TO_CHANGE)
+#
+- name: git_collector__Deprecation
+  type: GitCollector
+  arguments:
+    - FROM_CHANGE
+    - TO_CHANGE
+  repository: "${GERRIT_URL}"
+  # -----------------
+  # String for specifying the range of commits in Git.
+  #
+  log_selector: "${FROM_CHANGE}..${TO_CHANGE}"
+  # -----------------
+  # Regular expression for matching whole commit messages containing relevant
+  # information/ID to be added to the output of this collector
+  #
+  # This selects the string which contains one or more IDs from in the commit
+  # message.
+  # For example if you have a commit message like:
+  # "adfadsfsd [ADP-10,APD-12,HW123143] # asdfadf asd dagdfg sfd sfdg"
+  # it will return the [ADP-10,ADP-12,HW123143]
+  id_pattern: "${GIT_COLLECTOR__DEPRECATION_ID_PATTERN}"
+  # -----------------
+  # Regular expression for matching whole reverted commits containing relevant
+  # information to be removed from the output of this collector. Must differ
+  # from \u2018pattern\u2019.
+  #
+  # This is how to recognize the revert commits, so it can be removed from the
+  # commit list.
+  # If in the scanned range you have a ADP-10 and a Revert ADP-10 than it won't
+  # be listed in the resulting array. For this to work the row must start with
+  # "Revert"
+  revert_pattern: "^Revert\\s*(.+?)\\s*($)"
+  output_mapping:
+    id: "/id"
+    commit: "/commit"
+    message: "/message"
+    author_name: "/author_name"
+    author_email: "/author_email"
+    author_time: "/author_time"
+    committer_name: "/committer_name"
+    committer_email: "/committer_email"
+    committer_time: "/committer_time"
+  operators:
+    - type: DuplicateRemoverOperator
+      field: "/id"
+
+# *****************************************************************************
+# Collector to search for all finished vulnerabilites fixed in git
+# (FROM_CHANGE..TO_CHANGE)
+#
+- name: git_collector__Vulnerabilities
+  type: GitCollector
+  arguments:
+    - FROM_CHANGE
+    - TO_CHANGE
+  repository: "${GERRIT_URL}"
+  # -----------------
+  # String for specifying the range of commits in Git.
+  #
+  log_selector: "${FROM_CHANGE}..${TO_CHANGE}"
+  # -----------------
+  # Regular expression used to extract issue ID-s from commit messages
+  #
+  id_pattern: "${GIT_COLLECTOR__VULNERABILITIES_ID_PATTERN}"
+  # -----------------
+  # Regular expression for matching whole reverted commits containing relevant
+  # information to be removed from the output of this collector. Must differ
+  # from \u2018pattern\u2019.
+  #
+  # This is how to recognize the revert commits, so it can be removed from the
+  # commit list.
+  # If in the scanned range you have a ADP-10 and a Revert ADP-10 than it
+  # won't be listed in the resulting array. For this to work the row must
+  # start with "Revert"
+  revert_pattern: "^Revert\\s*(.+?)\\s*($)"
+  output_mapping:
+    id: "/id"
+    commit: "/commit"
+    message: "/message"
+    author_name: "/author_name"
+    author_email: "/author_email"
+    author_time: "/author_time"
+    committer_name: "/committer_name"
+    committer_email: "/committer_email"
+    committer_time: "/committer_time"
+  operators:
+    - type: DuplicateRemoverOperator
+      field: "/id"
+
+# *****************************************************************************
+# Collector to search for Abrupt NBC's delivered in git
+# (FROM_CHANGE..TO_CHANGE)
+#
+- name: git_collector__Abrupt_nbc
+  type: GitCollector
+  arguments:
+    - FROM_CHANGE
+    - TO_CHANGE
+  repository: "${GERRIT_URL}"
+  # -----------------
+  # String for specifying the range of commits in Git.
+  #
+  log_selector: "${FROM_CHANGE}..${TO_CHANGE}"
+  # -----------------
+  # Regular expression used to extract issue ID-s from commit messages
+  #
+  id_pattern: "${GIT_COLLECTOR__ABRUPT_NBC_ID_PATTERN}"
+  # -----------------
+  # Regular expression for matching whole reverted commits containing relevant
+  # information to be removed from the output of this collector. Must differ
+  # from \u2018pattern\u2019.
+  #
+  # This is how to recognize the revert commits, so it can be removed from the
+  # commit list.
+  # If in the scanned range you have a ADP-10 and a Revert ADP-10 than it
+  # won't be listed in the resulting array. For this to work the row must
+  # start with "Revert"
+  revert_pattern: "^Revert\\s*(.+?)\\s*($)"
+  output_mapping:
+    id: "/id"
+    commit: "/commit"
+    message: "/message"
+  operators:
+    - type: DuplicateRemoverOperator
+      field: "/id"
+
+# *****************************************************************************
+# Collector to search for NUC/NRC's delivered in git
+# (FROM_CHANGE..TO_CHANGE)
+#
+- name: git_collector__Nuc
+  type: GitCollector
+  arguments:
+    - FROM_CHANGE
+    - TO_CHANGE
+  repository: "${GERRIT_URL}"
+  # -----------------
+  # String for specifying the range of commits in Git.
+  #
+  log_selector: "${FROM_CHANGE}..${TO_CHANGE}"
+  # -----------------
+  # Regular expression used to extract issue ID-s from commit messages
+  #
+  id_pattern: "${GIT_COLLECTOR__NUC_ID_PATTERN}"
+  # -----------------
+  # Regular expression for matching whole reverted commits containing relevant
+  # information to be removed from the output of this collector. Must differ
+  # from \u2018pattern\u2019.
+  #
+  # This is how to recognize the revert commits, so it can be removed from the
+  # commit list.
+  # If in the scanned range you have a ADP-10 and a Revert ADP-10 than it
+  # won't be listed in the resulting array. For this to work the row must
+  # start with "Revert"
+  revert_pattern: "^Revert\\s*(.+?)\\s*($)"
+  output_mapping:
+    id: "/id"
+    commit: "/commit"
+    message: "/message"
+  operators:
+    - type: DuplicateRemoverOperator
+      field: "/id"
+# *****************************************************************************
+# Without "Focal point ID" refering to feature/MR in jira
+# Feature is only referred in git commit message
+#
+- name: jira_collector__No_feature_in_jira
+  type: JiraCollector
+  # -----------------
+  # URL to the Jira server
+  jira_url: "${JIRA_COLLECTOR__NO_FEATURE_IN_JIRA_JIRA_URL}"
+  # -----------------
+  # This is the query to select Jira issues to work with.
+  # It is good practice to build the query in Jira's query editor first.
+  # When the query provides the desired result, it could be assigned to jql
+  # configuration parameter.
+  #
+  # https://jira-oss.seli.wh.rnd.internal.ericsson.com/browse/WP-48?jql=
+  #
+  jql: "${JIRA_COLLECTOR__NO_FEATURE_IN_JIRA_JQL}"
+  # -----------------
+  # This parameter controls what fields the Jira server shall return
+  fields:
+    - Summary
+    - status
+    - Issue Type
+  input_mapping:
+    - id: "/id"
+  output_mapping:
+    id: "/key"
+    heading: "/Summary"
+    status: "/status"
+    type: "/Issue Type"
+    link: "/collector_generated_fields/link"
+  operators:
+    - type: DuplicateRemoverOperator
+      field: "/id"
+# *****************************************************************************
+# With Fx status progress refering to feature/MR in jira
+#
+- name: jira_collector__Feature_in_jira
+  type: JiraCollector
+  # -----------------
+  # URL to the Jira server
+  jira_url: "${JIRA_COLLECTOR__FEATURE_IN_JIRA_JIRA_URL}"
+  # -----------------
+  # This is the query to select Jira issues to work with.
+  # It is good practice to build the query in Jira's query editor first.
+  # When the query provides the desired result, it could be assigned to jql
+  # configuration parameter.
+  #
+  # https://jira-oss.seli.wh.rnd.internal.ericsson.com/browse/WP-48?jql=
+  #
+  jql: "${JIRA_COLLECTOR__FEATURE_IN_JIRA_JQL}"
+  fields:
+    - Focal Point ID
+    - Summary
+    - status
+    - Issue Type
+  input_mapping:
+    - id: "/id"
+  output_mapping:
+    id: "/key"
+    focal_point_id: "/Focal Point ID"
+    heading: "/Summary"
+    status: "/status"
+    type: "/Issue Type"
+    link: "/collector_generated_fields/link"
+  operators:
+    - type: DuplicateRemoverOperator
+      field: "/id"
+# *****************************************************************************
+#
+- name: jira_collector__Bug
+  type: JiraCollector
+  # -----------------
+  # URL to the Jira server
+  jira_url: "${JIRA_COLLECTOR__BUG_JIRA_URL}"
+  # -----------------
+  # This is the query to select Jira issues to work with.
+  # It is good practice to build the query in Jira's query editor first.
+  # When the query provides the desired result, it could be assigned to jql
+  # configuration parameter.
+  #
+  # https://jira-oss.seli.wh.rnd.internal.ericsson.com/browse/WP-48?jql=
+  #
+  jql: "${JIRA_COLLECTOR__BUG_JQL}"
+  fields:
+    - Summary
+    - status
+    - Issue Type
+  input_mapping:
+    - id: "/id"
+  output_mapping:
+    id: "/key"
+    heading: "/Summary"
+    status: "/status"
+    type: "/Issue Type"
+    link: "/collector_generated_fields/link"
+  operators:
+    - type: DuplicateRemoverOperator
+      field: "/id"
+# *****************************************************************************
+#
+- name: jira_collector__Unfinished_tasks
+  type: JiraCollector
+  # -----------------
+  # URL to the Jira server
+  jira_url: "${JIRA_COLLECTOR__UNFINISHED_TASKS_JIRA_URL}"
+  # -----------------
+  # This is the query to select Jira issues to work with.
+  # It is good practice to build the query in Jira's query editor first.
+  # When the query provides the desired result, it could be assigned to jql
+  # configuration parameter.
+  #
+  # https://jira-oss.seli.wh.rnd.internal.ericsson.com/browse/WP-48?jql=
+  #
+  jql: "${JIRA_COLLECTOR__UNFINISHED_TASKS_JQL}"
+  fields:
+    - Summary
+    - status
+    - Issue Type
+  input_mapping:
+    - id: "/id"
+  output_mapping:
+    id: "/key"
+    heading: "/Summary"
+    status: "/status"
+    type: "/Issue Type"
+    link: "/collector_generated_fields/link"
+  operators:
+    - type: DuplicateRemoverOperator
+      field: "/id"
+# *****************************************************************************
+#
+- name: jira_collector__Open_bug
+  type: JiraCollector
+  # -----------------
+  # URL to the Jira server
+  jira_url: "${JIRA_COLLECTOR__OPEN_BUG_JIRA_URL}"
+  # -----------------
+  # This is the query to select Jira issues to work with.
+  # It is good practice to build the query in Jira's query editor first.
+  # When the query provides the desired result, it could be assigned to jql
+  # configuration parameter.
+  #
+  # https://jira-oss.seli.wh.rnd.internal.ericsson.com/browse/WP-48?jql=
+  #
+  jql: "${JIRA_COLLECTOR__OPEN_BUG_JQL}"
+  fields:
+    - Summary
+    - status
+    - Issue Type
+    - priority
+  output_mapping:
+    id: "/key"
+    heading: "/Summary"
+    status: "/status"
+    type: "/Issue Type"
+    priority: "/priority"
+    link: "/collector_generated_fields/link"
+# *****************************************************************************
+#
+- name: jira_collector__Deprecation_approved
+  type: JiraCollector
+  # -----------------
+  # URL to the Jira server
+  jira_url: "https://jira-oss.seli.wh.rnd.internal.ericsson.com"
+  # -----------------
+  # This is the query to select Jira issues to work with.
+  # It is good practice to build the query in Jira's query editor first.
+  # When the query provides the desired result, it could be assigned to jql
+  # configuration parameter.
+  #
+  # https://jira-oss.seli.wh.rnd.internal.ericsson.com/browse/WP-48?jql=
+  #
+  jql: "${JIRA_COLLECTOR__DEPRECATION_APPROVED_JQL}"
+  fields:
+    - Summary
+    - status
+    - Issue Type
+    - Possible impact on other ADP Services Components
+    - cf[30108]
+    - cf[30109]
+    - Start date
+    - Deprecation End Date
+  output_mapping:
+    id: "/key"
+    heading: "/Summary"
+    status: "/status"
+    type: "/Issue Type"
+    link: "/collector_generated_fields/link"
+    gs_impact: "/Possible impact on other ADP Services Components"
+    int_impact: "/cf[30108]"
+    end_impact: "/cf[30109]"
+    start_date: "/Start date"
+    end_date: "/Deprecation End Date"
+# *****************************************************************************
+#
+- name: jira_collector__Deprecation_done
+  type: JiraCollector
+  # -----------------
+  # URL to the Jira server
+  jira_url: "https://jira-oss.seli.wh.rnd.internal.ericsson.com"
+  # -----------------
+  # This is the query to select Jira issues to work with.
+  # It is good practice to build the query in Jira's query editor first.
+  # When the query provides the desired result, it could be assigned to jql
+  # configuration parameter.
+  #
+  # https://jira-oss.seli.wh.rnd.internal.ericsson.com/browse/WP-48?jql=
+  #
+  jql: "${JIRA_COLLECTOR__DEPRECATION_DONE_JQL}"
+  fields:
+    - Summary
+    - status
+    - Issue Type
+    - Possible impact on other ADP Services Components
+    - cf[30108]
+    - cf[30109]
+  input_mapping:
+    - id: "/id"
+  output_mapping:
+    id: "/key"
+    heading: "/Summary"
+    status: "/status"
+    type: "/Issue Type"
+    link: "/collector_generated_fields/link"
+    gs_impact: "/Possible impact on other ADP Services Components"
+    int_impact: "/cf[30108]"
+    end_impact: "/cf[30109]"
+# *****************************************************************************
+#
+- name: jira_collector__Vulnerabilities
+  type: JiraCollector
+  # -----------------
+  # URL to the Jira server
+  jira_url: "https://jira-oss.seli.wh.rnd.internal.ericsson.com"
+  # -----------------
+  # This is the query to select Jira issues to work with.
+  # It is good practice to build the query in Jira's query editor first.
+  # When the query provides the desired result, it could be assigned to jql
+  # configuration parameter.
+  #
+  # https://jira-oss.seli.wh.rnd.internal.ericsson.com/browse/WP-48?jql=
+  #
+  jql: "${JIRA_COLLECTOR__VULNERABILITIES_JQL}"
+  fields:
+    - Summary
+    - status
+    - Issue Type
+    - Vulnerability IDs
+  input_mapping:
+    - id: "/id"
+  output_mapping:
+    id: "/key"
+    heading: "/Summary"
+    vulnerabilities: "/Vulnerability IDs"
+    link: "/collector_generated_fields/link"
+
+  # *****************************************************************************
+  #
+- name: jira_collector__Abrupt_nbc
+  type: JiraCollector
+  # -----------------
+  # URL to the Jira server
+  jira_url: "https://jira-oss.seli.wh.rnd.internal.ericsson.com"
+  jql: "${JIRA_COLLECTOR__ABRUPT_NBC_JQL}"
+  fields:
+    - Summary
+    - status
+    - Issue Type
+    - Possible impact on other ADP Services Components
+    - cf[30108]
+    - cf[30109]
+    - Start date
+  input_mapping:
+    - id: "/id"
+  output_mapping:
+    id: "/key"
+    heading: "/Summary"
+    status: "/status"
+    type: "/Issue Type"
+    link: "/collector_generated_fields/link"
+    gs_impact: "/Possible impact on other ADP Services Components"
+    int_impact: "/cf[30108]"
+    end_impact: "/cf[30109]"
+    start_date: "/Start date"
+
+
+  # *****************************************************************************
+  #
+- name: jira_collector__Nuc
+  type: JiraCollector
+  # -----------------
+  # URL to the Jira server
+  jira_url: "https://jira-oss.seli.wh.rnd.internal.ericsson.com"
+  jql: "${JIRA_COLLECTOR__NUC_JQL}"
+  fields:
+    - Summary
+    - status
+    - Issue Type
+    - Customer Details #There is no field Customer Impact on your JIRA
+  input_mapping:
+    - id: "/id"
+  output_mapping:
+    id: "/key"
+    heading: "/Summary"
+    status: "/status"
+    type: "/Issue Type"
+    link: "/collector_generated_fields/link"
+    customer_impact: "/Customer Details"
+
+# *****************************************************************************
+# Produces a document in HTML format using a template
+#
+- name: html_generator
+  type: HtmlGenerator
+  template_path: "${TEMPLATE_PATH}"
+  output_path: "${OUTPUT_DIR}/pri.html"
+  # -----------------
+  # This tell the engine, that the Generator needs this argument and the
+  # validation in the beginning will fail if it is not provided as environment
+  # variable or as command-line parameter
+  arguments:
+    - DATE_ARG
+    - DOC_APPROVER
+    - PRODUCT_NUMBER
+    - PRODUCT_NAME
+    - PRODUCT_VERSION
+    - PRODUCT_REVISION
+    - PRODUCT_IMAGE_TAG
+    - JIRA_COMPONENT_LONG_NAME
+    - PRODUCT_RELEASE_NUMBER
+    - TYPE_OF_RELEASE
+    - DOC_PREPARED
+    - OUTPUT_DIR
+    - TEMPLATE_PATH
+    - DOC_NUMBER
+    - DOC_VERSION
+    - PRI_TITLE
+    - MANUAL_SUPPORT_INFO
+    - MANUAL_REFERENCES_INFO
+    - MANUAL_STAKEHOLDER_VERIFICATION_INFO
+    - IS_PRA
+    - MARKETPLACE_URL
+# *****************************************************************************
+#
+- name: pdf_generator
+  type: PdfGenerator
+  template_path: "${TEMPLATE_PATH}"
+  output_path: "${OUTPUT_DIR}/pri.pdf"
+  # -----------------
+  # This tell the engine, that the Generator needs this argument and the
+  # validation in the beginning will fail if it is not provided as environment
+  # variable or as command-line parameter
+  arguments:
+    - DATE_ARG
+    - DOC_APPROVER
+    - PRODUCT_NUMBER
+    - PRODUCT_NAME
+    - PRODUCT_VERSION
+    - PRODUCT_REVISION
+    - PRODUCT_IMAGE_TAG
+    - JIRA_COMPONENT_LONG_NAME
+    - PRODUCT_RELEASE_NUMBER
+    - TYPE_OF_RELEASE
+    - DOC_PREPARED
+    - OUTPUT_DIR
+    - TEMPLATE_PATH
+    - DOC_NUMBER
+    - DOC_VERSION
+    - PRI_TITLE
+    - MANUAL_STAKEHOLDER_VERIFICATION_INFO
+    - MANUAL_SUPPORT_INFO
+    - MANUAL_REFERENCES_INFO
+    - IS_PRA
+    - MARKETPLACE_URL
+# *****************************************************************************
+# Produces a document in JSON format
+#
+- name: json_generator
+  type: JsonGenerator
+  output_path: "${OUTPUT_DIR}/pri.json"
+  # -----------------
+  # This tell the engine, that the Generator needs this argument and the
+  # validation in the beginning will fail if it is not provided as environment
+  # variable or as command-line parameter
+  arguments:
+    - FROM_CHANGE
+    - TO_CHANGE
+    - DATE_ARG
+    - DOC_APPROVER
+    - PRODUCT_NUMBER
+    - PRODUCT_NAME
+    - JIRA_COMPONENT_LONG_NAME
+    - PRODUCT_RELEASE_NUMBER
+    - TYPE_OF_RELEASE
+    - DOC_PREPARED
+    - OUTPUT_DIR
